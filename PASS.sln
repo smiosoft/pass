@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5514BD07-535
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smiosoft.PASS", "src\Smiosoft.PASS\Smiosoft.PASS.csproj", "{C0B93CEB-CCCB-43D4-9571-510BBCD6704F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smiosoft.PASS.ServiceBuss", "src\Smiosoft.PASS.ServiceBuss\Smiosoft.PASS.ServiceBuss.csproj", "{5B0DA27F-559B-4AA9-B5AB-D1AF54F13506}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +19,17 @@ Global
 		{C0B93CEB-CCCB-43D4-9571-510BBCD6704F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0B93CEB-CCCB-43D4-9571-510BBCD6704F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0B93CEB-CCCB-43D4-9571-510BBCD6704F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B0DA27F-559B-4AA9-B5AB-D1AF54F13506}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B0DA27F-559B-4AA9-B5AB-D1AF54F13506}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B0DA27F-559B-4AA9-B5AB-D1AF54F13506}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B0DA27F-559B-4AA9-B5AB-D1AF54F13506}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C0B93CEB-CCCB-43D4-9571-510BBCD6704F} = {5514BD07-5351-4629-9976-8060781B8DB5}
+		{5B0DA27F-559B-4AA9-B5AB-D1AF54F13506} = {5514BD07-5351-4629-9976-8060781B8DB5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0D19ABE4-9919-4964-B04F-CC71E5D10229}
