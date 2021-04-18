@@ -2,7 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <IsPackable>false</IsPackable>
+    <PackageId>PASS.ServiceBus</PackageId>
+    <Version>0.0.0</Version>
+    <Authors>Nick Smirnoff</Authors>
     <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>

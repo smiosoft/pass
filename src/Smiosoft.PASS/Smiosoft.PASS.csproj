@@ -2,7 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <IsPackable>false</IsPackable>
+    <PackageId>PASS</PackageId>
+    <Version>0.0.0</Version>
+    <Authors>Nick Smirnoff</Authors>
+    <Company>Smiosoft</Company>
     <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
