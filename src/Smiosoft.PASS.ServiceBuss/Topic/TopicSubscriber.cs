@@ -32,7 +32,8 @@ namespace Smiosoft.PASS.ServiceBuss.Topic
 		{
 			Client.RegisterMessageHandler((message, cancellationToken) =>
 			{
-				var deserialised = JsonConvert.DeserializeObject<TMessage>(Encoding.UTF8.GetString(message.Body));
+				var deserialised = JsonConvert.DeserializeObject<TMessage>(Encoding.UTF8.GetString(message.Body))
+					?? throw new DeserialisationException($"Failed to deserialise incoming message to type [{typeof(TMessage).Name}]");
 				return OnMessageRecievedAsync(deserialised, cancellationToken);
 			},
 			new MessageHandlerOptions((args) => OnExceptionAsync(args.Exception)));
