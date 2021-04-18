@@ -4,7 +4,7 @@ using Smiosoft.PASS.Subscriber;
 
 namespace Smiosoft.PASS
 {
-	public static class StartupInjection
+	public static class ServiceCollectionExtensions
 	{
 		public static IServiceCollection AddPassPublisher<TPublisherImplementation>(this IServiceCollection services)
 			where TPublisherImplementation : IBasePublisher
