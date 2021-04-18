@@ -1,4 +1,4 @@
-﻿namespace Smiosoft.PASS.Subscriber
+namespace Smiosoft.PASS.Subscriber
 {
 	public interface IBaseSubscriber
 	{

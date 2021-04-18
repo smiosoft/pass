@@ -1,4 +1,4 @@
-﻿namespace Smiosoft.PASS
+namespace Smiosoft.PASS
 {
 	public interface IClient<TClient>
 	{

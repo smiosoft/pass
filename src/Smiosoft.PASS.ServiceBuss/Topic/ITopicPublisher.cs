@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.ServiceBus;
+using Microsoft.Azure.ServiceBus;
 using Smiosoft.PASS.Publisher;
 
 namespace Smiosoft.PASS.ServiceBuss.Topic

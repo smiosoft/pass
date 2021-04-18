@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Smiosoft.PASS.ServiceBuss.Topic;
 
 namespace Smiosoft.PASS.ServiceBuss.Configuration
