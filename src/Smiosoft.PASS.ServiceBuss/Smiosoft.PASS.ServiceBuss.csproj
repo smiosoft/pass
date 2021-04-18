@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <PackageId>PASS.ServiceBus</PackageId>
+    <PackageId>Smiosoft.PASS.ServiceBus</PackageId>
+    <Description>Publisher And Subscriber System for Azure Service Bus</Description>
     <Version>0.0.0</Version>
     <Authors>Nick Smirnoff</Authors>
     <LangVersion>9.0</LangVersion>
