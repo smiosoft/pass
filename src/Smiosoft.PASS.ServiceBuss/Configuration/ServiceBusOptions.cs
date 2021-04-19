@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Smiosoft.PASS.ServiceBuss.Queue;
 using Smiosoft.PASS.ServiceBuss.Topic;
 
 namespace Smiosoft.PASS.ServiceBuss.Configuration
@@ -10,6 +11,18 @@ namespace Smiosoft.PASS.ServiceBuss.Configuration
 		public ServiceBusOptions(IServiceCollection services)
 		{
 			_services = services;
+		}
+
+		public void AddQueuePublisher<TQueuePublisherImplementation>()
+			where TQueuePublisherImplementation : class, IQueuePublisher
+		{
+			_services.AddPassPublisher<TQueuePublisherImplementation>();
+		}
+
+		public void AddQueueSubscriber<TQueueSubscriberImplementation>()
+			where TQueueSubscriberImplementation : class, IQueueSubscriber
+		{
+			_services.AddPassSubscriber<TQueueSubscriberImplementation>();
 		}
 
 		public void AddTopicPublisher<TTopicPublisherImplementation>()
