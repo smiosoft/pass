@@ -1,5 +1,7 @@
 # Azure Service Bus
 
+`Smiosoft.PASS.Servicebus` intends to be a simple, unambitious wrapper around Azure Service Bus Queues and Topics.
+
 ## Queues + Topics
 
 ### Subscribers
