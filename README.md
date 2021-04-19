@@ -2,7 +2,7 @@
 
 _Publisher And Subscriber System._
 
-![pass](..)
+![pass](docs/.assets/project-title.png)
 
 ## Getting Started
 
