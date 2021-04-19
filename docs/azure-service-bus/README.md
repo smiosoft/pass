@@ -21,7 +21,7 @@ internal class ExampleQueueSubscription : QueueSubscriber<MyMessage>
 }
 ```
 
-#### Register the client configurations
+#### Client registration
 
 Register all your subscribers by including them in the service configuration options.
 
@@ -36,9 +36,9 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-#### Done
+#### Recieve messages
 
-That is it, the configured subscribers will be registered and listening on a background service.
+That is it, the configured subscribers will be registered and listening on a background service when you app is running.
 
 ### Publishers
 
@@ -54,7 +54,7 @@ internal class ExampleQueuePublisher : QueuePublisher<MyMessage>
 }
 ```
 
-#### Register the client configurations
+#### Client registration
 
 Register all your subscribers by including them in the service configuration options.
 
