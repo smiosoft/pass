@@ -68,4 +68,4 @@ stages:
       inputs:
         command: 'build'
         projects: '**/*.csproj'
-        arguments: '-c $(BuildConfiguration) --no-restore'
+        arguments: '-c $(build_configuration) --no-restore'
