@@ -4,11 +4,20 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+variables:
+  build_configuration: 'Release'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+- stage: build_stage
+  displayName: Build stage
+  jobs:
+  - job: build_job
+    displayName: Build job
+    steps:
+    - task: gitversion/setup@0
+      displayName: Install GitVersion
+      inputs:
+        versionSpec: '5.5.0'
+
+    - task: gitversion/execute@0
+      displayName: Determine version
