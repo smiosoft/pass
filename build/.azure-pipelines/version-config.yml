@@ -1,6 +1,10 @@
 mode: ContinuousDeployment
 branches:
   master:
+    regex: dev-ops
+    tag: preview
     increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    is-release-branch: true
 ignore:
   sha: []
