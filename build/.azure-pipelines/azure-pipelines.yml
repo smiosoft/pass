@@ -21,6 +21,8 @@ stages:
 
     - task: gitversion/execute@0
       displayName: Determine version
+      useConfigFile: true
+      configFilePath: 'build/.azure-pipelines/version-config.yml'
 
     - script: |
         echo Major: $(GitVersion.Major)
@@ -69,6 +71,7 @@ stages:
         command: 'build'
         projects: '**/*.csproj'
         arguments: '--configuration $(BuildConfiguration) --no-restore'
+        versioningScheme: byBuildNumber
 
     - task: DotNetCoreCLI@2
       displayName: 'Pack source projects'
@@ -77,7 +80,8 @@ stages:
         packagesToPack: 'src/**/*.csproj'
         packDirectory: '$(Build.ArtifactStagingDirectory)'
         nobuild: true
-        versioningScheme: 'byBuildNumber'
+        versioningScheme: byEnvVar
+        versionEnvVar: 'GitVersion.NuGetVersion'
 
     - publish: '$(Build.ArtifactStagingDirectory)'
       displayName: 'Publish artifact: $(ArtifactNuGetName)'
