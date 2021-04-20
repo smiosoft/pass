@@ -87,5 +87,4 @@ stages:
     - publish: '$(Build.ArtifactStagingDirectory)'
       displayName: 'Publish artifact: $(ArtifactNuGetName)'
       artifact: 'nuget-packages'
-      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
