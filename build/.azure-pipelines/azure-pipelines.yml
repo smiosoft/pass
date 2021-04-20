@@ -55,3 +55,17 @@ stages:
         echo CommitsSinceVersionSourcePadded: $(GitVersion.CommitsSinceVersionSourcePadded)
         echo UncommittedChanges: $(GitVersion.UncommittedChanges)
         echo CommitDate: $(GitVersion.CommitDate)
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore packages'
+      inputs:
+        command: 'restore'
+        projects: '**/*.csproj'
+        feedsToUse: 'select'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build solution'
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '-c $(BuildConfiguration) --no-restore'
