@@ -21,8 +21,9 @@ stages:
 
     - task: gitversion/execute@0
       displayName: Determine version
-      useConfigFile: true
-      configFilePath: 'build/.azure-pipelines/version-config.yml'
+      inputs:
+        useConfigFile: true
+        configFilePath: 'build/.azure-pipelines/version-config.yml'
 
     - script: |
         echo Major: $(GitVersion.Major)
