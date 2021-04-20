@@ -5,7 +5,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  build_configuration: 'Release'
+  BuildConfiguration: 'Release'
 
 stages:
 - stage: build_stage
@@ -64,8 +64,23 @@ stages:
         feedsToUse: 'select'
 
     - task: DotNetCoreCLI@2
-      displayName: 'Build solution'
+      displayName: 'Build projects'
       inputs:
         command: 'build'
         projects: '**/*.csproj'
-        arguments: '-c $(build_configuration) --no-restore'
+        arguments: '--configuration $(BuildConfiguration) --no-restore'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Pack source projects'
+      inputs:
+        command: 'pack'
+        packagesToPack: 'src/**/*.csproj'
+        packDirectory: '$(Build.ArtifactStagingDirectory)'
+        nobuild: true
+        versioningScheme: 'byBuildNumber'
+
+    - publish: '$(Build.ArtifactStagingDirectory)'
+      displayName: 'Publish artifact: $(ArtifactNuGetName)'
+      artifact: 'nuget-packages'
+      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
