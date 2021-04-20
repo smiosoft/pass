@@ -1,8 +1,8 @@
 mode: ContinuousDeployment
 branches:
   master:
-    increment: Patch
-    prevent-increment-of-merged-branch-version: true
-    is-release-branch: true
+    tag: ""
+  pull-request:
+    tag: "pr"
 ignore:
   sha: []
