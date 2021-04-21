@@ -1,8 +1,4 @@
 mode: ContinuousDeployment
-branches:
-  master:
-    tag: ""
-  pull-request:
-    tag: "pr"
+branches: {}
 ignore:
   sha: []
