@@ -4,14 +4,9 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-parameters:
-  - name: skipDeployment
-    displayName: 'Skip Deployment'
-    type: boolean
-    default: false
-
 variables:
   buildConfiguration: 'Release'
+  isMasterBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
 stages:
 - stage: build_stage
@@ -63,7 +58,7 @@ stages:
 - stage: publish_stage
   displayName: Publish stage
   dependsOn: build_stage
-  condition: and(succeeded(), eq(parameters.skipDeployment, false))
+  condition: and(succeeded(), eq(variables.isMasterBranch, true))
   jobs:
   - deployment: deploy_artifacts
     displayName: 'Publish NuGet packages to internal feed'
