@@ -6,7 +6,7 @@ pool:
 
 variables:
   BuildConfiguration: 'Release'
-  IsMasterBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  IsMasterBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/versioning')]
 
 stages:
 - stage: build_stage
