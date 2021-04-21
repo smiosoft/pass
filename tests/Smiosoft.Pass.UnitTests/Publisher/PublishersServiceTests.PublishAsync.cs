@@ -25,7 +25,7 @@ namespace Smiosoft.Pass.UnitTests.Publisher
 			}
 
 			[Fact]
-			public async Task GiventMultipleRegisteredPublishers_WhenExecutedWithARegisteredPublisherMessage_ThenMessageIsPublishedWithTheCorrespondingPublisher()
+			public async Task GiventMultipleConfiguredPublishers_WhenExecutedWithARegisteredPublisherMessage_ThenMessageIsPublishedWithTheCorrespondingPublisher()
 			{
 				_mockServiceProvider
 					.Setup(_ => _.GetService(typeof(IEnumerable<IBasePublisher>)))
@@ -44,7 +44,7 @@ namespace Smiosoft.Pass.UnitTests.Publisher
 			}
 
 			[Fact]
-			public async Task GiventMultipleRegisteredPublishers_WhenExecutedWithARegisteredPublisherMessageOnce_ThenFetchPublishersFromServiceProvider()
+			public async Task GiventMultipleConfiguredPublishers_WhenExecutedWithARegisteredPublisherMessageOnce_ThenFetchPublishersFromServiceProvider()
 			{
 				_mockServiceProvider
 					.Setup(_ => _.GetService(typeof(IEnumerable<IBasePublisher>)))
@@ -61,7 +61,7 @@ namespace Smiosoft.Pass.UnitTests.Publisher
 			}
 
 			[Fact]
-			public async Task GiventMultipleRegisteredPublishers_WhenExecutedWithARegisteredPublisherMessageMultipleTimes_ThenFetchPublisherFromInternalCache()
+			public async Task GiventMultipleConfiguredPublishers_WhenExecutedWithARegisteredPublisherMessageMultipleTimes_ThenFetchPublisherFromInternalCache()
 			{
 				_mockServiceProvider
 					.Setup(_ => _.GetService(typeof(IEnumerable<IBasePublisher>)))
@@ -82,7 +82,7 @@ namespace Smiosoft.Pass.UnitTests.Publisher
 			}
 
 			[Fact]
-			public void GiventMultipleRegisteredPublishers_WhenExecutedWithAnUnregisteredPublisherMessage_ThenPublisherNotRegisteredExceptionIsThrown()
+			public void GiventMultipleConfiguredPublishers_WhenExecutedWithAnUnregisteredPublisherMessage_ThenPublisherNotRegisteredExceptionIsThrown()
 			{
 				_mockServiceProvider
 					.Setup(_ => _.GetService(typeof(IEnumerable<IBasePublisher>)))
