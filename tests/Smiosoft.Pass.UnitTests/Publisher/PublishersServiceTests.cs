@@ -4,7 +4,7 @@ using Smiosoft.PASS.Publisher;
 
 namespace Smiosoft.Pass.UnitTests.Publisher
 {
-	public class PublishersServiceTests
+	public partial class PublishersServiceTests
 	{
 		private readonly Mock<IServiceProvider> _mockServiceProvider;
 		private readonly PublishersService _sut;

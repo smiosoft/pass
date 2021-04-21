@@ -13,7 +13,7 @@ namespace Smiosoft.PASS.Publisher
 
 		public PublishersService(IServiceProvider provider)
 		{
-			_provider = provider;
+			_provider = provider ?? throw new ArgumentNullException(nameof(provider));
 			_publishers = new ConcurrentDictionary<Type, object>();
 		}
 
