@@ -1,12 +1,17 @@
 trigger:
-- versioning
+- master
 
 pool:
   vmImage: ubuntu-latest
 
+parameters:
+  - name: skipDeployment
+    displayName: 'Skip Deployment'
+    type: boolean
+    default: false
+
 variables:
-  BuildConfiguration: 'Release'
-  IsMasterBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  buildConfiguration: 'Release'
 
 stages:
 - stage: build_stage
@@ -38,7 +43,7 @@ stages:
       inputs:
         command: 'build'
         projects: '**/*.csproj'
-        arguments: '--configuration $(BuildConfiguration) --no-restore'
+        arguments: '--configuration $(buildConfiguration) --no-restore'
         versioningScheme: 'byBuildNumber'
 
     - task: DotNetCoreCLI@2
@@ -58,7 +63,7 @@ stages:
 - stage: publish_stage
   displayName: Publish stage
   dependsOn: build_stage
-  condition: and(succeeded(), eq(variables['IsMasterBranch'], true))
+  condition: and(succeeded(), eq(parameters.skipDeployment, false))
   jobs:
   - deployment: deploy_artifacts
     displayName: 'Publish NuGet packages to internal feed'

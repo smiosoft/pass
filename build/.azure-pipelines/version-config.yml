@@ -5,7 +5,7 @@ commits-since-version-source-padding: 0
 commit-message-incrementing: Disabled
 branches:
   master:
-    regex: ^versioning
+    regex: master
     tag: ''
     is-release-branch: true
   pull-request:
