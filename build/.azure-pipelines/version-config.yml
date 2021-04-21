@@ -3,5 +3,7 @@ branches:
   master:
     regex: ^versioning
     is-release-branch: true
+  pull-request:
+    tag: pr
 ignore:
   sha: []
