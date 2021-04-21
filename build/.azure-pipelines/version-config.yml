@@ -2,6 +2,7 @@ mode: Mainline
 branches:
   master:
     regex: ^versioning
+    tag: ''
     is-release-branch: true
   pull-request:
     tag: pr
