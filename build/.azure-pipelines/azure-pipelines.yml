@@ -1,12 +1,12 @@
 trigger:
-- master
+- versioning
 
 pool:
   vmImage: ubuntu-latest
 
 variables:
   BuildConfiguration: 'Release'
-  IsMaster: $[eq(variables['Build.SourceBranch'], 'master')]
+  IsMaster: $[eq(variables['Build.SourceBranch'], 'versioning')]
 
 stages:
 - stage: build_stage
