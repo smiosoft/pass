@@ -44,6 +44,44 @@ namespace Smiosoft.Pass.UnitTests.Publisher
 			}
 
 			[Fact]
+			public async Task GiventMultipleRegisteredPublishers_WhenExecutedWithARegisteredPublisherMessageOnce_ThenFetchPublishersFromServiceProvider()
+			{
+				_mockServiceProvider
+					.Setup(_ => _.GetService(typeof(IEnumerable<IBasePublisher>)))
+					.Returns(new IBasePublisher[]
+					{
+						_mockMessageOnePublisher.Object,
+						_mockMessageTwoPublisher.Object,
+						_mockMessageThreePublisher.Object
+					});
+
+				await _sut.PublishAsync(new DummyTestMessageTwo());
+
+				_mockServiceProvider.Verify(_ => _.GetService(typeof(IEnumerable<IBasePublisher>)), Times.Once);
+			}
+
+			[Fact]
+			public async Task GiventMultipleRegisteredPublishers_WhenExecutedWithARegisteredPublisherMessageMultipleTimes_ThenFetchPublisherFromInternalCache()
+			{
+				_mockServiceProvider
+					.Setup(_ => _.GetService(typeof(IEnumerable<IBasePublisher>)))
+					.Returns(new IBasePublisher[]
+					{
+						_mockMessageOnePublisher.Object,
+						_mockMessageTwoPublisher.Object,
+						_mockMessageThreePublisher.Object
+					});
+
+				await _sut.PublishAsync(new DummyTestMessageTwo());
+				await _sut.PublishAsync(new DummyTestMessageTwo());
+				await _sut.PublishAsync(new DummyTestMessageTwo());
+				await _sut.PublishAsync(new DummyTestMessageTwo());
+
+				_mockServiceProvider.Verify(_ => _.GetService(typeof(IEnumerable<IBasePublisher>)), Times.Once);
+				_mockMessageTwoPublisher.Verify(_ => _.PublishAsync(It.IsAny<DummyTestMessageTwo>()), Times.Exactly(4));
+			}
+
+			[Fact]
 			public void GiventMultipleRegisteredPublishers_WhenExecutedWithAnUnregisteredPublisherMessage_ThenPublisherNotRegisteredExceptionIsThrown()
 			{
 				_mockServiceProvider
