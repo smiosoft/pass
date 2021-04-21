@@ -10,7 +10,7 @@ namespace Smiosoft.Pass.UnitTests.Publisher
 		public class Constructor : PublishersServiceTests
 		{
 			[Fact]
-			public void GivenValidParameters_WhenConstructing_ThenEnsureNoExceptionsAreThrown()
+			public void GivenValidParameters_WhenConstructing_ThenNoExceptionsAreThrown()
 			{
 				Action act = () => new PublishersService(_mockServiceProvider.Object);
 
@@ -18,7 +18,7 @@ namespace Smiosoft.Pass.UnitTests.Publisher
 			}
 
 			[Fact]
-			public void GivenNullParameters_WhenConstructing_ThenEnsureArgumentNullExceptionsAreThrown()
+			public void GivenNullParameters_WhenConstructing_ThenArgumentNullExceptionIsThrown()
 			{
 				Action act = () => new PublishersService(null!);
 
