@@ -5,6 +5,7 @@
     <PackageId>Smiosoft.PASS.ServiceBus</PackageId>
     <Description>Publisher And Subscriber System for Azure Service Bus</Description>
     <Version>0.0.0</Version>
+    <IsPackable>true</IsPackable>
     <Authors>Nick Smirnoff</Authors>
     <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>

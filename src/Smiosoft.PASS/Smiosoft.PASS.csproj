@@ -5,6 +5,7 @@
     <PackageId>Smiosoft.PASS</PackageId>
     <Description>Publisher And Subscriber System</Description>
     <Version>0.0.0</Version>
+    <IsPackable>true</IsPackable>
     <Authors>Nick Smirnoff</Authors>
     <Company>Smiosoft</Company>
     <LangVersion>9.0</LangVersion>

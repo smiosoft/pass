@@ -1,0 +1,79 @@
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  BuildConfiguration: 'Release'
+
+stages:
+- stage: build_stage
+  displayName: Build stage
+  jobs:
+  - job: build_job
+    displayName: Build job
+    steps:
+    - task: gitversion/setup@0
+      displayName: Install GitVersion
+      inputs:
+        versionSpec: '5.5.0'
+
+    - task: gitversion/execute@0
+      displayName: Determine version
+      inputs:
+        useConfigFile: true
+        configFilePath: 'build/.azure-pipelines/version-config.yml'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore packages'
+      inputs:
+        command: 'restore'
+        projects: '**/*.csproj'
+        feedsToUse: 'select'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build projects'
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration) --no-restore'
+        versioningScheme: byBuildNumber
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Create NuGet packages'
+      inputs:
+        command: 'pack'
+        packagesToPack: 'src/**/*.csproj'
+        packDirectory: '$(Build.ArtifactStagingDirectory)'
+        nobuild: true
+        versioningScheme: byEnvVar
+        versionEnvVar: 'GitVersion.NuGetVersion'
+
+    - publish: '$(Build.ArtifactStagingDirectory)'
+      displayName: 'Publish artifacts'
+      artifact: 'nuget-packages'
+
+- stage: publish_stage
+  displayName: Publish stage
+  dependsOn: build_stage
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  jobs:
+  - deployment: deploy_artifacts
+    displayName: 'Publish NuGet packages to internal feed'
+    environment: internal_feed
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - download: current
+              artifact: 'nuget-packages'
+              displayName: 'Download NuGet packages'
+
+            - task: DotNetCoreCLI@2
+              displayName: 'Push NuGet packages to the feed'
+              inputs:
+                command: 'push'
+                packagesToPush: '$(Agent.BuildDirectory)/nuget-packages/*.nupkg'
+                nuGetFeedType: 'internal'
+                publishVstsFeed: 'f479efe2-179c-4ce7-9313-60199b06c5f0'
