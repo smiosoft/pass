@@ -1,7 +1,8 @@
 mode: ContinuousDeployment
 increment: Patch
 branches:
-  versioning:
+  master:
+    regex: ^versioning
     is-release-branch: true
 ignore:
   sha: []
