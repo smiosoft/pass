@@ -6,7 +6,7 @@ pool:
 
 variables:
   BuildConfiguration: 'Release'
-  IsMasterBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  IsMasterBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/versioning')]
 
 stages:
 - stage: build_stage
@@ -39,6 +39,7 @@ stages:
         command: 'build'
         projects: '**/*.csproj'
         arguments: '--configuration $(BuildConfiguration) --no-restore'
+        versioningScheme: 'byBuildNumber'
 
     - task: DotNetCoreCLI@2
       displayName: 'Create NuGet packages'
@@ -47,7 +48,8 @@ stages:
         packagesToPack: 'src/**/*.csproj'
         packDirectory: '$(Build.ArtifactStagingDirectory)'
         nobuild: true
-        versioningScheme: 'byBuildNumber'
+        versioningScheme: byEnvVar
+        versionEnvVar: GitVersion.NuGetVersion
 
     - publish: '$(Build.ArtifactStagingDirectory)'
       displayName: 'Publish artifacts'
