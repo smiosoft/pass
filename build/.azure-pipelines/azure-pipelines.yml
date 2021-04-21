@@ -41,7 +41,7 @@ stages:
         versioningScheme: byBuildNumber
 
     - task: DotNetCoreCLI@2
-      displayName: 'Pack source projects'
+      displayName: 'Create NuGet packages'
       inputs:
         command: 'pack'
         packagesToPack: 'src/**/*.csproj'
@@ -54,3 +54,26 @@ stages:
       displayName: 'Publish artifacts'
       artifact: 'nuget-packages'
 
+- stage: publish_stage
+  displayName: Publish stage
+  dependsOn: build_stage
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  jobs:
+  - deployment: deploy_artifacts
+    displayName: 'Publish NuGet packages to internal feed'
+    environment: internal_feed
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - download: current
+              artifact: 'nuget-packages'
+              displayName: 'Download NuGet packages'
+
+            - task: DotNetCoreCLI@2
+              displayName: 'Push NuGet packages to the feed'
+              inputs:
+                command: 'push'
+                packagesToPush: '$(Agent.BuildDirectory)/nuget-packages/*.nupkg'
+                nuGetFeedType: 'internal'
+                publishVstsFeed: 'f479efe2-179c-4ce7-9313-60199b06c5f0'
