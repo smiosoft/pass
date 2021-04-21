@@ -1,6 +1,6 @@
 using System;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
+using Smiosoft.Pass.UnitTests.Helpers.Mocks.Factories;
 using Smiosoft.PASS.Publisher;
 
 namespace Smiosoft.Pass.UnitTests.Publisher
@@ -12,19 +12,7 @@ namespace Smiosoft.Pass.UnitTests.Publisher
 
 		public PublishersServiceTests()
 		{
-			_mockServiceProvider = new Mock<IServiceProvider>();
-
-			var serviceScope = new Mock<IServiceScope>();
-			serviceScope.Setup(x => x.ServiceProvider).Returns(_mockServiceProvider.Object);
-
-			var serviceScopeFactory = new Mock<IServiceScopeFactory>();
-			serviceScopeFactory
-				.Setup(x => x.CreateScope())
-				.Returns(serviceScope.Object);
-
-			_mockServiceProvider
-				.Setup(x => x.GetService(typeof(IServiceScopeFactory)))
-				.Returns(serviceScopeFactory.Object);
+			_mockServiceProvider = MockServiceProviderFactory.Create();
 
 			_sut = new PublishersService(_mockServiceProvider.Object);
 		}

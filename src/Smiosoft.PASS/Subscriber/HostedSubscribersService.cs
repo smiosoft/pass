@@ -12,7 +12,7 @@ namespace Smiosoft.PASS.Subscriber
 
 		public HostedSubscribersService(IServiceProvider provider)
 		{
-			_provider = provider;
+			_provider = provider ?? throw new ArgumentNullException(nameof(provider));
 		}
 
 		protected override Task ExecuteAsync(CancellationToken stoppingToken)
