@@ -6,7 +6,7 @@ pool:
 
 variables:
   BuildConfiguration: 'Release'
-  IsMaster: $[eq(variables['Build.SourceBranch'], 'versioning')]
+  IsMasterBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/versioning')]
 
 stages:
 - stage: build_stage
@@ -56,7 +56,7 @@ stages:
 - stage: publish_stage
   displayName: Publish stage
   dependsOn: build_stage
-  condition: and(succeeded(), eq(variables['IsMaster'], true))
+  condition: and(succeeded(), eq(variables['IsMasterBranch'], true))
   jobs:
   - deployment: deploy_artifacts
     displayName: 'Publish NuGet packages to internal feed'
