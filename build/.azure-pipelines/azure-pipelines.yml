@@ -6,6 +6,7 @@ pool:
 
 variables:
   BuildConfiguration: 'Release'
+  IsMaster: $[eq(variables['Build.SourceBranch'], 'master')]
 
 stages:
 - stage: build_stage
@@ -38,7 +39,6 @@ stages:
         command: 'build'
         projects: '**/*.csproj'
         arguments: '--configuration $(BuildConfiguration) --no-restore'
-        versioningScheme: byBuildNumber
 
     - task: DotNetCoreCLI@2
       displayName: 'Create NuGet packages'
@@ -47,8 +47,7 @@ stages:
         packagesToPack: 'src/**/*.csproj'
         packDirectory: '$(Build.ArtifactStagingDirectory)'
         nobuild: true
-        versioningScheme: byEnvVar
-        versionEnvVar: 'GitVersion.NuGetVersion'
+        versioningScheme: 'byBuildNumber'
 
     - publish: '$(Build.ArtifactStagingDirectory)'
       displayName: 'Publish artifacts'
@@ -57,7 +56,7 @@ stages:
 - stage: publish_stage
   displayName: Publish stage
   dependsOn: build_stage
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), eq(variables['IsMaster'], true))
   jobs:
   - deployment: deploy_artifacts
     displayName: 'Publish NuGet packages to internal feed'
