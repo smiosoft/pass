@@ -1,4 +1,14 @@
-mode: ContinuousDeployment
-branches: {}
+mode: Mainline
+legacy-semver-padding: 0
+build-metadata-padding: 0
+commits-since-version-source-padding: 0
+commit-message-incrementing: Disabled
+branches:
+  master:
+    regex: master
+    tag: ''
+    is-release-branch: true
+  pull-request:
+    tag: pr
 ignore:
   sha: []

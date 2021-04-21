@@ -5,7 +5,8 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  BuildConfiguration: 'Release'
+  buildConfiguration: 'Release'
+  isMasterBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
 stages:
 - stage: build_stage
@@ -37,8 +38,8 @@ stages:
       inputs:
         command: 'build'
         projects: '**/*.csproj'
-        arguments: '--configuration $(BuildConfiguration) --no-restore'
-        versioningScheme: byBuildNumber
+        arguments: '--configuration $(buildConfiguration) --no-restore'
+        versioningScheme: 'byBuildNumber'
 
     - task: DotNetCoreCLI@2
       displayName: 'Create NuGet packages'
@@ -48,7 +49,7 @@ stages:
         packDirectory: '$(Build.ArtifactStagingDirectory)'
         nobuild: true
         versioningScheme: byEnvVar
-        versionEnvVar: 'GitVersion.NuGetVersion'
+        versionEnvVar: GitVersion.NuGetVersion
 
     - publish: '$(Build.ArtifactStagingDirectory)'
       displayName: 'Publish artifacts'
@@ -57,7 +58,7 @@ stages:
 - stage: publish_stage
   displayName: Publish stage
   dependsOn: build_stage
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), eq(variables.isMasterBranch, true))
   jobs:
   - deployment: deploy_artifacts
     displayName: 'Publish NuGet packages to internal feed'
