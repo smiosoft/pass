@@ -1,5 +1,4 @@
-mode: ContinuousDeployment
-increment: Patch
+mode: Mainline
 branches:
   master:
     regex: ^versioning
