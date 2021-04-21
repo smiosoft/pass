@@ -3,6 +3,7 @@ increment: Patch
 branches:
   master:
     regex: ^versioning
+    increment: Patch
     is-release-branch: true
 ignore:
   sha: []
