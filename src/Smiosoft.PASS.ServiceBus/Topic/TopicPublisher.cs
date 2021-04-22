@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
 using Newtonsoft.Json;
 
-namespace Smiosoft.PASS.ServiceBuss.Topic
+namespace Smiosoft.PASS.ServiceBus.Topic
 {
 	public abstract class TopicPublisher<TMessage> : ITopicPublisher<TMessage>
 		where TMessage : class

@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace Smiosoft.PASS.ServiceBuss.UnitTests
+namespace Smiosoft.PASS.ServiceBus.UnitTests
 {
 	public class UnitTest1
 	{

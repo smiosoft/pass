@@ -1,6 +1,6 @@
 using System;
 
-namespace Smiosoft.PASS.ServiceBuss.Exceptions
+namespace Smiosoft.PASS.ServiceBus.Exceptions
 {
 	public class DeserialisationException : Exception
 	{

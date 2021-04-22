@@ -1,8 +1,8 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using Smiosoft.PASS.ServiceBuss.Configuration;
+using Smiosoft.PASS.ServiceBus.Configuration;
 
-namespace Smiosoft.PASS.ServiceBuss
+namespace Smiosoft.PASS.ServiceBus
 {
 	public static class StartupInjection
 	{

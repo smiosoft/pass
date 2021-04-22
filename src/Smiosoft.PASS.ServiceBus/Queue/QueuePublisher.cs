@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
 using Newtonsoft.Json;
 
-namespace Smiosoft.PASS.ServiceBuss.Queue
+namespace Smiosoft.PASS.ServiceBus.Queue
 {
 	public abstract class QueuePublisher<TMessage> : IQueuePublisher<TMessage>
 		where TMessage : class

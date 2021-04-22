@@ -7,13 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5514BD07-535
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiosoft.PASS", "src\Smiosoft.PASS\Smiosoft.PASS.csproj", "{C0B93CEB-CCCB-43D4-9571-510BBCD6704F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiosoft.PASS.ServiceBuss", "src\Smiosoft.PASS.ServiceBuss\Smiosoft.PASS.ServiceBuss.csproj", "{5B0DA27F-559B-4AA9-B5AB-D1AF54F13506}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiosoft.PASS.ServiceBus", "src\Smiosoft.PASS.ServiceBus\Smiosoft.PASS.ServiceBus.csproj", "{5B0DA27F-559B-4AA9-B5AB-D1AF54F13506}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9567BA38-3228-425B-ACD2-649BDBA82EA3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiosoft.Pass.UnitTests", "tests\Smiosoft.Pass.UnitTests\Smiosoft.Pass.UnitTests.csproj", "{DEBBFB79-266C-4515-8909-80B8E2D603ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smiosoft.PASS.ServiceBuss.UnitTests", "tests\Smiosoft.PASS.ServiceBuss.UnitTests\Smiosoft.PASS.ServiceBuss.UnitTests.csproj", "{4B832FB2-2BAA-4AD6-8D24-659B751CAB51}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smiosoft.PASS.ServiceBus.UnitTests", "tests\Smiosoft.PASS.ServiceBus.UnitTests\Smiosoft.PASS.ServiceBus.UnitTests.csproj", "{4B832FB2-2BAA-4AD6-8D24-659B751CAB51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

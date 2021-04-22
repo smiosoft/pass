@@ -1,7 +1,7 @@
 using Microsoft.Azure.ServiceBus;
 using Smiosoft.PASS.Subscriber;
 
-namespace Smiosoft.PASS.ServiceBuss.Topic
+namespace Smiosoft.PASS.ServiceBus.Topic
 {
 	public interface ITopicSubscriber : IBaseSubscriber
 	{ }

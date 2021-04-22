@@ -1,7 +1,7 @@
 using Microsoft.Azure.ServiceBus;
 using Smiosoft.PASS.Publisher;
 
-namespace Smiosoft.PASS.ServiceBuss.Queue
+namespace Smiosoft.PASS.ServiceBus.Queue
 {
 	public interface IQueuePublisher : IBasePublisher
 	{ }

@@ -4,22 +4,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
 using Newtonsoft.Json;
-using Smiosoft.PASS.ServiceBuss.Exceptions;
+using Smiosoft.PASS.ServiceBus.Exceptions;
 
-namespace Smiosoft.PASS.ServiceBuss.Queue
+namespace Smiosoft.PASS.ServiceBus.Topic
 {
-	public abstract class QueueSubscriber<TMessage> : IQueueSubscriber<TMessage>
+	public abstract class TopicSubscriber<TMessage> : ITopicSubscriber<TMessage>
 		where TMessage : class
 	{
-		public IQueueClient Client { get; }
+		public ISubscriptionClient Client { get; }
 
-		public QueueSubscriber(IQueueClient client)
+		public TopicSubscriber(ISubscriptionClient client)
 		{
 			Client = client;
 		}
 
-		public QueueSubscriber(string connectionString, string queueName)
-			: this(new QueueClient(connectionString, queueName))
+		public TopicSubscriber(string connectionString, string topicPath, string subscriptionName)
+			: this(new SubscriptionClient(connectionString, topicPath, subscriptionName))
 		{ }
 
 		public abstract Task OnMessageRecievedAsync(TMessage message, CancellationToken cancellationToken);

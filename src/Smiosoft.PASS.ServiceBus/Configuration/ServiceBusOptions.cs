@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
-using Smiosoft.PASS.ServiceBuss.Queue;
-using Smiosoft.PASS.ServiceBuss.Topic;
+using Smiosoft.PASS.ServiceBus.Queue;
+using Smiosoft.PASS.ServiceBus.Topic;
 
-namespace Smiosoft.PASS.ServiceBuss.Configuration
+namespace Smiosoft.PASS.ServiceBus.Configuration
 {
 	public class ServiceBusOptions
 	{
