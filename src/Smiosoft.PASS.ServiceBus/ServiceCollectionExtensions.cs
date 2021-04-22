@@ -1,7 +1,9 @@
 using System;
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
 using Smiosoft.PASS.ServiceBus.Configuration;
 
+[assembly: InternalsVisibleTo("Smiosoft.PASS.ServiceBus.UnitTests")]
 namespace Smiosoft.PASS.ServiceBus
 {
 	public static class StartupInjection
