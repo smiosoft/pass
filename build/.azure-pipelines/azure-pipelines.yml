@@ -53,7 +53,7 @@ stages:
       displayName: Publish test results
       inputs:
         testResultsFormat: 'VSTest'
-        testResultsFiles: '**/*-tests.trx'
+        testResultsFiles: '**/*.trx'
         failTaskOnFailedTests: true
 
     - task: DotNetCoreCLI@2
