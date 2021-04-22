@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
@@ -12,12 +13,24 @@ namespace Smiosoft.PASS.ServiceBus.Topic
 
 		public TopicPublisher(ITopicClient client)
 		{
-			Client = client;
+			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}
 
 		public TopicPublisher(string connectionString, string topicPath)
-			: this(new TopicClient(connectionString, topicPath))
-		{ }
+		{
+			if (string.IsNullOrWhiteSpace(connectionString))
+			{
+				throw new ArgumentNullException(nameof(connectionString));
+			}
+
+			if (string.IsNullOrWhiteSpace(topicPath))
+			{
+				throw new ArgumentNullException(nameof(topicPath));
+			}
+
+
+			Client = new TopicClient(connectionString, topicPath);
+		}
 
 		public virtual Task PublishAsync(TMessage message)
 		{
