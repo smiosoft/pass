@@ -1,9 +1,9 @@
 using System;
 using Moq;
-using Smiosoft.Pass.UnitTests.Helpers.Mocks.Factories;
+using Smiosoft.PASS.UnitTests.Helpers.Mocks.Factories;
 using Smiosoft.PASS.Publisher;
 
-namespace Smiosoft.Pass.UnitTests.Publisher
+namespace Smiosoft.PASS.UnitTests.Publisher
 {
 	public partial class PublishersServiceTests
 	{

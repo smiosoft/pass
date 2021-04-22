@@ -1,9 +1,9 @@
 using System;
 using Moq;
-using Smiosoft.Pass.UnitTests.Helpers.Mocks.Factories;
+using Smiosoft.PASS.UnitTests.Helpers.Mocks.Factories;
 using Smiosoft.PASS.Subscriber;
 
-namespace Smiosoft.Pass.UnitTests.Subscriber
+namespace Smiosoft.PASS.UnitTests.Subscriber
 {
 	public partial class HostedSubscribersServiceTests
 	{

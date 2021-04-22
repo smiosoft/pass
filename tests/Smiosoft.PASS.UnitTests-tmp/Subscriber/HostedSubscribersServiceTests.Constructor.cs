@@ -3,7 +3,7 @@ using FluentAssertions;
 using Smiosoft.PASS.Subscriber;
 using Xunit;
 
-namespace Smiosoft.Pass.UnitTests.Subscriber
+namespace Smiosoft.PASS.UnitTests.Subscriber
 {
 	public partial class HostedSubscribersServiceTests
 	{

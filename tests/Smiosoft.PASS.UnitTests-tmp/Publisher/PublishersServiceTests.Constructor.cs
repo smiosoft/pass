@@ -3,7 +3,7 @@ using FluentAssertions;
 using Smiosoft.PASS.Publisher;
 using Xunit;
 
-namespace Smiosoft.Pass.UnitTests.Publisher
+namespace Smiosoft.PASS.UnitTests.Publisher
 {
 	public partial class PublishersServiceTests
 	{

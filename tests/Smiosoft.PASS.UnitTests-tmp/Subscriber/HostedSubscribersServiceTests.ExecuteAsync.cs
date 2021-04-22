@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
-using Smiosoft.Pass.UnitTests.Helpers.Messages;
+using Smiosoft.PASS.UnitTests.Helpers.Messages;
 using Smiosoft.PASS.Subscriber;
 using Xunit;
 
-namespace Smiosoft.Pass.UnitTests.Subscriber
+namespace Smiosoft.PASS.UnitTests.Subscriber
 {
 	public partial class HostedSubscribersServiceTests
 	{

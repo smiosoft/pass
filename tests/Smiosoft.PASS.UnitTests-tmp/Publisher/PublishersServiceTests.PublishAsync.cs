@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using Smiosoft.Pass.UnitTests.Helpers.Messages;
+using Smiosoft.PASS.UnitTests.Helpers.Messages;
 using Smiosoft.PASS.Publisher;
 using Xunit;
 
-namespace Smiosoft.Pass.UnitTests.Publisher
+namespace Smiosoft.PASS.UnitTests.Publisher
 {
 	public partial class PublishersServiceTests
 	{

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiosoft.PASS.ServiceBus", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9567BA38-3228-425B-ACD2-649BDBA82EA3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiosoft.Pass.UnitTests", "tests\Smiosoft.Pass.UnitTests\Smiosoft.Pass.UnitTests.csproj", "{DEBBFB79-266C-4515-8909-80B8E2D603ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiosoft.PASS.UnitTests", "tests\Smiosoft.PASS.UnitTests\Smiosoft.PASS.UnitTests.csproj", "{DEBBFB79-266C-4515-8909-80B8E2D603ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smiosoft.PASS.ServiceBus.UnitTests", "tests\Smiosoft.PASS.ServiceBus.UnitTests\Smiosoft.PASS.ServiceBus.UnitTests.csproj", "{4B832FB2-2BAA-4AD6-8D24-659B751CAB51}"
 EndProject
