@@ -15,12 +15,28 @@ namespace Smiosoft.PASS.ServiceBus.Topic
 
 		public TopicSubscriber(ISubscriptionClient client)
 		{
-			Client = client;
+			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}
 
 		public TopicSubscriber(string connectionString, string topicPath, string subscriptionName)
-			: this(new SubscriptionClient(connectionString, topicPath, subscriptionName))
-		{ }
+		{
+			if (string.IsNullOrWhiteSpace(connectionString))
+			{
+				throw new ArgumentNullException(nameof(connectionString));
+			}
+
+			if (string.IsNullOrWhiteSpace(topicPath))
+			{
+				throw new ArgumentNullException(nameof(topicPath));
+			}
+
+			if (string.IsNullOrWhiteSpace(subscriptionName))
+			{
+				throw new ArgumentNullException(nameof(subscriptionName));
+			}
+
+			Client = new SubscriptionClient(connectionString, topicPath, subscriptionName);
+		}
 
 		public abstract Task OnMessageRecievedAsync(TMessage message, CancellationToken cancellationToken);
 

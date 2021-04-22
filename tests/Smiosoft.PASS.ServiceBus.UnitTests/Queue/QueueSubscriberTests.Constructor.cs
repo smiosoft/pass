@@ -35,12 +35,14 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Queue
 
 			[Theory]
 			[InlineData(null, null)]
-			[InlineData("", "")]
-			[InlineData(" ", " ")]
-			[InlineData("", null)]
-			[InlineData(" ", null)]
 			[InlineData(null, "")]
 			[InlineData(null, " ")]
+			[InlineData("", null)]
+			[InlineData("", "")]
+			[InlineData("", " ")]
+			[InlineData(" ", null)]
+			[InlineData(" ", "")]
+			[InlineData(" ", " ")]
 			public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenArgumentNullExceptionIsThrown(string connectionString, string queueName)
 			{
 				Action act = () => new MessageOneQueueSubscriber(connectionString, queueName);

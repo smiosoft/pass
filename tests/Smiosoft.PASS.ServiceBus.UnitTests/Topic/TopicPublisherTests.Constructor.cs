@@ -35,15 +35,17 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Topic
 
 			[Theory]
 			[InlineData(null, null)]
-			[InlineData("", "")]
-			[InlineData(" ", " ")]
-			[InlineData("", null)]
-			[InlineData(" ", null)]
 			[InlineData(null, "")]
 			[InlineData(null, " ")]
-			public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenArgumentNullExceptionIsThrown(string connectionString, string queueName)
+			[InlineData("", null)]
+			[InlineData("", "")]
+			[InlineData("", " ")]
+			[InlineData(" ", null)]
+			[InlineData(" ", "")]
+			[InlineData(" ", " ")]
+			public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenArgumentNullExceptionIsThrown(string connectionString, string topicPath)
 			{
-				Action act = () => new MessageOneTopicPublisher(connectionString, queueName);
+				Action act = () => new MessageOneTopicPublisher(connectionString, topicPath);
 
 				act.Should().Throw<ArgumentNullException>();
 			}
