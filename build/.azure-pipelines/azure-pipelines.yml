@@ -42,6 +42,21 @@ stages:
         versioningScheme: 'byBuildNumber'
 
     - task: DotNetCoreCLI@2
+      displayName: Run tests
+      inputs:
+        command: 'test'
+        projects: 'tests/**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration) --no-build --logger:trx'
+        publishTestResults: true
+
+    - task: PublishTestResults@2
+      displayName: Publish test results
+      inputs:
+        testResultsFormat: 'VSTest'
+        testResultsFiles: '**/*-tests.trx'
+        failTaskOnFailedTests: true
+
+    - task: DotNetCoreCLI@2
       displayName: 'Create NuGet packages'
       inputs:
         command: 'pack'
