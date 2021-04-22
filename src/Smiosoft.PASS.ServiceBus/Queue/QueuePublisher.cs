@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
@@ -12,12 +13,24 @@ namespace Smiosoft.PASS.ServiceBus.Queue
 
 		public QueuePublisher(IQueueClient client)
 		{
-			Client = client;
+			Client = client ?? throw new ArgumentNullException(nameof(client)); ;
 		}
 
 		public QueuePublisher(string connectionString, string queueName)
-			: this(new QueueClient(connectionString, queueName))
-		{ }
+		{
+			if (string.IsNullOrWhiteSpace(connectionString))
+			{
+				throw new ArgumentNullException(nameof(connectionString));
+			}
+
+			if (string.IsNullOrWhiteSpace(queueName))
+			{
+				throw new ArgumentNullException(nameof(queueName));
+			}
+
+
+			Client = new QueueClient(connectionString, queueName);
+		}
 
 		public virtual Task PublishAsync(TMessage message)
 		{

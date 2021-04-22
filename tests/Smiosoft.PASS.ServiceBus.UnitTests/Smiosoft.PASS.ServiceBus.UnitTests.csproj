@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Smiosoft.PASS.ServiceBus\Smiosoft.PASS.ServiceBus.csproj" />
+    <ProjectReference Include="..\Smiosoft.PASS.UnitTests\Smiosoft.PASS.UnitTests.csproj" />
   </ItemGroup>
 
 </Project>
