@@ -1,10 +1,10 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
 using Smiosoft.PASS.ServiceBus.Topic;
-using Smiosoft.PASS.UnitTests.Helpers.Messages;
+using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
 
-namespace Smiosoft.PASS.ServiceBus.UnitTests.Helpers.Subscribers
+namespace Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers.Subscribers
 {
 	public class MessageOneTopicSubscriber : TopicSubscriber<DummyTestMessageOne>
 	{

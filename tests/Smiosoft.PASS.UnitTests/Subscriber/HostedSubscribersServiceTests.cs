@@ -1,7 +1,7 @@
 using System;
 using Moq;
-using Smiosoft.PASS.UnitTests.Helpers.Mocks.Factories;
 using Smiosoft.PASS.Subscriber;
+using Smiosoft.PASS.UnitTests.TestHelpers.Mocks.Factories;
 
 namespace Smiosoft.PASS.UnitTests.Subscriber
 {

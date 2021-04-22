@@ -1,8 +1,8 @@
 using Microsoft.Azure.ServiceBus;
 using Moq;
 using Smiosoft.PASS.ServiceBus.Topic;
-using Smiosoft.PASS.ServiceBus.UnitTests.Helpers.Publishers;
-using Smiosoft.PASS.UnitTests.Helpers.Messages;
+using Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers.Publishers;
+using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
 
 namespace Smiosoft.PASS.ServiceBus.UnitTests.Topic
 {

@@ -1,8 +1,8 @@
 using Microsoft.Azure.ServiceBus;
 using Moq;
 using Smiosoft.PASS.ServiceBus.Queue;
-using Smiosoft.PASS.ServiceBus.UnitTests.Helpers.Subscribers;
-using Smiosoft.PASS.UnitTests.Helpers.Messages;
+using Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers.Subscribers;
+using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
 
 namespace Smiosoft.PASS.ServiceBus.UnitTests.Queue
 {

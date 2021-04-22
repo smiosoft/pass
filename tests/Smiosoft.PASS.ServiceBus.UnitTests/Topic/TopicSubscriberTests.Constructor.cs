@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using FluentAssertions;
-using Smiosoft.PASS.ServiceBus.UnitTests.Helpers.Subscribers;
+using Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers.Subscribers;
 using Xunit;
 
 namespace Smiosoft.PASS.ServiceBus.UnitTests.Topic

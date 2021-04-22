@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
 using Moq;
-using Smiosoft.PASS.UnitTests.Helpers.Messages;
+using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
 using Xunit;
 
 namespace Smiosoft.PASS.ServiceBus.UnitTests.Queue

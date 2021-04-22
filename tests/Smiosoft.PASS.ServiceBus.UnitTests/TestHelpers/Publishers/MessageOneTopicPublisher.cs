@@ -1,8 +1,8 @@
-﻿using Microsoft.Azure.ServiceBus;
+using Microsoft.Azure.ServiceBus;
 using Smiosoft.PASS.ServiceBus.Topic;
-using Smiosoft.PASS.UnitTests.Helpers.Messages;
+using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
 
-namespace Smiosoft.PASS.ServiceBus.UnitTests.Helpers.Publishers
+namespace Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers.Publishers
 {
 	public class MessageOneTopicPublisher : TopicPublisher<DummyTestMessageOne>
 	{

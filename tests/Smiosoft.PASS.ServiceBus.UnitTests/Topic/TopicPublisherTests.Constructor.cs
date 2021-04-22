@@ -1,6 +1,6 @@
 using System;
 using FluentAssertions;
-using Smiosoft.PASS.ServiceBus.UnitTests.Helpers.Publishers;
+using Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers.Publishers;
 using Xunit;
 
 namespace Smiosoft.PASS.ServiceBus.UnitTests.Topic

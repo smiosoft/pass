@@ -2,7 +2,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
-namespace Smiosoft.PASS.UnitTests.Helpers.Mocks.Factories
+namespace Smiosoft.PASS.UnitTests.TestHelpers.Mocks.Factories
 {
 	public static class MockServiceProviderFactory
 	{

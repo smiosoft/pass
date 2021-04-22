@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using Smiosoft.PASS.UnitTests.Helpers.Messages;
 using Smiosoft.PASS.Publisher;
 using Xunit;
+using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
 
 namespace Smiosoft.PASS.UnitTests.Publisher
 {

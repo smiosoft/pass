@@ -1,8 +1,8 @@
 using Microsoft.Azure.ServiceBus;
 using Smiosoft.PASS.ServiceBus.Queue;
-using Smiosoft.PASS.UnitTests.Helpers.Messages;
+using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
 
-namespace Smiosoft.PASS.ServiceBus.UnitTests.Helpers.Publishers
+namespace Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers.Publishers
 {
 	public class MessageOneQueuePublisher : QueuePublisher<DummyTestMessageOne>
 	{
