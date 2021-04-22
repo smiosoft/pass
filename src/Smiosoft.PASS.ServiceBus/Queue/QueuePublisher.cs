@@ -13,7 +13,7 @@ namespace Smiosoft.PASS.ServiceBus.Queue
 
 		public QueuePublisher(IQueueClient client)
 		{
-			Client = client ?? throw new ArgumentNullException(nameof(client)); ;
+			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}
 
 		public QueuePublisher(string connectionString, string queueName)
