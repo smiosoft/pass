@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Smiosoft.PASS.ServiceBus.Queue;
 using Smiosoft.PASS.ServiceBus.Topic;
@@ -10,7 +11,7 @@ namespace Smiosoft.PASS.ServiceBus.Configuration
 
 		public ServiceBusOptions(IServiceCollection services)
 		{
-			_services = services;
+			_services = services ?? throw new ArgumentNullException(nameof(services));
 		}
 
 		public void AddQueuePublisher<TQueuePublisherImplementation>()
