@@ -15,12 +15,24 @@ namespace Smiosoft.PASS.ServiceBus.Queue
 
 		public QueueSubscriber(IQueueClient client)
 		{
-			Client = client;
+			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}
 
 		public QueueSubscriber(string connectionString, string queueName)
-			: this(new QueueClient(connectionString, queueName))
-		{ }
+		{
+			if (string.IsNullOrWhiteSpace(connectionString))
+			{
+				throw new ArgumentNullException(nameof(connectionString));
+			}
+
+			if (string.IsNullOrWhiteSpace(queueName))
+			{
+				throw new ArgumentNullException(nameof(queueName));
+			}
+
+
+			Client = new QueueClient(connectionString, queueName);
+		}
 
 		public abstract Task OnMessageRecievedAsync(TMessage message, CancellationToken cancellationToken);
 
