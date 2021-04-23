@@ -46,14 +46,19 @@ stages:
       inputs:
         command: 'test'
         projects: 'tests/**/*.csproj'
-        arguments: '--configuration $(BuildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
+        arguments: '--configuration $(BuildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
         publishTestResults: true
+
+    - task: reportgenerator@4
+      inputs:
+        reports: '$(Build.SourcesDirectory)/**/*.cobertura.xml'
+        targetdir: '$(Build.SourcesDirectory)/CoverageResults'
 
     - task: PublishCodeCoverageResults@1
       displayName: 'Publish code coverage report'
       inputs:
         codeCoverageTool: 'Cobertura'
-        summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+        summaryFileLocation: '$(Build.SourcesDirectory)/CoverageResults/Cobertura.xml'
 
     - task: DotNetCoreCLI@2
       displayName: 'Create NuGet packages'
