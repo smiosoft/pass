@@ -1,7 +1,9 @@
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
 using Smiosoft.PASS.Publisher;
 using Smiosoft.PASS.Subscriber;
 
+[assembly: InternalsVisibleTo("Smiosoft.PASS.UnitTests")]
 namespace Smiosoft.PASS
 {
 	public static class ServiceCollectionExtensions
