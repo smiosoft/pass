@@ -46,7 +46,7 @@ stages:
       inputs:
         command: 'test'
         projects: 'tests/**/*.csproj'
-        arguments: '--configuration $(BuildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
+        arguments: '--configuration $(BuildConfiguration) --no-build --logger trx --results-directory "$(Build.SourcesDirectory)/TestResults" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
         publishTestResults: true
 
     - task: PublishCodeCoverageResults@1
