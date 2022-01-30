@@ -6,7 +6,7 @@ using Smiosoft.PASS.ServiceBus.Configuration;
 [assembly: InternalsVisibleTo("Smiosoft.PASS.ServiceBus.UnitTests")]
 namespace Smiosoft.PASS.ServiceBus
 {
-	public static class StartupInjection
+	public static class ServiceCollectionExtensions
 	{
 		public static IServiceCollection AddPassServiceBus(this IServiceCollection services, Action<ServiceBusOptions> options)
 		{
