@@ -13,12 +13,12 @@ namespace Smiosoft.PASS.ServiceBus.Topic
 	{
 		public ISubscriptionClient Client { get; }
 
-		public TopicSubscriber(ISubscriptionClient client)
+		protected TopicSubscriber(ISubscriptionClient client)
 		{
 			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}
 
-		public TopicSubscriber(string connectionString, string topicPath, string subscriptionName)
+		protected TopicSubscriber(string connectionString, string topicPath, string subscriptionName)
 		{
 			if (string.IsNullOrWhiteSpace(connectionString))
 			{

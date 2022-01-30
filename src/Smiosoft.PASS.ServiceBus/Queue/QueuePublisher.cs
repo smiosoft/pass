@@ -11,12 +11,12 @@ namespace Smiosoft.PASS.ServiceBus.Queue
 	{
 		public IQueueClient Client { get; }
 
-		public QueuePublisher(IQueueClient client)
+		protected QueuePublisher(IQueueClient client)
 		{
 			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}
 
-		public QueuePublisher(string connectionString, string queueName)
+		protected QueuePublisher(string connectionString, string queueName)
 		{
 			if (string.IsNullOrWhiteSpace(connectionString))
 			{

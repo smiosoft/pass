@@ -11,12 +11,12 @@ namespace Smiosoft.PASS.ServiceBus.Topic
 	{
 		public ITopicClient Client { get; }
 
-		public TopicPublisher(ITopicClient client)
+		protected TopicPublisher(ITopicClient client)
 		{
 			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}
 
-		public TopicPublisher(string connectionString, string topicPath)
+		protected TopicPublisher(string connectionString, string topicPath)
 		{
 			if (string.IsNullOrWhiteSpace(connectionString))
 			{
