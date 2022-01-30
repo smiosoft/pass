@@ -37,7 +37,7 @@ namespace Smiosoft.PASS.Publisher
 				await PublishAsync(message);
 				return true;
 			}
-			catch (PublisherNotRegisteredException)
+			catch
 			{
 				return false;
 			}
