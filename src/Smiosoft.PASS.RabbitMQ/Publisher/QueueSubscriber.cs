@@ -1,11 +1,9 @@
 using System;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using Smiosoft.PASS.Exceptions;
+using Smiosoft.PASS.Extensions;
 
 namespace Smiosoft.PASS.RabbitMQ.Publisher
 {
@@ -64,9 +62,7 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 			{
 				try
 				{
-					var deserialised = JsonConvert.DeserializeObject<TMessage>(Encoding.UTF8.GetString(args.Body.ToArray()))
-						?? throw new DeserialisationException(typeof(TMessage));
-					await OnMessageRecievedAsync(deserialised, CancellationToken.None);
+					await OnMessageRecievedAsync(args.Body.ToArray().Deserialise<TMessage>(), CancellationToken.None);
 				}
 				catch (Exception exception)
 				{

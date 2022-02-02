@@ -1,8 +1,7 @@
 using System;
-using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using RabbitMQ.Client;
+using Smiosoft.PASS.Extensions;
 
 namespace Smiosoft.PASS.RabbitMQ.Publisher
 {
@@ -50,7 +49,7 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 					exchange: "",
 					routingKey: RoutingKey,
 					basicProperties: null,
-					body: Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
+					body: message.Serialise());
 			});
 		}
 	}
