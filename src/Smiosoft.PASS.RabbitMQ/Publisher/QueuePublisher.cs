@@ -9,11 +9,11 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 	public abstract class QueuePublisher<TMessage> : IQueuePublisher<TMessage>
 		where TMessage : class
 	{
-		protected ConnectionFactory Factory { get; }
+		protected IConnectionFactory Factory { get; }
 		protected string QueueName { get; }
 		protected string RoutingKey { get; }
 
-		protected QueuePublisher(ConnectionFactory factory, string queueName, string routingKey)
+		protected QueuePublisher(IConnectionFactory factory, string queueName, string routingKey)
 		{
 			if (string.IsNullOrWhiteSpace(queueName))
 			{
@@ -40,15 +40,17 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 			{
 				using var connection = Factory.CreateConnection();
 				using var channel = connection.CreateModel();
-				channel.QueueDeclare(queue: QueueName,
-									 durable: false,
-									 exclusive: false,
-									 autoDelete: false,
-									 arguments: null);
-				channel.BasicPublish(exchange: "",
-									 routingKey: RoutingKey,
-									 basicProperties: null,
-									 body: Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
+				channel.QueueDeclare(
+					queue: QueueName,
+					durable: false,
+					exclusive: false,
+					autoDelete: false,
+					arguments: null);
+				channel.BasicPublish(
+					exchange: "",
+					routingKey: RoutingKey,
+					basicProperties: null,
+					body: Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
 			});
 		}
 	}

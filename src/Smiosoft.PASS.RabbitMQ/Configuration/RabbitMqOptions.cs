@@ -18,5 +18,11 @@ namespace Smiosoft.PASS.RabbitMQ.Configuration
 		{
 			_services.AddPassPublisher<TQueuePublisherImplementation>();
 		}
+
+		public void AddQueueSubscriber<TQueueSubscriberImplementation>()
+			where TQueueSubscriberImplementation : class, IQueueSubscriber
+		{
+			_services.AddPassSubscriber<TQueueSubscriberImplementation>();
+		}
 	}
 }
