@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
 using Newtonsoft.Json;
-using Smiosoft.PASS.ServiceBus.Exceptions;
+using Smiosoft.PASS.Exceptions;
 
 namespace Smiosoft.PASS.ServiceBus.Topic
 {
