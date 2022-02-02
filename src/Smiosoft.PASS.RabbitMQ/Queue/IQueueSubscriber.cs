@@ -1,6 +1,6 @@
 using Smiosoft.PASS.Subscriber;
 
-namespace Smiosoft.PASS.RabbitMQ.Publisher
+namespace Smiosoft.PASS.RabbitMQ.Queue
 {
 	public interface IQueueSubscriber : IBaseSubscriber
 	{ }

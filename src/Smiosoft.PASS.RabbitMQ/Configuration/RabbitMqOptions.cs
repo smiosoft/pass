@@ -1,6 +1,6 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using Smiosoft.PASS.RabbitMQ.Publisher;
+using Smiosoft.PASS.RabbitMQ.Queue;
 
 namespace Smiosoft.PASS.RabbitMQ.Configuration
 {
