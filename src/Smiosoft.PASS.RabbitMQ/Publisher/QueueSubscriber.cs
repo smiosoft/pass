@@ -9,15 +9,16 @@ using Smiosoft.PASS.Exceptions;
 
 namespace Smiosoft.PASS.RabbitMQ.Publisher
 {
-	public abstract class QueueSubscriber<TMessage> : IQueueSubscriber<TMessage>
+	public abstract class QueueSubscriber<TMessage> : IQueueSubscriber<TMessage>, IDisposable
 		where TMessage : class
 	{
+		private bool _disposedValue;
+
 		protected IConnectionFactory Factory { get; }
+		protected IConnection Connection { get; }
+		protected IModel Channel { get; }
 		protected string QueueName { get; }
 		protected string RoutingKey { get; }
-
-		private readonly IConnection _connection;
-		private readonly IModel _channel;
 
 		protected QueueSubscriber(IConnectionFactory factory, string queueName, string routingKey)
 		{
@@ -32,11 +33,10 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 			}
 
 			Factory = factory ?? throw new ArgumentNullException(nameof(factory));
+			Connection = Factory.CreateConnection();
+			Channel = Connection.CreateModel();
 			QueueName = queueName;
 			RoutingKey = routingKey;
-
-			_connection = Factory.CreateConnection();
-			_channel = _connection.CreateModel();
 		}
 
 		protected QueueSubscriber(string hostName, string queueName, string routingKey)
@@ -50,23 +50,22 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 			return Task.CompletedTask;
 		}
 
-		public void Register()
+		public virtual void Register()
 		{
-
-			_channel.QueueDeclare(
+			Channel.QueueDeclare(
 				queue: QueueName,
 				durable: false,
 				exclusive: false,
 				autoDelete: false,
 				arguments: null);
 
-			var consumer = new EventingBasicConsumer(_channel);
-			consumer.Received += async (model, message) =>
+			var consumer = new EventingBasicConsumer(Channel);
+			consumer.Received += async (model, args) =>
 			{
 				try
 				{
-					var deserialised = JsonConvert.DeserializeObject<TMessage>(Encoding.UTF8.GetString(message.Body.ToArray()))
-					?? throw new DeserialisationException(typeof(TMessage));
+					var deserialised = JsonConvert.DeserializeObject<TMessage>(Encoding.UTF8.GetString(args.Body.ToArray()))
+						?? throw new DeserialisationException(typeof(TMessage));
 					await OnMessageRecievedAsync(deserialised, CancellationToken.None);
 				}
 				catch (Exception exception)
@@ -75,10 +74,30 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 				}
 			};
 
-			_channel.BasicConsume(
+			Channel.BasicConsume(
 				queue: QueueName,
 				autoAck: true,
 				consumer: consumer);
+		}
+
+		public void Dispose()
+		{
+			Dispose(disposing: true);
+			GC.SuppressFinalize(this);
+		}
+
+		private void Dispose(bool disposing)
+		{
+			if (!_disposedValue)
+			{
+				if (disposing)
+				{
+					Connection.Dispose();
+					Channel.Dispose();
+				}
+
+				_disposedValue = true;
+			}
 		}
 	}
 }
