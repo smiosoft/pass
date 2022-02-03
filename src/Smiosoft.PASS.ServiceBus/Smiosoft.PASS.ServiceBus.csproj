@@ -16,7 +16,7 @@
     <PackageProjectUrl>https://github.com/smiosoft/pass</PackageProjectUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageIcon>package-logo.png</PackageIcon>
-    <PackageIconUrl>https://raw.githubusercontent.com/smiosoft/pass/package-info/docs/.assets/package-logo.png</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/smiosoft/pass/master/docs/.assets/package-logo.png</PackageIconUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/smiosoft/pass</RepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
