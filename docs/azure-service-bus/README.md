@@ -2,13 +2,11 @@
 
 `Smiosoft.PASS.ServiceBus` intends to be a simple, unambitious wrapper around Azure Service Bus Queues and Topics.
 
-## Queues + Topics
+## Subscribers
 
-### Subscribers
+### Subscription configuration
 
-#### Client configuration
-
-Create a client by creating a class that inherits either `QueueSubscriber<>` or `TopicSubscriber<>`, and ensure to provide it with the message object type that you are expecting to recieve. The client configuration is passed through the base constructor.
+Configure a subscription by creating a class that inherits either `Smiosoft.PASS.ServiceBus.Queue.QueueSubscriber<>` or `Smiosoft.PASS.ServiceBus.Topic.TopicSubscriber<>`, and ensure to provide it with the message object type that you are expecting to recieve. The configuration is passed through the base constructor.
 
 ```csharp
 internal class ExampleQueueSubscription : QueueSubscriber<MyMessage>
@@ -23,7 +21,7 @@ internal class ExampleQueueSubscription : QueueSubscriber<MyMessage>
 }
 ```
 
-#### Client registration
+### Subscription registration
 
 Register all your subscribers by including them in the service configuration options.
 
@@ -38,15 +36,15 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-#### Recieve messages
+### Recieve messages
 
 That is it, the configured subscribers will be registered and listening on a background service when you app is running.
 
-### Publishers
+## Publishers
 
-#### Client configuration
+### Publisher configuration
 
-Create a client by creating a class that inherits either `QueuePublisher<>` or `TopicPublisher<>`, and ensure to provide it with the message object type, this would be used to link back to the client when publishing. The client configuration is passed through the base constructor.
+Configure a publisher by creating a class that inherits either `Smiosoft.PASS.ServiceBus.Queue.QueuePublisher<>` or `Smiosoft.PASS.ServiceBus.Topic.TopicPublisher<>`, and ensure to provide it with the message object type, this would be used to link back to the specific publisher when publishing. The configuration is passed through the base constructor.
 
 ```csharp
 internal class ExampleQueuePublisher : QueuePublisher<MyMessage>
@@ -56,9 +54,9 @@ internal class ExampleQueuePublisher : QueuePublisher<MyMessage>
 }
 ```
 
-#### Client registration
+### Publisher registration
 
-Register all your subscribers by including them in the service configuration options.
+Register all your publishers by including them in the service configuration options.
 
 ```csharp
 public void ConfigureServices(IServiceCollection services)
@@ -71,9 +69,9 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-#### Publish messages
+### Publish messages
 
-Inject `IPublishersService` and use it to publish your messages. The library will match the given message type with a configured client to publish your message!
+Inject `IPublishersService` and use it to publish your messages. The library will match the given message type with a configured publisher to publish your message!
 
 ```csharp
 internal class Sandbox
@@ -94,4 +92,3 @@ internal class Sandbox
 	}
 }
 ```
-
