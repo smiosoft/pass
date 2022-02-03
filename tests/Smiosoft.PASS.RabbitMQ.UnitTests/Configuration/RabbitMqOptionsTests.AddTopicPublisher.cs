@@ -1,15 +1,15 @@
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Smiosoft.PASS.Publisher;
-using Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers.Publishers;
+using Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers.Publishers;
 using Smiosoft.PASS.UnitTests.TestHelpers.Mocks.Factories;
 using Xunit;
 
-namespace Smiosoft.PASS.ServiceBus.UnitTests.Configuration
+namespace Smiosoft.PASS.RabbitMQ.UnitTests.Configuration
 {
-	public partial class ServiceBusOptionsTests
+	public partial class RabbitMqOptionsTests
 	{
-		public class AddTopicPublisher : ServiceBusOptionsTests
+		public class AddTopicPublisher : RabbitMqOptionsTests
 		{
 			[Fact]
 			public void GivenConfiguredPublisher_WhenExecuted_ThenPublisherIsAddedAsSingleton()
