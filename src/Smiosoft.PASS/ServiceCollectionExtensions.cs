@@ -24,14 +24,14 @@ namespace Smiosoft.PASS
 			return services;
 		}
 
-		public static IServiceCollection AddPassPublishersService(this IServiceCollection services)
+		public static IServiceCollection AddPassPublishingService(this IServiceCollection services)
 		{
-			services.AddSingleton<IPublishersService, PublishersService>();
+			services.AddSingleton<IPublishingService, PublishingService>();
 
 			return services;
 		}
 
-		public static IServiceCollection AddPassSubscribersService(this IServiceCollection services)
+		public static IServiceCollection AddPassHostedSubscribersService(this IServiceCollection services)
 		{
 			services.AddHostedService<HostedSubscribersService>();
 

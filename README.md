@@ -6,7 +6,7 @@ _Publisher And Subscriber System._
 
 ## Getting Started
 
-This library intends to be a simple, unambitious wrapper around existing cloud messaging systems.
+This library intends to be a simple, unambitious wrapper around existing Advanced Message Queueing Protocol (AMQP) systems.
 
 ### Prerequisites
 
@@ -15,3 +15,4 @@ This library intends to be a simple, unambitious wrapper around existing cloud m
 ### Usage
 
 #### [Azure Service Bus](docs/azure-service-bus)
+#### [RabbitMQ](docs/rabbit-mq)

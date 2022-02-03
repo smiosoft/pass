@@ -1,10 +1,8 @@
 using System;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
-using Newtonsoft.Json;
-using Smiosoft.PASS.ServiceBus.Exceptions;
+using Smiosoft.PASS.Extensions;
 
 namespace Smiosoft.PASS.ServiceBus.Queue
 {
@@ -13,12 +11,12 @@ namespace Smiosoft.PASS.ServiceBus.Queue
 	{
 		public IQueueClient Client { get; }
 
-		public QueueSubscriber(IQueueClient client)
+		protected QueueSubscriber(IQueueClient client)
 		{
 			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}
 
-		public QueueSubscriber(string connectionString, string queueName)
+		protected QueueSubscriber(string connectionString, string queueName)
 		{
 			if (string.IsNullOrWhiteSpace(connectionString))
 			{
@@ -45,9 +43,7 @@ namespace Smiosoft.PASS.ServiceBus.Queue
 		{
 			Client.RegisterMessageHandler((message, cancellationToken) =>
 			{
-				var deserialised = JsonConvert.DeserializeObject<TMessage>(Encoding.UTF8.GetString(message.Body))
-					?? throw new DeserialisationException(typeof(TMessage));
-				return OnMessageRecievedAsync(deserialised, cancellationToken);
+				return OnMessageRecievedAsync(message.Body.Deserialise<TMessage>(), cancellationToken);
 			},
 			new MessageHandlerOptions((args) => OnExceptionAsync(args.Exception)));
 		}

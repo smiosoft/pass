@@ -6,12 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Smiosoft.PASS.Publisher
 {
-	internal class PublishersService : IPublishersService
+	internal class PublishingService : IPublishingService
 	{
 		private readonly IServiceProvider _provider;
 		private readonly ConcurrentDictionary<Type, object> _publishers;
 
-		public PublishersService(IServiceProvider provider)
+		public PublishingService(IServiceProvider provider)
 		{
 			_provider = provider ?? throw new ArgumentNullException(nameof(provider));
 			_publishers = new ConcurrentDictionary<Type, object>();
@@ -37,7 +37,7 @@ namespace Smiosoft.PASS.Publisher
 				await PublishAsync(message);
 				return true;
 			}
-			catch (PublisherNotRegisteredException)
+			catch
 			{
 				return false;
 			}

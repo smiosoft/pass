@@ -1,15 +1,15 @@
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers.Subscribers;
+using Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers.Subscribers;
 using Smiosoft.PASS.Subscriber;
 using Smiosoft.PASS.UnitTests.TestHelpers.Mocks.Factories;
 using Xunit;
 
-namespace Smiosoft.PASS.ServiceBus.UnitTests.Configuration
+namespace Smiosoft.PASS.RabbitMQ.UnitTests.Configuration
 {
-	public partial class ServiceBusOptionsTests
+	public partial class RabbitMqOptionsTests
 	{
-		public class AddQueueSubscriber : ServiceBusOptionsTests
+		public class AddQueueSubscriber : RabbitMqOptionsTests
 		{
 			[Fact]
 			public void GivenConfiguredSubscriber_WhenExecuted_ThenSubscriberIsAddedAsSingleton()

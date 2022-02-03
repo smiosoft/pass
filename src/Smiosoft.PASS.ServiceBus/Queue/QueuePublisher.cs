@@ -1,8 +1,7 @@
 using System;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
-using Newtonsoft.Json;
+using Smiosoft.PASS.Extensions;
 
 namespace Smiosoft.PASS.ServiceBus.Queue
 {
@@ -11,12 +10,12 @@ namespace Smiosoft.PASS.ServiceBus.Queue
 	{
 		public IQueueClient Client { get; }
 
-		public QueuePublisher(IQueueClient client)
+		protected QueuePublisher(IQueueClient client)
 		{
 			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}
 
-		public QueuePublisher(string connectionString, string queueName)
+		protected QueuePublisher(string connectionString, string queueName)
 		{
 			if (string.IsNullOrWhiteSpace(connectionString))
 			{
@@ -34,7 +33,7 @@ namespace Smiosoft.PASS.ServiceBus.Queue
 
 		public virtual Task PublishAsync(TMessage message)
 		{
-			return Client.SendAsync(new Message(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message))));
+			return Client.SendAsync(new Message(message.Serialise()));
 		}
 	}
 }

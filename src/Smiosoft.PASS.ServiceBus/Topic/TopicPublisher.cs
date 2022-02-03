@@ -1,8 +1,7 @@
 using System;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
-using Newtonsoft.Json;
+using Smiosoft.PASS.Extensions;
 
 namespace Smiosoft.PASS.ServiceBus.Topic
 {
@@ -11,12 +10,12 @@ namespace Smiosoft.PASS.ServiceBus.Topic
 	{
 		public ITopicClient Client { get; }
 
-		public TopicPublisher(ITopicClient client)
+		protected TopicPublisher(ITopicClient client)
 		{
 			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}
 
-		public TopicPublisher(string connectionString, string topicPath)
+		protected TopicPublisher(string connectionString, string topicPath)
 		{
 			if (string.IsNullOrWhiteSpace(connectionString))
 			{
@@ -34,7 +33,7 @@ namespace Smiosoft.PASS.ServiceBus.Topic
 
 		public virtual Task PublishAsync(TMessage message)
 		{
-			return Client.SendAsync(new Message(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message))));
+			return Client.SendAsync(new Message(message.Serialise()));
 		}
 	}
 }

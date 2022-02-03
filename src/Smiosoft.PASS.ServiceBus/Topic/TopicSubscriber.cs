@@ -1,10 +1,8 @@
 using System;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
-using Newtonsoft.Json;
-using Smiosoft.PASS.ServiceBus.Exceptions;
+using Smiosoft.PASS.Extensions;
 
 namespace Smiosoft.PASS.ServiceBus.Topic
 {
@@ -13,12 +11,12 @@ namespace Smiosoft.PASS.ServiceBus.Topic
 	{
 		public ISubscriptionClient Client { get; }
 
-		public TopicSubscriber(ISubscriptionClient client)
+		protected TopicSubscriber(ISubscriptionClient client)
 		{
 			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}
 
-		public TopicSubscriber(string connectionString, string topicPath, string subscriptionName)
+		protected TopicSubscriber(string connectionString, string topicPath, string subscriptionName)
 		{
 			if (string.IsNullOrWhiteSpace(connectionString))
 			{
@@ -49,9 +47,7 @@ namespace Smiosoft.PASS.ServiceBus.Topic
 		{
 			Client.RegisterMessageHandler((message, cancellationToken) =>
 			{
-				var deserialised = JsonConvert.DeserializeObject<TMessage>(Encoding.UTF8.GetString(message.Body))
-					?? throw new DeserialisationException(typeof(TMessage));
-				return OnMessageRecievedAsync(deserialised, cancellationToken);
+				return OnMessageRecievedAsync(message.Body.Deserialise<TMessage>(), cancellationToken);
 			},
 			new MessageHandlerOptions((args) => OnExceptionAsync(args.Exception)));
 		}
