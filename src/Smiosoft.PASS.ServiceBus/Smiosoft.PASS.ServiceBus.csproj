@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <PackageId>Smiosoft.PASS.ServiceBus</PackageId>
     <Description>Publisher And Subscriber System for Azure Service Bus</Description>
     <Version>0.0.0</Version>
