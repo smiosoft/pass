@@ -12,7 +12,7 @@ namespace Smiosoft.PASS.UnitTests.Publisher
 			[Fact]
 			public void GivenValidParameters_WhenConstructing_ThenNoExceptionsAreThrown()
 			{
-				Action act = () => new PublishersService(_mockServiceProvider.Object);
+				Action act = () => new PublishingService(_mockServiceProvider.Object);
 
 				act.Should().NotThrow();
 			}
@@ -20,7 +20,7 @@ namespace Smiosoft.PASS.UnitTests.Publisher
 			[Fact]
 			public void GivenNullParameters_WhenConstructing_ThenArgumentNullExceptionIsThrown()
 			{
-				Action act = () => new PublishersService(null!);
+				Action act = () => new PublishingService(null!);
 
 				act.Should().Throw<ArgumentNullException>();
 			}

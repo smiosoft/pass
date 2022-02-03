@@ -13,8 +13,8 @@ namespace Smiosoft.PASS.ServiceBus
 			options(new ServiceBusOptions(services));
 
 			services
-				.AddPassPublishersService()
-				.AddPassSubscribersService();
+				.AddPassPublishingService()
+				.AddPassHostedSubscribersService();
 
 			return services;
 		}

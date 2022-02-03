@@ -71,16 +71,16 @@ public void ConfigureServices(IServiceCollection services)
 
 ### Publish messages
 
-Inject `IPublishersService` and use it to publish your messages. The library will match the given message type with a configured publisher to publish your message!
+Inject `IPublishingService` and use it to publish your messages. The library will match the given message type with a configured publisher to publish your message!
 
 ```csharp
 internal class Sandbox
 {
-	private readonly IPublishersService _publisher;
+	private readonly IPublishingService _publishingService;
 
-	public Sandbox(IPublishersService publisher)
+	public Sandbox(IPublishingService publishingService)
 	{
-		_publisher = IPublishersService_publisher;
+		_publishingService = publishingService;
 	}
 
 	private async Task ImportantTask()
@@ -88,7 +88,7 @@ internal class Sandbox
 		// TODO: Implement important task
 
 		// Notify the rest of the system important task is complete
-		await _publisher.PublishAsync<MyMessage>(new MyMessage("That thing you asked for is done."))
+		await _publishingService.PublishAsync<MyMessage>(new MyMessage("That thing you asked for is done."))
 	}
 }
 ```

@@ -11,8 +11,8 @@ namespace Smiosoft.PASS.RabbitMQ
 			options(new RabbitMqOptions(services));
 
 			services
-				.AddPassPublishersService()
-				.AddPassSubscribersService();
+				.AddPassPublishingService()
+				.AddPassHostedSubscribersService();
 
 			return services;
 		}
