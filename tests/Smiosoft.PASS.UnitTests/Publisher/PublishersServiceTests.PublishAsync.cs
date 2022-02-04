@@ -94,7 +94,7 @@ namespace Smiosoft.PASS.UnitTests.Publisher
 
 				Func<Task> act = async () => await _sut.PublishAsync(new DummyTestMessageThree());
 
-				act.Should().Throw<PublisherNotRegisteredException>();
+				act.Should().ThrowAsync<PublisherNotRegisteredException>();
 			}
 		}
 	}

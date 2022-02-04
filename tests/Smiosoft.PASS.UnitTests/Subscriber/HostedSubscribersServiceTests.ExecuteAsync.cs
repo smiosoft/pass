@@ -37,9 +37,9 @@ namespace Smiosoft.PASS.UnitTests.Subscriber
 
 				await _sut.StartAsync(CancellationToken.None);
 
-				_mockMessageOneSubscriber.Verify(_ => _.Register(), Times.Once);
-				_mockMessageTwoSubscriber.Verify(_ => _.Register(), Times.Once);
-				_mockMessageThreeSubscriber.Verify(_ => _.Register(), Times.Once);
+				_mockMessageOneSubscriber.Verify(_ => _.RegisterAsync(), Times.Once);
+				_mockMessageTwoSubscriber.Verify(_ => _.RegisterAsync(), Times.Once);
+				_mockMessageThreeSubscriber.Verify(_ => _.RegisterAsync(), Times.Once);
 			}
 		}
 	}
