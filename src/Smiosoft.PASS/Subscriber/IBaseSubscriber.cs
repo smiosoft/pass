@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace Smiosoft.PASS.Subscriber
 {
 	public interface IBaseSubscriber
 	{
-		void Register();
+		Task RegisterAsync();
 	}
 }

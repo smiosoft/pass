@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,12 +19,7 @@ namespace Smiosoft.PASS.Subscriber
 		protected override Task ExecuteAsync(CancellationToken stoppingToken)
 		{
 			var subscribers = _provider.GetServices<IBaseSubscriber>();
-			foreach (var subscriber in subscribers)
-			{
-				subscriber.Register();
-			}
-
-			return Task.CompletedTask;
+			return Task.WhenAll(subscribers.Select(subscriber => subscriber.RegisterAsync()));
 		}
 	}
 }

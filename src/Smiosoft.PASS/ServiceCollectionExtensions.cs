@@ -8,18 +8,18 @@ namespace Smiosoft.PASS
 {
 	public static class ServiceCollectionExtensions
 	{
-		public static IServiceCollection AddPassPublisher<TPublisherImplementation>(this IServiceCollection services)
-			where TPublisherImplementation : IBasePublisher
+		public static IServiceCollection AddPassPublisher<TPublisher>(this IServiceCollection services)
+			where TPublisher : IBasePublisher
 		{
-			services.AddSingleton(typeof(IBasePublisher), typeof(TPublisherImplementation));
+			services.AddSingleton(typeof(IBasePublisher), typeof(TPublisher));
 
 			return services;
 		}
 
-		public static IServiceCollection AddPassSubscriber<TSubscriberImplementation>(this IServiceCollection services)
-			where TSubscriberImplementation : IBaseSubscriber
+		public static IServiceCollection AddPassSubscriber<TSubscriber>(this IServiceCollection services)
+			where TSubscriber : IBaseSubscriber
 		{
-			services.AddSingleton(typeof(IBaseSubscriber), typeof(TSubscriberImplementation));
+			services.AddSingleton(typeof(IBaseSubscriber), typeof(TSubscriber));
 
 			return services;
 		}

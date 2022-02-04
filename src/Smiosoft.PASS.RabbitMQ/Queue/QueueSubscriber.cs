@@ -41,7 +41,7 @@ namespace Smiosoft.PASS.RabbitMQ.Queue
 			return Task.CompletedTask;
 		}
 
-		public virtual void Register()
+		public virtual Task RegisterAsync()
 		{
 			Channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
 			Channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
@@ -61,6 +61,7 @@ namespace Smiosoft.PASS.RabbitMQ.Queue
 			};
 
 			Channel.BasicConsume(queue: QueueName, autoAck: false, consumer: consumer);
+			return Task.CompletedTask;
 		}
 
 		public void Dispose()

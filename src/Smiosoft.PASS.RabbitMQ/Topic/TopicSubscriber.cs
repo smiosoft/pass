@@ -48,7 +48,7 @@ namespace Smiosoft.PASS.RabbitMQ.Topic
 			return Task.CompletedTask;
 		}
 
-		public virtual void Register()
+		public virtual Task RegisterAsync()
 		{
 			Channel.ExchangeDeclare(exchange: ExchangeName, type: ExchangeType.Topic);
 
@@ -69,6 +69,7 @@ namespace Smiosoft.PASS.RabbitMQ.Topic
 			};
 
 			Channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);
+			return Task.CompletedTask;
 		}
 
 		public void Dispose()
