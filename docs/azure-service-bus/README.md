@@ -1,25 +1,37 @@
 # Azure Service Bus
 
-`Smiosoft.PASS.ServiceBus` intends to be a simple, unambitious wrapper around Azure Service Bus Queues and Topics.
+`Smiosoft.PASS.ServiceBus` intends to be a simple, unambitious wrapper around Azure Service Bus.
 
 ## Subscribers
 
 ### Subscription configuration
 
-Configure a subscription by creating a class that inherits either `Smiosoft.PASS.ServiceBus.Queue.QueueSubscriber<>` or `Smiosoft.PASS.ServiceBus.Topic.TopicSubscriber<>`, and ensure to provide it with the message object type that you are expecting to recieve. The configuration is passed through the base constructor.
+Configure a subscription by creating a class that inherits from one of the following flows:
+
+- `Smiosoft.PASS.ServiceBus.Subscriber.ServiceBusQueueSubscriber<>`
+- `Smiosoft.PASS.ServiceBus.Subscriber.ServiceBusTopicSubscriber<>`
+
+Ensure to provide a message object type that is intended to be recieved.
 
 ```csharp
-internal class ExampleQueueSubscription : QueueSubscriber<MyMessage>
+internal class ExampleQueueSubscription : ServiceBusQueueSubscriber<MyMessage>
 {
 	public ExampleQueueSubscription() : base("connection_string", "queue_name")
 	{ }
 
-	public override Task OnMessageRecievedAsync(MyMessage message, CancellationToken cancellationToken)
-	{
-		return Task.CompletedTask;
-	}
+	public override Task OnExceptionAsync(Exception exception)
+    {
+        return Task.CompletedTask;
+    }
+
+    public override Task OnMessageRecievedAsync(MyMessage message, CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
+    }
 }
 ```
+
+For users who need more fine grained control, or a custom flow can do so by inheriting `Smiosoft.PASS.ServiceBus.Subscriber.ServiceBusSubscriberBase<>`.
 
 ### Subscription registration
 
@@ -30,29 +42,36 @@ public void ConfigureServices(IServiceCollection services)
 {
 	services.AddPassServiceBus(options =>
 	{
-		options.AddQueueSubscriber<ExampleQueueSubscriber>();
-		options.AddTopicSubscriber<ExampleTopicSubscriber>();
+		options.AddSubscriber<ExampleQueueSubscription>();
+		options.AddSubscriber<ExampleTopicSubscription>();
 	});
 }
 ```
 
 ### Recieve messages
 
-That is it, the configured subscribers will be registered and listening on a background service when you app is running.
+That is it, the configured subscribers will be registered and listening on a background service.
 
 ## Publishers
 
 ### Publisher configuration
 
-Configure a publisher by creating a class that inherits either `Smiosoft.PASS.ServiceBus.Queue.QueuePublisher<>` or `Smiosoft.PASS.ServiceBus.Topic.TopicPublisher<>`, and ensure to provide it with the message object type, this would be used to link back to the specific publisher when publishing. The configuration is passed through the base constructor.
+Configure a publisher by creating a class that inherits from one of the following flows:
+
+- `Smiosoft.PASS.ServiceBus.Subscriber.ServiceBusQueuePublisher<>`
+- `Smiosoft.PASS.ServiceBus.Subscriber.ServiceBusTopicPublisher<>`
+
+Ensure to provide a message object type that is intended to be published, this type will also be used to link back to the specific publisher when publishing.
 
 ```csharp
-internal class ExampleQueuePublisher : QueuePublisher<MyMessage>
+internal class ExampleQueuePublisher : ServiceBusQueuePublisher<MyMessage>
 {
 	public ExampleQueuePublisher() : base("connection_string", "queue_name")
 	{ }
 }
 ```
+
+For users who need more fine grained control, or a custom flow can do so by inheriting `Smiosoft.PASS.ServiceBus.Subscriber.ServiceBusPublisherBase<>`.
 
 ### Publisher registration
 
@@ -63,15 +82,15 @@ public void ConfigureServices(IServiceCollection services)
 {
 	services.AddPassServiceBus(options =>
 	{
-		options.AddQueuePublisher<ExampleQueuePublisher>();
-		options.AddTopicPublisher<ExampleTopicPublisher>();
+		options.AddPublisher<ExampleQueuePublisher>();
+		options.AddPublisher<ExampleTopicPublisher>();
 	});
 }
 ```
 
 ### Publish messages
 
-Inject `IPublishingService` and use it to publish your messages. The library will match the given message type with a configured publisher to publish your message!
+Inject `IPublishingService` and use it to publish your messages. The library will match the given message object type with a configured publisher to publish your message!
 
 ```csharp
 internal class Sandbox

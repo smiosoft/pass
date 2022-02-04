@@ -53,8 +53,8 @@ public void ConfigureServices(IServiceCollection services)
 {
 	services.AddPassRabbitMq(options =>
 	{
-		options.AddSubscriber<ExampleQueueSubscriber>();
-		options.AddSubscriber<ExampleTopicSubscriber>();
+		options.AddSubscriber<ExampleQueueSubscription>();
+		options.AddSubscriber<ExampleTopicSubscription>();
 	});
 }
 ```
