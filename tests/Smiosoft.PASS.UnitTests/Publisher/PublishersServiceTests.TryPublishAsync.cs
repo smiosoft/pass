@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using Smiosoft.PASS.Publisher;
-using Xunit;
 using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
+using Xunit;
 
 namespace Smiosoft.PASS.UnitTests.Publisher
 {

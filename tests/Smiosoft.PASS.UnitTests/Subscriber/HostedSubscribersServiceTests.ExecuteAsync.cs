@@ -3,8 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using Smiosoft.PASS.Subscriber;
-using Xunit;
 using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
+using Xunit;
 
 namespace Smiosoft.PASS.UnitTests.Subscriber
 {

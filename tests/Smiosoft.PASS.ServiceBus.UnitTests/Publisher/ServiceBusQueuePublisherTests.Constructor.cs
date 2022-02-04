@@ -3,34 +3,18 @@ using FluentAssertions;
 using Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers.Publishers;
 using Xunit;
 
-namespace Smiosoft.PASS.ServiceBus.UnitTests.Queue
+namespace Smiosoft.PASS.ServiceBus.UnitTests.Publisher
 {
-	public partial class QueuePublisherTests
+	public partial class ServiceBusQueuePublisherTests
 	{
-		public class Constructor : QueuePublisherTests
+		public class Constructor : ServiceBusQueuePublisherTests
 		{
-			[Fact]
-			public void GivenValidParameters_WhenConstructingWithClient_ThenNoExceptionsAreThrown()
-			{
-				Action act = () => new MessageOneQueuePublisher(_mockQueueClient.Object);
-
-				act.Should().NotThrow();
-			}
-
 			[Fact]
 			public void GivenValidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown()
 			{
 				Action act = () => new MessageOneQueuePublisher("Endpoint=sb://test.net/;SharedAccessKeyName=***;SharedAccessKey=***", "test-queue");
 
 				act.Should().NotThrow();
-			}
-
-			[Fact]
-			public void GivenNullParameters_WhenConstructingWithClient_ThenArgumentNullExceptionIsThrown()
-			{
-				Action act = () => new MessageOneQueuePublisher(null!);
-
-				act.Should().Throw<ArgumentNullException>();
 			}
 
 			[Theory]

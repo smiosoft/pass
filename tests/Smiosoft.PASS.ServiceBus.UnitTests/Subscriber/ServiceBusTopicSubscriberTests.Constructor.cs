@@ -1,36 +1,20 @@
-using System;
+﻿using System;
 using FluentAssertions;
 using Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers.Subscribers;
 using Xunit;
 
-namespace Smiosoft.PASS.ServiceBus.UnitTests.Topic
+namespace Smiosoft.PASS.ServiceBus.UnitTests.Subscriber
 {
-	public partial class TopicSubscriberTests
+	public partial class ServiceBusTopicSubscriberTests
 	{
-		public class Constructor : TopicSubscriberTests
+		public class Constructor : ServiceBusTopicSubscriberTests
 		{
-			[Fact]
-			public void GivenValidParameters_WhenConstructingWithClient_ThenNoExceptionsAreThrown()
-			{
-				Action act = () => new MessageOneTopicSubscriber(_mockSubscriptionClient.Object);
-
-				act.Should().NotThrow();
-			}
-
 			[Fact]
 			public void GivenValidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown()
 			{
 				Action act = () => new MessageOneTopicSubscriber("Endpoint=sb://test.net/;SharedAccessKeyName=***;SharedAccessKey=***", "test-topic", "test-subscription");
 
 				act.Should().NotThrow();
-			}
-
-			[Fact]
-			public void GivenNullParameters_WhenConstructingWithClient_ThenArgumentNullExceptionIsThrown()
-			{
-				Action act = () => new MessageOneTopicSubscriber(null!);
-
-				act.Should().Throw<ArgumentNullException>();
 			}
 
 			[Theory]
@@ -61,9 +45,9 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Topic
 			[InlineData(" ", " ", null)]
 			[InlineData(" ", " ", "")]
 			[InlineData(" ", " ", " ")]
-			public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenArgumentNullExceptionIsThrown(string connectionString, string topicPath, string subscriptionName)
+			public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenArgumentNullExceptionIsThrown(string connectionString, string topicName, string subscriptionName)
 			{
-				Action act = () => new MessageOneTopicSubscriber(connectionString, topicPath, subscriptionName);
+				Action act = () => new MessageOneTopicSubscriber(connectionString, topicName, subscriptionName);
 
 				act.Should().Throw<ArgumentNullException>();
 			}

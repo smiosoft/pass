@@ -9,15 +9,25 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Configuration
 {
 	public partial class ServiceBusOptionsTests
 	{
-		public class AddQueueSubscriber : ServiceBusOptionsTests
+		public class AddSubscriber : ServiceBusOptionsTests
 		{
 			[Fact]
-			public void GivenConfiguredSubscriber_WhenExecuted_ThenSubscriberIsAddedAsSingleton()
+			public void GivenConfiguredQueueSubscriber_WhenExecuted_ThenSubscriberIsAddedAsSingleton()
 			{
-				_sut.AddQueueSubscriber<MessageOneQueueSubscriber>();
+				_sut.AddSubscriber<MessageOneQueueSubscriber>();
 
 				_mockServiceCollection.Verify(
 					_ => _.Add(MockServiceDescriptorFactory.CreateIt(ServiceLifetime.Singleton, typeof(IBaseSubscriber), typeof(MessageOneQueueSubscriber))),
+					Times.Once);
+			}
+
+			[Fact]
+			public void GivenConfiguredTopicSubscriber_WhenExecuted_ThenSubscriberIsAddedAsSingleton()
+			{
+				_sut.AddSubscriber<MessageOneTopicSubscriber>();
+
+				_mockServiceCollection.Verify(
+					_ => _.Add(MockServiceDescriptorFactory.CreateIt(ServiceLifetime.Singleton, typeof(IBaseSubscriber), typeof(MessageOneTopicSubscriber))),
 					Times.Once);
 			}
 		}

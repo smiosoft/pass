@@ -1,36 +1,20 @@
-using System;
+﻿using System;
 using FluentAssertions;
 using Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers.Subscribers;
 using Xunit;
 
-namespace Smiosoft.PASS.ServiceBus.UnitTests.Queue
+namespace Smiosoft.PASS.ServiceBus.UnitTests.Subscriber
 {
-	public partial class QueueSubscriberTests
+	public partial class ServiceBusQueueSubscriberTests
 	{
-		public class Constructor : QueueSubscriberTests
+		public class Constructor : ServiceBusQueueSubscriberTests
 		{
-			[Fact]
-			public void GivenValidParameters_WhenConstructingWithClient_ThenNoExceptionsAreThrown()
-			{
-				Action act = () => new MessageOneQueueSubscriber(_mockQueueClient.Object);
-
-				act.Should().NotThrow();
-			}
-
 			[Fact]
 			public void GivenValidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown()
 			{
 				Action act = () => new MessageOneQueueSubscriber("Endpoint=sb://test.net/;SharedAccessKeyName=***;SharedAccessKey=***", "test-queue");
 
 				act.Should().NotThrow();
-			}
-
-			[Fact]
-			public void GivenNullParameters_WhenConstructingWithClient_ThenArgumentNullExceptionIsThrown()
-			{
-				Action act = () => new MessageOneQueueSubscriber(null!);
-
-				act.Should().Throw<ArgumentNullException>();
 			}
 
 			[Theory]
