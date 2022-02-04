@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FluentAssertions;
 using Smiosoft.PASS.ServiceBus.Configuration;
 using Xunit;

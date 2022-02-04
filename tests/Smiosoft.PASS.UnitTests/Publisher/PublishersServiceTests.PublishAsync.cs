@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using Smiosoft.PASS.Publisher;
-using Xunit;
 using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
+using Xunit;
 
 namespace Smiosoft.PASS.UnitTests.Publisher
 {
@@ -94,7 +94,7 @@ namespace Smiosoft.PASS.UnitTests.Publisher
 
 				Func<Task> act = async () => await _sut.PublishAsync(new DummyTestMessageThree());
 
-				act.Should().Throw<PublisherNotRegisteredException>();
+				act.Should().ThrowAsync<PublisherNotRegisteredException>();
 			}
 		}
 	}

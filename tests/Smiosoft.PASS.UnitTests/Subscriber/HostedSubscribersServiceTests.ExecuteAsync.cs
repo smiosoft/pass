@@ -3,8 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using Smiosoft.PASS.Subscriber;
-using Xunit;
 using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
+using Xunit;
 
 namespace Smiosoft.PASS.UnitTests.Subscriber
 {
@@ -37,9 +37,9 @@ namespace Smiosoft.PASS.UnitTests.Subscriber
 
 				await _sut.StartAsync(CancellationToken.None);
 
-				_mockMessageOneSubscriber.Verify(_ => _.Register(), Times.Once);
-				_mockMessageTwoSubscriber.Verify(_ => _.Register(), Times.Once);
-				_mockMessageThreeSubscriber.Verify(_ => _.Register(), Times.Once);
+				_mockMessageOneSubscriber.Verify(_ => _.RegisterAsync(), Times.Once);
+				_mockMessageTwoSubscriber.Verify(_ => _.RegisterAsync(), Times.Once);
+				_mockMessageThreeSubscriber.Verify(_ => _.RegisterAsync(), Times.Once);
 			}
 		}
 	}

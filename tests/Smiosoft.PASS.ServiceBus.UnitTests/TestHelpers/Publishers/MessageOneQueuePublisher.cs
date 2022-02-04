@@ -1,14 +1,10 @@
-using Microsoft.Azure.ServiceBus;
-using Smiosoft.PASS.ServiceBus.Queue;
+using Smiosoft.PASS.ServiceBus.Publisher;
 using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
 
 namespace Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers.Publishers
 {
-	public class MessageOneQueuePublisher : QueuePublisher<DummyTestMessageOne>
+	public class MessageOneQueuePublisher : ServiceBusQueuePublisher<DummyTestMessageOne>
 	{
-		public MessageOneQueuePublisher(IQueueClient client) : base(client)
-		{ }
-
 		public MessageOneQueuePublisher(string connectionString, string queueName) : base(connectionString, queueName)
 		{ }
 	}
