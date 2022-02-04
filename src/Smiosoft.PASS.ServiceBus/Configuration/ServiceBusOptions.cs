@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using Smiosoft.PASS.ServiceBus.Queue;
-using Smiosoft.PASS.ServiceBus.Topic;
+using Smiosoft.PASS.ServiceBus.Publisher;
+using Smiosoft.PASS.ServiceBus.Subscriber;
 
 namespace Smiosoft.PASS.ServiceBus.Configuration
 {
@@ -14,28 +14,16 @@ namespace Smiosoft.PASS.ServiceBus.Configuration
 			_services = services ?? throw new ArgumentNullException(nameof(services));
 		}
 
-		public void AddQueuePublisher<TQueuePublisherImplementation>()
-			where TQueuePublisherImplementation : class, IQueuePublisher
+		public void AddPublisher<TPublisher>()
+			where TPublisher : class, IServiceBusPublisher
 		{
-			_services.AddPassPublisher<TQueuePublisherImplementation>();
+			_services.AddPassPublisher<TPublisher>();
 		}
 
-		public void AddQueueSubscriber<TQueueSubscriberImplementation>()
-			where TQueueSubscriberImplementation : class, IQueueSubscriber
+		public void AddSubscriber<TSubscriber>()
+			where TSubscriber : class, IServiceBusSubscriber
 		{
-			_services.AddPassSubscriber<TQueueSubscriberImplementation>();
-		}
-
-		public void AddTopicPublisher<TTopicPublisherImplementation>()
-			where TTopicPublisherImplementation : class, ITopicPublisher
-		{
-			_services.AddPassPublisher<TTopicPublisherImplementation>();
-		}
-
-		public void AddTopicSubscriber<TTopicSubscriberImplementation>()
-			where TTopicSubscriberImplementation : class, ITopicSubscriber
-		{
-			_services.AddPassSubscriber<TTopicSubscriberImplementation>();
+			_services.AddPassSubscriber<TSubscriber>();
 		}
 	}
 }
