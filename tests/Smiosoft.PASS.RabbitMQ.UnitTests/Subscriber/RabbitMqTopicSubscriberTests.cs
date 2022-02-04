@@ -1,20 +1,20 @@
 using System.Collections.Generic;
 using Moq;
 using RabbitMQ.Client;
-using Smiosoft.PASS.RabbitMQ.Topic;
+using Smiosoft.PASS.RabbitMQ.Subscriber;
 using Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers.Subscribers;
 using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
 
-namespace Smiosoft.PASS.RabbitMQ.UnitTests.Topic
+namespace Smiosoft.PASS.RabbitMQ.UnitTests.Subscriber
 {
-	public partial class TopicSubscriberTests
+	public partial class RabbitMqTopicSubscriberTests
 	{
 		private readonly Mock<IConnectionFactory> _mockConnectionFactory;
 		private readonly Mock<IConnection> _mockConnection;
 		private readonly Mock<IModel> _mockChannel;
-		private readonly TopicSubscriber<DummyTestMessageOne> _sut;
+		private readonly RabbitMqTopicSubscriber<DummyTestMessageOne> _sut;
 
-		public TopicSubscriberTests()
+		public RabbitMqTopicSubscriberTests()
 		{
 			_mockConnectionFactory = new Mock<IConnectionFactory>();
 			_mockConnection = new Mock<IConnection>();

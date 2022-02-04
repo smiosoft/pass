@@ -1,10 +1,10 @@
 using RabbitMQ.Client;
-using Smiosoft.PASS.RabbitMQ.Queue;
+using Smiosoft.PASS.RabbitMQ.Publisher;
 using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
 
 namespace Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers.Publishers
 {
-	public class MessageOneQueuePublisher : QueuePublisher<DummyTestMessageOne>
+	public class MessageOneQueuePublisher : RabbitMqQueuePublisher<DummyTestMessageOne>
 	{
 		public MessageOneQueuePublisher(IConnectionFactory factory, string queueName) : base(factory, queueName)
 		{ }

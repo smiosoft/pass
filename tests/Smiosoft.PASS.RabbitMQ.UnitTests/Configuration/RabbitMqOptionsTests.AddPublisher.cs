@@ -9,15 +9,25 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Configuration
 {
 	public partial class RabbitMqOptionsTests
 	{
-		public class AddQueuePublisher : RabbitMqOptionsTests
+		public class AddPublisher : RabbitMqOptionsTests
 		{
 			[Fact]
-			public void GivenConfiguredPublisher_WhenExecuted_ThenPublisherIsAddedAsSingleton()
+			public void GivenConfiguredQueuePublisher_WhenExecuted_ThenPublisherIsAddedAsSingleton()
 			{
-				_sut.AddQueuePublisher<MessageOneQueuePublisher>();
+				_sut.AddPublisher<MessageOneQueuePublisher>();
 
 				_mockServiceCollection.Verify(
 					_ => _.Add(MockServiceDescriptorFactory.CreateIt(ServiceLifetime.Singleton, typeof(IBasePublisher), typeof(MessageOneQueuePublisher))),
+					Times.Once);
+			}
+
+			[Fact]
+			public void GivenConfiguredTopicPublisher_WhenExecuted_ThenPublisherIsAddedAsSingleton()
+			{
+				_sut.AddPublisher<MessageOneTopicPublisher>();
+
+				_mockServiceCollection.Verify(
+					_ => _.Add(MockServiceDescriptorFactory.CreateIt(ServiceLifetime.Singleton, typeof(IBasePublisher), typeof(MessageOneTopicPublisher))),
 					Times.Once);
 			}
 		}

@@ -1,13 +1,13 @@
-using System;
+﻿using System;
 using FluentAssertions;
 using Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers.Publishers;
 using Xunit;
 
-namespace Smiosoft.PASS.RabbitMQ.UnitTests.Topic
+namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
 {
-	public partial class TopicPublisherTests
+	public partial class RabbitMqTopicPublisherTests
 	{
-		public class Constructor : TopicPublisherTests
+		public class Constructor : RabbitMqTopicPublisherTests
 		{
 			[Fact]
 			public void GivenValidParameters_WhenConstructinggWithConnectionFactory_ThenNoExceptionsAreThrown()

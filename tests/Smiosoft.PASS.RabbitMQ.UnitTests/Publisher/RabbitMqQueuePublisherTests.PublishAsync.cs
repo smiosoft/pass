@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moq;
@@ -6,11 +6,11 @@ using RabbitMQ.Client;
 using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
 using Xunit;
 
-namespace Smiosoft.PASS.RabbitMQ.UnitTests.Queue
+namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
 {
-	public partial class QueuePublisherTests
+	public partial class RabbitMqQueuePublisherTests
 	{
-		public class PublishAsync : QueuePublisherTests
+		public class PublishAsync : RabbitMqQueuePublisherTests
 		{
 			[Fact]
 			public async Task GivenConfiguredPublisher_WhenExected_ThenQueueIsDeclaredOnce()

@@ -1,18 +1,19 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Moq;
 using RabbitMQ.Client;
 using Xunit;
 
-namespace Smiosoft.PASS.RabbitMQ.UnitTests.Topic
+namespace Smiosoft.PASS.RabbitMQ.UnitTests.Subscriber
 {
-	public partial class TopicSubscriberTests
+	public partial class RabbitMqTopicSubscriberTests
 	{
-		public class Register : TopicSubscriberTests
+		public class Register : RabbitMqTopicSubscriberTests
 		{
 			[Fact]
-			public void GivenConfiguredSubscriber_WhenExected_ThenExchangeIsDeclaredOnce()
+			public async Task GivenConfiguredSubscriber_WhenExected_ThenExchangeIsDeclaredOnce()
 			{
-				_sut.Register();
+				await _sut.RegisterAsync();
 
 				_mockChannel.Verify(
 					_ => _.ExchangeDeclare(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>()),
@@ -20,9 +21,9 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Topic
 			}
 
 			[Fact]
-			public void GivenConfiguredSubscriber_WhenExected_ThenBasicConsumerIsDeclaredOnce()
+			public async Task GivenConfiguredSubscriber_WhenExected_ThenBasicConsumerIsDeclaredOnce()
 			{
-				_sut.Register();
+				await _sut.RegisterAsync();
 
 				_mockChannel.Verify(
 					_ => _.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>(), It.IsAny<IBasicConsumer>()),
