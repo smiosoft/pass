@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using Smiosoft.PASS.RabbitMQ.Queue;
-using Smiosoft.PASS.RabbitMQ.Topic;
+using Smiosoft.PASS.RabbitMQ.Publisher;
+using Smiosoft.PASS.RabbitMQ.Subscriber;
 
 namespace Smiosoft.PASS.RabbitMQ.Configuration
 {
@@ -14,28 +14,16 @@ namespace Smiosoft.PASS.RabbitMQ.Configuration
 			_services = services ?? throw new ArgumentNullException(nameof(services));
 		}
 
-		public void AddQueuePublisher<TQueuePublisherImplementation>()
-			where TQueuePublisherImplementation : class, IQueuePublisher
+		public void AddPublisher<TPublisher>()
+			where TPublisher : class, IRabbitMqPublisher
 		{
-			_services.AddPassPublisher<TQueuePublisherImplementation>();
+			_services.AddPassPublisher<TPublisher>();
 		}
 
-		public void AddQueueSubscriber<TQueueSubscriberImplementation>()
-			where TQueueSubscriberImplementation : class, IQueueSubscriber
+		public void AddSubscriber<TSubscriber>()
+			where TSubscriber : class, IRabbitMqSubscriber
 		{
-			_services.AddPassSubscriber<TQueueSubscriberImplementation>();
-		}
-
-		public void AddTopicPublisher<TTopicPublisherImplementation>()
-			where TTopicPublisherImplementation : class, ITopicPublisher
-		{
-			_services.AddPassPublisher<TTopicPublisherImplementation>();
-		}
-
-		public void AddTopicSubscriber<TTopicSubscriberImplementation>()
-			where TTopicSubscriberImplementation : class, ITopicSubscriber
-		{
-			_services.AddPassSubscriber<TTopicSubscriberImplementation>();
+			_services.AddPassSubscriber<TSubscriber>();
 		}
 	}
 }
