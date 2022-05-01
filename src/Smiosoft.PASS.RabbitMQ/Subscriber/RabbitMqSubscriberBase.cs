@@ -9,17 +9,14 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 		where TMessage : class
 	{
 		private bool _disposedValue;
+		private IConnectionFactory? _factory;
+		private IConnection? _connection;
+		private IModel? _channel;
 
-		protected IConnectionFactory Factory { get; }
-		protected IConnection Connection { get; }
-		protected IModel Channel { get; }
-
-		protected RabbitMqSubscriberBase(IConnectionFactory factory)
-		{
-			Factory = factory ?? throw new ArgumentNullException(nameof(factory));
-			Connection = Factory.CreateConnection();
-			Channel = Connection.CreateModel();
-		}
+		protected string HostName { get; }
+		protected IConnectionFactory Factory { get => _factory ??= CreateConnectionFactory(); }
+		protected IConnection Connection { get => _connection ??= CreateConnection(); }
+		protected IModel Channel { get => _channel ??= CreateChannel(); }
 
 		protected RabbitMqSubscriberBase(string hostName)
 		{
@@ -28,9 +25,7 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 				throw new ArgumentNullException(nameof(hostName));
 			}
 
-			Factory = new ConnectionFactory() { HostName = hostName };
-			Connection = Factory.CreateConnection();
-			Channel = Connection.CreateModel();
+			HostName = hostName;
 		}
 
 		public abstract Task OnExceptionAsync(Exception exception);
@@ -63,6 +58,21 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 		{
 			Dispose(disposing: true);
 			GC.SuppressFinalize(this);
+		}
+
+		protected virtual IConnectionFactory CreateConnectionFactory()
+		{
+			return new ConnectionFactory() { HostName = HostName };
+		}
+
+		protected virtual IConnection CreateConnection()
+		{
+			return Factory.CreateConnection();
+		}
+
+		protected virtual IModel CreateChannel()
+		{
+			return Connection.CreateModel();
 		}
 	}
 }

@@ -12,23 +12,6 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 		protected string ExchangeName { get; }
 		protected string RoutingKey { get; }
 
-		protected RabbitMqTopicSubscriber(IConnectionFactory factory, string exchangeName, string routingKey)
-			: base(factory)
-		{
-			if (string.IsNullOrWhiteSpace(exchangeName))
-			{
-				throw new ArgumentNullException(nameof(exchangeName));
-			}
-
-			if (string.IsNullOrWhiteSpace(routingKey))
-			{
-				throw new ArgumentNullException(nameof(routingKey));
-			}
-
-			ExchangeName = exchangeName;
-			RoutingKey = routingKey;
-		}
-
 		protected RabbitMqTopicSubscriber(string hostName, string exchangeName, string routingKey)
 			: base(hostName)
 		{
@@ -46,9 +29,9 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 			RoutingKey = routingKey;
 		}
 
-		public override Task RegisterAsync()
+		public override async Task RegisterAsync()
 		{
-			return Task.Run(() =>
+			try
 			{
 				Channel.ExchangeDeclare(exchange: ExchangeName, type: ExchangeType.Topic);
 
@@ -56,20 +39,26 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 				Channel.QueueBind(queue: queueName, exchange: ExchangeName, routingKey: RoutingKey);
 
 				var consumer = new EventingBasicConsumer(Channel);
-				consumer.Received += async (sender, args) =>
-				{
-					try
-					{
-						await OnMessageRecievedAsync(args.Body.ToArray().Deserialise<TMessage>(), default);
-					}
-					catch (Exception exception)
-					{
-						await OnExceptionAsync(exception);
-					}
-				};
+				consumer.Received += Consumer_ReceivedAsync;
 
 				Channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);
-			});
+			}
+			catch (Exception exception)
+			{
+				await OnExceptionAsync(exception);
+			}
+		}
+
+		private async void Consumer_ReceivedAsync(object sender, BasicDeliverEventArgs args)
+		{
+			try
+			{
+				await OnMessageRecievedAsync(args.Body.ToArray().Deserialise<TMessage>(), default);
+			}
+			catch (Exception exception)
+			{
+				await OnExceptionAsync(exception);
+			}
 		}
 	}
 }
