@@ -20,23 +20,32 @@ namespace Smiosoft.PASS.ServiceBus.Publisher
 			ConnectionString = connectionString;
 		}
 
+		public abstract Task OnExceptionAsync(Exception exception);
+
 		public abstract Task PublishAsync(TMessage message);
 
 		protected async Task SendMessageAsync(string queueOrTopicName, TMessage message)
 		{
-			if (string.IsNullOrWhiteSpace(queueOrTopicName))
+			try
 			{
-				throw new ArgumentNullException(nameof(queueOrTopicName));
-			}
+				if (string.IsNullOrWhiteSpace(queueOrTopicName))
+				{
+					throw new ArgumentNullException(nameof(queueOrTopicName));
+				}
 
-			if (message == null)
+				if (message == null)
+				{
+					throw new ArgumentNullException(nameof(message));
+				}
+
+				await using var client = new ServiceBusClient(ConnectionString);
+				var sender = client.CreateSender(queueOrTopicName);
+				await sender.SendMessageAsync(new ServiceBusMessage(message.Serialise()));
+			}
+			catch (Exception exception)
 			{
-				throw new ArgumentNullException(nameof(message));
+				await OnExceptionAsync(exception);
 			}
-
-			await using var client = new ServiceBusClient(ConnectionString);
-			var sender = client.CreateSender(queueOrTopicName);
-			await sender.SendMessageAsync(new ServiceBusMessage(message.Serialise()));
 		}
 	}
 }
