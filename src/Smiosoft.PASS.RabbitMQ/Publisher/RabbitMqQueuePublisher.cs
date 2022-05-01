@@ -10,17 +10,6 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 	{
 		protected string QueueName { get; }
 
-		protected RabbitMqQueuePublisher(IConnectionFactory factory, string queueName)
-			: base(factory)
-		{
-			if (string.IsNullOrWhiteSpace(queueName))
-			{
-				throw new ArgumentNullException(nameof(queueName));
-			}
-
-			QueueName = queueName;
-		}
-
 		protected RabbitMqQueuePublisher(string hostName, string queueName)
 			: base(hostName)
 		{
@@ -32,9 +21,9 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 			QueueName = queueName;
 		}
 
-		public override Task PublishAsync(TMessage message)
+		public override async Task PublishAsync(TMessage message)
 		{
-			return Task.Run(() =>
+			try
 			{
 				using var connection = Factory.CreateConnection();
 				using var channel = connection.CreateModel();
@@ -44,7 +33,11 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 				properties.Persistent = true;
 
 				channel.BasicPublish(exchange: "", routingKey: QueueName, basicProperties: properties, body: message.Serialise());
-			});
+			}
+			catch (Exception exception)
+			{
+				await OnExceptionAsync(exception);
+			}
 		}
 	}
 }

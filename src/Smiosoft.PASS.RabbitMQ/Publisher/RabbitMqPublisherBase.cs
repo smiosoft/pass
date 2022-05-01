@@ -7,12 +7,10 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 	public abstract class RabbitMqPublisherBase<TMessage> : IRabbitMqPublisher<TMessage>
 		where TMessage : class
 	{
-		protected IConnectionFactory Factory { get; }
+		private IConnectionFactory? _factory;
 
-		protected RabbitMqPublisherBase(IConnectionFactory factory)
-		{
-			Factory = factory ?? throw new ArgumentNullException(nameof(factory));
-		}
+		protected string HostName { get; }
+		protected IConnectionFactory Factory { get => _factory ??= CreateConnectionFactory(); }
 
 		protected RabbitMqPublisherBase(string hostName)
 		{
@@ -21,9 +19,16 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 				throw new ArgumentNullException(nameof(hostName));
 			}
 
-			Factory = new ConnectionFactory() { HostName = hostName };
+			HostName = hostName;
 		}
 
+		public abstract Task OnExceptionAsync(Exception exception);
+
 		public abstract Task PublishAsync(TMessage message);
+
+		protected virtual IConnectionFactory CreateConnectionFactory()
+		{
+			return new ConnectionFactory() { HostName = HostName };
+		}
 	}
 }
