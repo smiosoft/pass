@@ -23,6 +23,10 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
 			_options = options ?? throw new ArgumentNullException(nameof(options));
 		}
 
+		protected ServiceBusSubscriberBase(string connectionString)
+			: this(new ServiceBusSubscriberOptions(connectionString))
+		{ }
+
 		public abstract Task OnExceptionAsync(Exception exception);
 
 		public abstract Task OnMessageRecievedAsync(TMessage message, CancellationToken cancellationToken);

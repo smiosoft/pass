@@ -18,6 +18,10 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 			Options = topicSubscriberOptions ?? throw new ArgumentNullException(nameof(topicSubscriberOptions));
 		}
 
+		protected RabbitMqTopicSubscriber(string hostName, string exchangeName, string routingKey)
+			: this(new RabbitMqTopicSubscriberOptions(hostName, exchangeName, routingKey))
+		{ }
+
 		public override async Task RegisterAsync()
 		{
 			try

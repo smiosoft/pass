@@ -24,11 +24,21 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 			_options = options ?? throw new ArgumentNullException(nameof(options));
 		}
 
+		protected RabbitMqSubscriberBase(string hostName)
+			: this(new RabbitMqSubscriberOptions(hostName))
+		{ }
+
 		public abstract Task OnExceptionAsync(Exception exception);
 
 		public abstract Task OnMessageRecievedAsync(TMessage message, CancellationToken cancellationToken);
 
 		public abstract Task RegisterAsync();
+
+		public void Dispose()
+		{
+			Dispose(disposing: true);
+			GC.SuppressFinalize(this);
+		}
 
 		protected virtual void Dispose(bool disposing)
 		{
@@ -48,12 +58,6 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 
 				_disposedValue = true;
 			}
-		}
-
-		public void Dispose()
-		{
-			Dispose(disposing: true);
-			GC.SuppressFinalize(this);
 		}
 
 		protected virtual IConnectionFactory CreateConnectionFactory()

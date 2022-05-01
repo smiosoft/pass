@@ -16,6 +16,10 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
 			Options = topicSubscriberOptions ?? throw new ArgumentNullException(nameof(topicSubscriberOptions));
 		}
 
+		protected ServiceBusTopicSubscriber(string connectionString, string topicName, string subscriptionName)
+			: this(new ServiceBusTopicSubscriberOptions(connectionString, topicName, subscriptionName))
+		{ }
+
 		public override Task RegisterAsync()
 		{
 			return SetupProcessorAsync();

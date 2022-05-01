@@ -16,6 +16,10 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
 			Options = queueSubscriberOptions ?? throw new ArgumentNullException(nameof(queueSubscriberOptions));
 		}
 
+		protected ServiceBusQueueSubscriber(string connectionString, string queueName)
+			: this(new ServiceBusQueueSubscriberOptions(connectionString, queueName))
+		{ }
+
 		public override Task RegisterAsync()
 		{
 			return SetupProcessorAsync();

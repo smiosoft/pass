@@ -16,6 +16,10 @@ namespace Smiosoft.PASS.ServiceBus.Publisher
 			_options = options ?? throw new ArgumentNullException(nameof(options));
 		}
 
+		protected ServiceBusPublisherBase(string connectionString)
+			: this(new ServiceBusPublisherOptions(connectionString))
+		{ }
+
 		public abstract Task OnExceptionAsync(Exception exception);
 
 		public abstract Task PublishAsync(TMessage message);

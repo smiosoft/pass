@@ -18,6 +18,10 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 			Options = queueSubscriberOptions ?? throw new ArgumentNullException(nameof(queueSubscriberOptions));
 		}
 
+		protected RabbitMqQueueSubscriber(string hostName, string queueName)
+			: this(new RabbitMqQueueSubscriberOptions(hostName, queueName))
+		{ }
+
 		public override async Task RegisterAsync()
 		{
 			try

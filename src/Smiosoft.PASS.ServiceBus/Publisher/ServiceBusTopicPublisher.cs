@@ -15,6 +15,10 @@ namespace Smiosoft.PASS.ServiceBus.Publisher
 			Options = topicPublisherOptions ?? throw new ArgumentNullException(nameof(topicPublisherOptions));
 		}
 
+		protected ServiceBusTopicPublisher(string connectionString, string topicName)
+			: this(new ServiceBusTopicPublisherOptions(connectionString, topicName))
+		{ }
+
 		public override Task PublishAsync(TMessage message)
 		{
 			return SendMessageAsync(Options.TopicName, message);

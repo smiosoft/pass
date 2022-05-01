@@ -18,6 +18,10 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 			_options = options ?? throw new ArgumentNullException(nameof(options));
 		}
 
+		protected RabbitMqPublisherBase(string hostName)
+			: this(new RabbitMqPublisherOptions(hostName))
+		{ }
+
 		public abstract Task OnExceptionAsync(Exception exception);
 
 		public abstract Task PublishAsync(TMessage message);

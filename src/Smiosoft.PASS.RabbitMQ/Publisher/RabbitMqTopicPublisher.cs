@@ -17,6 +17,10 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 			Options = topicPublisherOptions ?? throw new ArgumentNullException(nameof(topicPublisherOptions));
 		}
 
+		protected RabbitMqTopicPublisher(string hostName, string exchangeName, string routingKey)
+			: this(new RabbitMqTopicPublisherOptions(hostName, exchangeName, routingKey))
+		{ }
+
 		public override async Task PublishAsync(TMessage message)
 		{
 			try
