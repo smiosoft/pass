@@ -7,13 +7,13 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Configuration
 	public partial class RabbitMqOptionsTests
 	{
 		private readonly Mock<IServiceCollection> _mockServiceCollection;
-		private readonly RabbitMqOptions _sut;
+		private readonly ConfigureRabbitMqOptions _sut;
 
 		public RabbitMqOptionsTests()
 		{
 			_mockServiceCollection = new Mock<IServiceCollection>();
 
-			_sut = new RabbitMqOptions(_mockServiceCollection.Object);
+			_sut = new ConfigureRabbitMqOptions(_mockServiceCollection.Object);
 		}
 	}
 }

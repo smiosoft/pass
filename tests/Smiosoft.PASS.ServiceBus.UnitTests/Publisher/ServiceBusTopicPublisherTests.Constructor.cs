@@ -27,11 +27,11 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Publisher
 			[InlineData(" ", null)]
 			[InlineData(" ", "")]
 			[InlineData(" ", " ")]
-			public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenArgumentNullExceptionIsThrown(string connectionString, string topicName)
+			public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown(string connectionString, string topicName)
 			{
 				Action act = () => new MessageOneQueuePublisher(connectionString, topicName);
 
-				act.Should().Throw<ArgumentNullException>();
+				act.Should().NotThrow();
 			}
 		}
 	}

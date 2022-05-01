@@ -7,13 +7,13 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Configuration
 	public partial class ServiceBusOptionsTests
 	{
 		private readonly Mock<IServiceCollection> _mockServiceCollection;
-		private readonly ServiceBusOptions _sut;
+		private readonly ConfigureServiceBusOptions _sut;
 
 		public ServiceBusOptionsTests()
 		{
 			_mockServiceCollection = new Mock<IServiceCollection>();
 
-			_sut = new ServiceBusOptions(_mockServiceCollection.Object);
+			_sut = new ConfigureServiceBusOptions(_mockServiceCollection.Object);
 		}
 	}
 }

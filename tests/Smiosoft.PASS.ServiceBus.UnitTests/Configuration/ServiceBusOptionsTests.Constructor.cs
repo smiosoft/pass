@@ -12,7 +12,7 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Configuration
 			[Fact]
 			public void GivenValidParameters_WhenConstructing_ThenNoExceptionsAreThrown()
 			{
-				Action act = () => new ServiceBusOptions(_mockServiceCollection.Object);
+				Action act = () => new ConfigureServiceBusOptions(_mockServiceCollection.Object);
 
 				act.Should().NotThrow();
 			}
@@ -20,7 +20,7 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Configuration
 			[Fact]
 			public void GivenNullParameters_WhenConstructing_ThenArgumentNullExceptionIsThrown()
 			{
-				Action act = () => new ServiceBusOptions(null!);
+				Action act = () => new ConfigureServiceBusOptions(null!);
 
 				act.Should().Throw<ArgumentNullException>();
 			}

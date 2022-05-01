@@ -27,7 +27,7 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
 				.Setup(_ => _.CreateModel())
 				.Returns(_mockChannel.Object);
 
-			_sut = new MessageOneTopicPublisher(_mockConnectionFactory.Object, "tests", "unit.test");
+			_sut = new MessageOneTopicPublisher("local-tests", "tests", "unit.test", _mockConnectionFactory.Object);
 		}
 	}
 }
