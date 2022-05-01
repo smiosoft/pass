@@ -10,10 +10,11 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
 		where TMessage : class
 	{
 		private bool _disposedValue;
+		private ServiceBusClient? _client;
 		private ServiceBusProcessor? _processor;
 
 		protected string ConnectionString { get; }
-		protected ServiceBusClient Client { get; }
+		protected ServiceBusClient Client { get => _client ??= CreateClient(); }
 		protected ServiceBusProcessor Processor { get => _processor ??= CreateProcessor(); }
 
 		protected ServiceBusSubscriberBase(string connectionString)
@@ -24,7 +25,6 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
 			}
 
 			ConnectionString = connectionString;
-			Client = new ServiceBusClient(ConnectionString);
 		}
 
 		public abstract Task OnExceptionAsync(Exception exception);
@@ -59,21 +59,33 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
 			}
 		}
 
+		protected virtual ServiceBusClient CreateClient()
+		{
+			return new ServiceBusClient(ConnectionString);
+		}
+
 		protected abstract ServiceBusProcessor CreateProcessor();
 
 		protected async Task SetupProcessorAsync()
 		{
-			Processor.ProcessMessageAsync += async (args) =>
+			try
 			{
-				await OnMessageRecievedAsync(args.Message.Body.ToArray().Deserialise<TMessage>(), args.CancellationToken);
-				await args.CompleteMessageAsync(args.Message, args.CancellationToken);
-			};
-			Processor.ProcessErrorAsync += async (args) =>
-			{
-				await OnExceptionAsync(args.Exception);
-			};
+				Processor.ProcessMessageAsync += async (args) =>
+				{
+					await OnMessageRecievedAsync(args.Message.Body.ToArray().Deserialise<TMessage>(), args.CancellationToken);
+					await args.CompleteMessageAsync(args.Message, args.CancellationToken);
+				};
+				Processor.ProcessErrorAsync += async (args) =>
+				{
+					await OnExceptionAsync(args.Exception);
+				};
 
-			await Processor.StartProcessingAsync();
+				await Processor.StartProcessingAsync();
+			}
+			catch (Exception exception)
+			{
+				await OnExceptionAsync(exception);
+			}
 		}
 	}
 }
