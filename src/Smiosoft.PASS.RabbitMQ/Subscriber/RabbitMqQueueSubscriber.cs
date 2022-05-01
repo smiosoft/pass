@@ -3,36 +3,37 @@ using System.Threading.Tasks;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Smiosoft.PASS.Extensions;
+using Smiosoft.PASS.RabbitMQ.Configuration;
 
 namespace Smiosoft.PASS.RabbitMQ.Subscriber
 {
 	public abstract class RabbitMqQueueSubscriber<TMessage> : RabbitMqSubscriberBase<TMessage>
 		where TMessage : class
 	{
-		protected string QueueName { get; }
+		protected RabbitMqQueueSubscriberOptions QueueSubscriberOptions { get; }
 
-		protected RabbitMqQueueSubscriber(string hostName, string queueName)
-			: base(hostName)
+		protected RabbitMqQueueSubscriber(RabbitMqQueueSubscriberOptions queueSubscriberOptions)
+			: base(queueSubscriberOptions)
 		{
-			if (string.IsNullOrWhiteSpace(queueName))
-			{
-				throw new ArgumentNullException(nameof(queueName));
-			}
-
-			QueueName = queueName;
+			QueueSubscriberOptions = queueSubscriberOptions ?? throw new ArgumentNullException(nameof(queueSubscriberOptions));
 		}
 
 		public override async Task RegisterAsync()
 		{
 			try
 			{
-				Channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+				Channel.QueueDeclare(
+					queue: QueueSubscriberOptions.QueueName,
+					durable: true,
+					exclusive: false,
+					autoDelete: false,
+					arguments: null);
 				Channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
 				var consumer = new EventingBasicConsumer(Channel);
 				consumer.Received += Consumer_ReceivedAsync;
 
-				Channel.BasicConsume(queue: QueueName, autoAck: false, consumer: consumer);
+				Channel.BasicConsume(queue: QueueSubscriberOptions.QueueName, autoAck: false, consumer: consumer);
 			}
 			catch (Exception exception)
 			{

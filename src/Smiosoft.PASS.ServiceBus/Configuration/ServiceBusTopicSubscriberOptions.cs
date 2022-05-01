@@ -4,8 +4,8 @@ namespace Smiosoft.PASS.ServiceBus.Configuration
 {
 	public class ServiceBusTopicSubscriberOptions : ServiceBusSubscriberOptions
 	{
-		public string TopicName { get; } = string.Empty;
-		public string SubscriptionName { get; } = string.Empty;
+		public string TopicName { get; }
+		public string SubscriptionName { get; }
 
 		[JsonConstructor]
 		public ServiceBusTopicSubscriberOptions(string connectionString, string topicName, string subscriptionName)

@@ -3,40 +3,29 @@ using System.Threading.Tasks;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Smiosoft.PASS.Extensions;
+using Smiosoft.PASS.RabbitMQ.Configuration;
 
 namespace Smiosoft.PASS.RabbitMQ.Subscriber
 {
 	public abstract class RabbitMqTopicSubscriber<TMessage> : RabbitMqSubscriberBase<TMessage>
 		where TMessage : class
 	{
-		protected string ExchangeName { get; }
-		protected string RoutingKey { get; }
+		protected RabbitMqTopicSubscriberOptions TopicSubscriberOptions { get; }
 
-		protected RabbitMqTopicSubscriber(string hostName, string exchangeName, string routingKey)
-			: base(hostName)
+		protected RabbitMqTopicSubscriber(RabbitMqTopicSubscriberOptions topicSubscriberOptions)
+			: base(topicSubscriberOptions)
 		{
-			if (string.IsNullOrWhiteSpace(exchangeName))
-			{
-				throw new ArgumentNullException(nameof(exchangeName));
-			}
-
-			if (string.IsNullOrWhiteSpace(routingKey))
-			{
-				throw new ArgumentNullException(nameof(routingKey));
-			}
-
-			ExchangeName = exchangeName;
-			RoutingKey = routingKey;
+			TopicSubscriberOptions = topicSubscriberOptions ?? throw new ArgumentNullException(nameof(topicSubscriberOptions));
 		}
 
 		public override async Task RegisterAsync()
 		{
 			try
 			{
-				Channel.ExchangeDeclare(exchange: ExchangeName, type: ExchangeType.Topic);
+				Channel.ExchangeDeclare(exchange: TopicSubscriberOptions.ExchangeName, type: ExchangeType.Topic);
 
 				var queueName = Channel.QueueDeclare().QueueName;
-				Channel.QueueBind(queue: queueName, exchange: ExchangeName, routingKey: RoutingKey);
+				Channel.QueueBind(queue: queueName, exchange: TopicSubscriberOptions.ExchangeName, routingKey: TopicSubscriberOptions.RoutingKey);
 
 				var consumer = new EventingBasicConsumer(Channel);
 				consumer.Received += Consumer_ReceivedAsync;

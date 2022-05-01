@@ -1,29 +1,15 @@
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using Smiosoft.PASS.RabbitMQ.Publisher;
-using Smiosoft.PASS.RabbitMQ.Subscriber;
+using Newtonsoft.Json;
 
 namespace Smiosoft.PASS.RabbitMQ.Configuration
 {
 	public class RabbitMqOptions
 	{
-		private readonly IServiceCollection _services;
+		public string HostName { get; }
 
-		public RabbitMqOptions(IServiceCollection services)
+		[JsonConstructor]
+		public RabbitMqOptions(string hostName)
 		{
-			_services = services ?? throw new ArgumentNullException(nameof(services));
-		}
-
-		public void AddPublisher<TPublisher>()
-			where TPublisher : class, IRabbitMqPublisher
-		{
-			_services.AddPassPublisher<TPublisher>();
-		}
-
-		public void AddSubscriber<TSubscriber>()
-			where TSubscriber : class, IRabbitMqSubscriber
-		{
-			_services.AddPassSubscriber<TSubscriber>();
+			HostName = hostName;
 		}
 	}
 }

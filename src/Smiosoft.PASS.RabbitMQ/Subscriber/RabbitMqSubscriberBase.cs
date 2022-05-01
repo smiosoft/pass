@@ -2,30 +2,26 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
+using Smiosoft.PASS.RabbitMQ.Configuration;
 
 namespace Smiosoft.PASS.RabbitMQ.Subscriber
 {
 	public abstract class RabbitMqSubscriberBase<TMessage> : IRabbitMqSubscriber<TMessage>, IDisposable
 		where TMessage : class
 	{
+		private readonly RabbitMqSubscriberOptions _options;
 		private bool _disposedValue;
 		private IConnectionFactory? _factory;
 		private IConnection? _connection;
 		private IModel? _channel;
 
-		protected string HostName { get; }
 		protected IConnectionFactory Factory { get => _factory ??= CreateConnectionFactory(); }
 		protected IConnection Connection { get => _connection ??= CreateConnection(); }
 		protected IModel Channel { get => _channel ??= CreateChannel(); }
 
-		protected RabbitMqSubscriberBase(string hostName)
+		protected RabbitMqSubscriberBase(RabbitMqSubscriberOptions options)
 		{
-			if (string.IsNullOrWhiteSpace(hostName))
-			{
-				throw new ArgumentNullException(nameof(hostName));
-			}
-
-			HostName = hostName;
+			_options = options ?? throw new ArgumentNullException(nameof(options));
 		}
 
 		public abstract Task OnExceptionAsync(Exception exception);
@@ -62,7 +58,7 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 
 		protected virtual IConnectionFactory CreateConnectionFactory()
 		{
-			return new ConnectionFactory() { HostName = HostName };
+			return new ConnectionFactory() { HostName = _options.HostName };
 		}
 
 		protected virtual IConnection CreateConnection()
