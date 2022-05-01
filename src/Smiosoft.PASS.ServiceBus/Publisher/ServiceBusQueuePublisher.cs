@@ -1,27 +1,23 @@
 using System;
 using System.Threading.Tasks;
+using Smiosoft.PASS.ServiceBus.Configuration;
 
 namespace Smiosoft.PASS.ServiceBus.Publisher
 {
 	public abstract class ServiceBusQueuePublisher<TMessage> : ServiceBusPublisherBase<TMessage>
 		where TMessage : class
 	{
-		protected string QueueName { get; }
+		protected ServiceBusQueuePublisherOptions QueuePublisherOptions { get; }
 
-		protected ServiceBusQueuePublisher(string connectionString, string queueName)
-			: base(connectionString)
+		protected ServiceBusQueuePublisher(ServiceBusQueuePublisherOptions queuePublisherOptions)
+			: base(queuePublisherOptions)
 		{
-			if (string.IsNullOrWhiteSpace(queueName))
-			{
-				throw new ArgumentNullException(nameof(queueName));
-			}
-
-			QueueName = queueName;
+			QueuePublisherOptions = queuePublisherOptions ?? throw new ArgumentNullException(nameof(queuePublisherOptions));
 		}
 
 		public override Task PublishAsync(TMessage message)
 		{
-			return SendMessageAsync(QueueName, message);
+			return SendMessageAsync(QueuePublisherOptions.QueueName, message);
 		}
 	}
 }

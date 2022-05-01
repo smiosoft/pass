@@ -2,22 +2,18 @@ using System;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using Smiosoft.PASS.Extensions;
+using Smiosoft.PASS.ServiceBus.Configuration;
 
 namespace Smiosoft.PASS.ServiceBus.Publisher
 {
 	public abstract class ServiceBusPublisherBase<TMessage> : IServiceBusPublisher<TMessage>
 		where TMessage : class
 	{
-		protected string ConnectionString { get; }
+		private readonly ServiceBusPublisherOptions _options;
 
-		protected ServiceBusPublisherBase(string connectionString)
+		protected ServiceBusPublisherBase(ServiceBusPublisherOptions options)
 		{
-			if (string.IsNullOrWhiteSpace(connectionString))
-			{
-				throw new ArgumentNullException(nameof(connectionString));
-			}
-
-			ConnectionString = connectionString;
+			_options = options ?? throw new ArgumentNullException(nameof(options));
 		}
 
 		public abstract Task OnExceptionAsync(Exception exception);
@@ -38,7 +34,7 @@ namespace Smiosoft.PASS.ServiceBus.Publisher
 					throw new ArgumentNullException(nameof(message));
 				}
 
-				await using var client = new ServiceBusClient(ConnectionString);
+				await using var client = new ServiceBusClient(_options.ConnectionString);
 				var sender = client.CreateSender(queueOrTopicName);
 				await sender.SendMessageAsync(new ServiceBusMessage(message.Serialise()));
 			}
