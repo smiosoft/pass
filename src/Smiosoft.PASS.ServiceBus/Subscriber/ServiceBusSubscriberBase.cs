@@ -3,28 +3,24 @@ using System.Threading;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using Smiosoft.PASS.Extensions;
+using Smiosoft.PASS.ServiceBus.Configuration;
 
 namespace Smiosoft.PASS.ServiceBus.Subscriber
 {
 	public abstract class ServiceBusSubscriberBase<TMessage> : IServiceBusSubscriber<TMessage>, IDisposable
 		where TMessage : class
 	{
+		private readonly ServiceBusSubscriberOptions _options;
 		private bool _disposedValue;
 		private ServiceBusClient? _client;
 		private ServiceBusProcessor? _processor;
 
-		protected string ConnectionString { get; }
 		protected ServiceBusClient Client { get => _client ??= CreateClient(); }
 		protected ServiceBusProcessor Processor { get => _processor ??= CreateProcessor(); }
 
-		protected ServiceBusSubscriberBase(string connectionString)
+		protected ServiceBusSubscriberBase(ServiceBusSubscriberOptions options)
 		{
-			if (string.IsNullOrWhiteSpace(connectionString))
-			{
-				throw new ArgumentNullException(nameof(connectionString));
-			}
-
-			ConnectionString = connectionString;
+			_options = options ?? throw new ArgumentNullException(nameof(options));
 		}
 
 		public abstract Task OnExceptionAsync(Exception exception);
@@ -61,7 +57,7 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
 
 		protected virtual ServiceBusClient CreateClient()
 		{
-			return new ServiceBusClient(ConnectionString);
+			return new ServiceBusClient(_options.ConnectionString);
 		}
 
 		protected abstract ServiceBusProcessor CreateProcessor();

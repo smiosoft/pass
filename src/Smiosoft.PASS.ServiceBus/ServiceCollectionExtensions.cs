@@ -8,9 +8,9 @@ namespace Smiosoft.PASS.ServiceBus
 {
 	public static class ServiceCollectionExtensions
 	{
-		public static IServiceCollection AddPassServiceBus(this IServiceCollection services, Action<ServiceBusOptions> options)
+		public static IServiceCollection AddPassServiceBus(this IServiceCollection services, Action<ConfigureServiceBusOptions> setup)
 		{
-			options(new ServiceBusOptions(services));
+			setup(new ConfigureServiceBusOptions(services));
 
 			services
 				.AddPassPublishingService()
