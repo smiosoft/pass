@@ -10,12 +10,12 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 	public abstract class RabbitMqQueueSubscriber<TMessage> : RabbitMqSubscriberBase<TMessage>
 		where TMessage : class
 	{
-		protected RabbitMqQueueSubscriberOptions QueueSubscriberOptions { get; }
+		protected RabbitMqQueueSubscriberOptions Options { get; }
 
 		protected RabbitMqQueueSubscriber(RabbitMqQueueSubscriberOptions queueSubscriberOptions)
 			: base(queueSubscriberOptions)
 		{
-			QueueSubscriberOptions = queueSubscriberOptions ?? throw new ArgumentNullException(nameof(queueSubscriberOptions));
+			Options = queueSubscriberOptions ?? throw new ArgumentNullException(nameof(queueSubscriberOptions));
 		}
 
 		public override async Task RegisterAsync()
@@ -23,7 +23,7 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 			try
 			{
 				Channel.QueueDeclare(
-					queue: QueueSubscriberOptions.QueueName,
+					queue: Options.QueueName,
 					durable: true,
 					exclusive: false,
 					autoDelete: false,
@@ -33,7 +33,7 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 				var consumer = new EventingBasicConsumer(Channel);
 				consumer.Received += Consumer_ReceivedAsync;
 
-				Channel.BasicConsume(queue: QueueSubscriberOptions.QueueName, autoAck: false, consumer: consumer);
+				Channel.BasicConsume(queue: Options.QueueName, autoAck: false, consumer: consumer);
 			}
 			catch (Exception exception)
 			{

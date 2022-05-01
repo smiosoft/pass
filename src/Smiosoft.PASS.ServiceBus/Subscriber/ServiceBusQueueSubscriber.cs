@@ -8,12 +8,12 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
 	public abstract class ServiceBusQueueSubscriber<TMessage> : ServiceBusSubscriberBase<TMessage>
 		where TMessage : class
 	{
-		protected ServiceBusQueueSubscriberOptions QueueSubscriberOptions { get; }
+		protected ServiceBusQueueSubscriberOptions Options { get; }
 
 		protected ServiceBusQueueSubscriber(ServiceBusQueueSubscriberOptions queueSubscriberOptions)
 			: base(queueSubscriberOptions)
 		{
-			QueueSubscriberOptions = queueSubscriberOptions ?? throw new ArgumentNullException(nameof(queueSubscriberOptions));
+			Options = queueSubscriberOptions ?? throw new ArgumentNullException(nameof(queueSubscriberOptions));
 		}
 
 		public override Task RegisterAsync()
@@ -23,7 +23,7 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
 
 		protected override ServiceBusProcessor CreateProcessor()
 		{
-			return Client.CreateProcessor(queueName: QueueSubscriberOptions.QueueName);
+			return Client.CreateProcessor(queueName: Options.QueueName);
 		}
 	}
 }

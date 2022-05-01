@@ -7,17 +7,17 @@ namespace Smiosoft.PASS.ServiceBus.Publisher
 	public abstract class ServiceBusTopicPublisher<TMessage> : ServiceBusPublisherBase<TMessage>
 		where TMessage : class
 	{
-		protected ServiceBusTopicPublisherOptions TopicPublisherOptions { get; }
+		protected ServiceBusTopicPublisherOptions Options { get; }
 
 		protected ServiceBusTopicPublisher(ServiceBusTopicPublisherOptions topicPublisherOptions)
 			: base(topicPublisherOptions)
 		{
-			TopicPublisherOptions = topicPublisherOptions ?? throw new ArgumentNullException(nameof(topicPublisherOptions));
+			Options = topicPublisherOptions ?? throw new ArgumentNullException(nameof(topicPublisherOptions));
 		}
 
 		public override Task PublishAsync(TMessage message)
 		{
-			return SendMessageAsync(TopicPublisherOptions.TopicName, message);
+			return SendMessageAsync(Options.TopicName, message);
 		}
 	}
 }

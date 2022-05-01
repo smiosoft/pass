@@ -2,23 +2,19 @@ using System;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
 using Smiosoft.PASS.Extensions;
+using Smiosoft.PASS.RabbitMQ.Configuration;
 
 namespace Smiosoft.PASS.RabbitMQ.Publisher
 {
 	public abstract class RabbitMqQueuePublisher<TMessage> : RabbitMqPublisherBase<TMessage>
 		where TMessage : class
 	{
-		protected string QueueName { get; }
+		protected RabbitMqQueuePublisherOptions Options { get; }
 
-		protected RabbitMqQueuePublisher(string hostName, string queueName)
-			: base(hostName)
+		protected RabbitMqQueuePublisher(RabbitMqQueuePublisherOptions queuePublisherOptions)
+			: base(queuePublisherOptions)
 		{
-			if (string.IsNullOrWhiteSpace(queueName))
-			{
-				throw new ArgumentNullException(nameof(queueName));
-			}
-
-			QueueName = queueName;
+			Options = queuePublisherOptions ?? throw new ArgumentNullException(nameof(queuePublisherOptions));
 		}
 
 		public override async Task PublishAsync(TMessage message)
@@ -27,12 +23,12 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 			{
 				using var connection = Factory.CreateConnection();
 				using var channel = connection.CreateModel();
-				channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+				channel.QueueDeclare(queue: Options.QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
 
 				var properties = channel.CreateBasicProperties();
 				properties.Persistent = true;
 
-				channel.BasicPublish(exchange: "", routingKey: QueueName, basicProperties: properties, body: message.Serialise());
+				channel.BasicPublish(exchange: "", routingKey: Options.QueueName, basicProperties: properties, body: message.Serialise());
 			}
 			catch (Exception exception)
 			{

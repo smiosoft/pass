@@ -2,30 +2,19 @@ using System;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
 using Smiosoft.PASS.Extensions;
+using Smiosoft.PASS.RabbitMQ.Configuration;
 
 namespace Smiosoft.PASS.RabbitMQ.Publisher
 {
 	public abstract class RabbitMqTopicPublisher<TMessage> : RabbitMqPublisherBase<TMessage>
 		where TMessage : class
 	{
-		protected string ExchangeName { get; }
-		protected string RoutingKey { get; }
+		protected RabbitMqTopicPublisherOptions Options { get; }
 
-		protected RabbitMqTopicPublisher(string hostName, string exchangeName, string routingKey)
-			: base(hostName)
+		protected RabbitMqTopicPublisher(RabbitMqTopicPublisherOptions topicPublisherOptions)
+			: base(topicPublisherOptions)
 		{
-			if (string.IsNullOrWhiteSpace(exchangeName))
-			{
-				throw new ArgumentNullException(nameof(exchangeName));
-			}
-
-			if (string.IsNullOrWhiteSpace(routingKey))
-			{
-				throw new ArgumentNullException(nameof(routingKey));
-			}
-
-			ExchangeName = exchangeName;
-			RoutingKey = routingKey;
+			Options = topicPublisherOptions ?? throw new ArgumentNullException(nameof(topicPublisherOptions));
 		}
 
 		public override async Task PublishAsync(TMessage message)
@@ -34,9 +23,13 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 			{
 				using var connection = Factory.CreateConnection();
 				using var channel = connection.CreateModel();
-				channel.ExchangeDeclare(exchange: ExchangeName, type: ExchangeType.Topic);
+				channel.ExchangeDeclare(exchange: Options.ExchangeName, type: ExchangeType.Topic);
 
-				channel.BasicPublish(exchange: ExchangeName, routingKey: RoutingKey, basicProperties: null, body: message.Serialise());
+				channel.BasicPublish(
+					exchange: Options.ExchangeName,
+					routingKey: Options.RoutingKey,
+					basicProperties: null,
+					body: message.Serialise());
 			}
 			catch (Exception exception)
 			{

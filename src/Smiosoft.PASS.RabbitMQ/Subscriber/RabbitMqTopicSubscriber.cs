@@ -10,22 +10,22 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 	public abstract class RabbitMqTopicSubscriber<TMessage> : RabbitMqSubscriberBase<TMessage>
 		where TMessage : class
 	{
-		protected RabbitMqTopicSubscriberOptions TopicSubscriberOptions { get; }
+		protected RabbitMqTopicSubscriberOptions Options { get; }
 
 		protected RabbitMqTopicSubscriber(RabbitMqTopicSubscriberOptions topicSubscriberOptions)
 			: base(topicSubscriberOptions)
 		{
-			TopicSubscriberOptions = topicSubscriberOptions ?? throw new ArgumentNullException(nameof(topicSubscriberOptions));
+			Options = topicSubscriberOptions ?? throw new ArgumentNullException(nameof(topicSubscriberOptions));
 		}
 
 		public override async Task RegisterAsync()
 		{
 			try
 			{
-				Channel.ExchangeDeclare(exchange: TopicSubscriberOptions.ExchangeName, type: ExchangeType.Topic);
+				Channel.ExchangeDeclare(exchange: Options.ExchangeName, type: ExchangeType.Topic);
 
 				var queueName = Channel.QueueDeclare().QueueName;
-				Channel.QueueBind(queue: queueName, exchange: TopicSubscriberOptions.ExchangeName, routingKey: TopicSubscriberOptions.RoutingKey);
+				Channel.QueueBind(queue: queueName, exchange: Options.ExchangeName, routingKey: Options.RoutingKey);
 
 				var consumer = new EventingBasicConsumer(Channel);
 				consumer.Received += Consumer_ReceivedAsync;

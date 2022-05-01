@@ -1,25 +1,21 @@
 using System;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
+using Smiosoft.PASS.RabbitMQ.Configuration;
 
 namespace Smiosoft.PASS.RabbitMQ.Publisher
 {
 	public abstract class RabbitMqPublisherBase<TMessage> : IRabbitMqPublisher<TMessage>
 		where TMessage : class
 	{
+		private readonly RabbitMqPublisherOptions _options;
 		private IConnectionFactory? _factory;
 
-		protected string HostName { get; }
 		protected IConnectionFactory Factory { get => _factory ??= CreateConnectionFactory(); }
 
-		protected RabbitMqPublisherBase(string hostName)
+		protected RabbitMqPublisherBase(RabbitMqPublisherOptions options)
 		{
-			if (string.IsNullOrWhiteSpace(hostName))
-			{
-				throw new ArgumentNullException(nameof(hostName));
-			}
-
-			HostName = hostName;
+			_options = options ?? throw new ArgumentNullException(nameof(options));
 		}
 
 		public abstract Task OnExceptionAsync(Exception exception);
@@ -28,7 +24,7 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 
 		protected virtual IConnectionFactory CreateConnectionFactory()
 		{
-			return new ConnectionFactory() { HostName = HostName };
+			return new ConnectionFactory() { HostName = _options.HostName };
 		}
 	}
 }
