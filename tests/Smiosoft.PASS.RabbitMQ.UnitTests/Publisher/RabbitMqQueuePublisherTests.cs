@@ -32,8 +32,9 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
 				.Returns(Mock.Of<IBasicProperties>());
 
 			_sut = new MessageOneQueuePublisher(
-				_mockConnectionFactory.Object,
-				"test-queue");
+				"local-tests",
+				"test-queue",
+				_mockConnectionFactory.Object);
 		}
 	}
 }

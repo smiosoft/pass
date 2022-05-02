@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FluentAssertions;
 using Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers.Subscribers;
 using Xunit;
@@ -45,11 +45,11 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Subscriber
 			[InlineData(" ", " ", null)]
 			[InlineData(" ", " ", "")]
 			[InlineData(" ", " ", " ")]
-			public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenArgumentNullExceptionIsThrown(string connectionString, string topicName, string subscriptionName)
+			public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown(string connectionString, string topicName, string subscriptionName)
 			{
 				Action act = () => new MessageOneTopicSubscriber(connectionString, topicName, subscriptionName);
 
-				act.Should().Throw<ArgumentNullException>();
+				act.Should().NotThrow();
 			}
 		}
 	}

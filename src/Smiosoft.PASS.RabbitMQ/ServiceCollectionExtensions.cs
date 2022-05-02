@@ -8,9 +8,9 @@ namespace Smiosoft.PASS.RabbitMQ
 {
 	public static class ServiceCollectionExtensions
 	{
-		public static IServiceCollection AddPassRabbitMq(this IServiceCollection services, Action<RabbitMqOptions> options)
+		public static IServiceCollection AddPassRabbitMq(this IServiceCollection services, Action<ConfigureRabbitMqOptions> setup)
 		{
-			options(new RabbitMqOptions(services));
+			setup(new ConfigureRabbitMqOptions(services));
 
 			services
 				.AddPassPublishingService()

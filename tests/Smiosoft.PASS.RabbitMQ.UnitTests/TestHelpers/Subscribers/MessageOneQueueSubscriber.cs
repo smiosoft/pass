@@ -9,8 +9,12 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers.Subscribers
 {
 	public class MessageOneQueueSubscriber : RabbitMqQueueSubscriber<DummyTestMessageOne>
 	{
-		public MessageOneQueueSubscriber(IConnectionFactory factory, string queueName) : base(factory, queueName)
-		{ }
+		private readonly IConnectionFactory? _factory;
+
+		public MessageOneQueueSubscriber(string hostName, string queueName, IConnectionFactory factory) : base(hostName, queueName)
+		{
+			_factory = factory;
+		}
 
 		public MessageOneQueueSubscriber(string hostName, string queueName) : base(hostName, queueName)
 		{ }
@@ -23,6 +27,11 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers.Subscribers
 		public override Task OnMessageRecievedAsync(DummyTestMessageOne message, CancellationToken cancellationToken)
 		{
 			return Task.CompletedTask;
+		}
+
+		protected override IConnectionFactory CreateConnectionFactory()
+		{
+			return _factory ?? base.CreateConnectionFactory();
 		}
 	}
 }

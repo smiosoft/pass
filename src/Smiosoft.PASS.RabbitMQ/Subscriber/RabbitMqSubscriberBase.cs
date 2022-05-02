@@ -2,42 +2,43 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
+using Smiosoft.PASS.RabbitMQ.Configuration;
 
 namespace Smiosoft.PASS.RabbitMQ.Subscriber
 {
 	public abstract class RabbitMqSubscriberBase<TMessage> : IRabbitMqSubscriber<TMessage>, IDisposable
 		where TMessage : class
 	{
+		private readonly RabbitMqSubscriberOptions _options;
 		private bool _disposedValue;
+		private IConnectionFactory? _factory;
+		private IConnection? _connection;
+		private IModel? _channel;
 
-		protected IConnectionFactory Factory { get; }
-		protected IConnection Connection { get; }
-		protected IModel Channel { get; }
+		protected IConnectionFactory Factory { get => _factory ??= CreateConnectionFactory(); }
+		protected IConnection Connection { get => _connection ??= CreateConnection(); }
+		protected IModel Channel { get => _channel ??= CreateChannel(); }
 
-		protected RabbitMqSubscriberBase(IConnectionFactory factory)
+		protected RabbitMqSubscriberBase(RabbitMqSubscriberOptions options)
 		{
-			Factory = factory ?? throw new ArgumentNullException(nameof(factory));
-			Connection = Factory.CreateConnection();
-			Channel = Connection.CreateModel();
+			_options = options ?? throw new ArgumentNullException(nameof(options));
 		}
 
 		protected RabbitMqSubscriberBase(string hostName)
-		{
-			if (string.IsNullOrWhiteSpace(hostName))
-			{
-				throw new ArgumentNullException(nameof(hostName));
-			}
-
-			Factory = new ConnectionFactory() { HostName = hostName };
-			Connection = Factory.CreateConnection();
-			Channel = Connection.CreateModel();
-		}
+			: this(new RabbitMqSubscriberOptions(hostName))
+		{ }
 
 		public abstract Task OnExceptionAsync(Exception exception);
 
 		public abstract Task OnMessageRecievedAsync(TMessage message, CancellationToken cancellationToken);
 
 		public abstract Task RegisterAsync();
+
+		public void Dispose()
+		{
+			Dispose(disposing: true);
+			GC.SuppressFinalize(this);
+		}
 
 		protected virtual void Dispose(bool disposing)
 		{
@@ -59,10 +60,19 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 			}
 		}
 
-		public void Dispose()
+		protected virtual IConnectionFactory CreateConnectionFactory()
 		{
-			Dispose(disposing: true);
-			GC.SuppressFinalize(this);
+			return new ConnectionFactory() { HostName = _options.HostName };
+		}
+
+		protected virtual IConnection CreateConnection()
+		{
+			return Factory.CreateConnection();
+		}
+
+		protected virtual IModel CreateChannel()
+		{
+			return Connection.CreateModel();
 		}
 	}
 }

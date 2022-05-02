@@ -3,59 +3,59 @@ using System.Threading.Tasks;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Smiosoft.PASS.Extensions;
+using Smiosoft.PASS.RabbitMQ.Configuration;
 
 namespace Smiosoft.PASS.RabbitMQ.Subscriber
 {
 	public abstract class RabbitMqQueueSubscriber<TMessage> : RabbitMqSubscriberBase<TMessage>
 		where TMessage : class
 	{
-		protected string QueueName { get; }
+		protected RabbitMqQueueSubscriberOptions Options { get; }
 
-		protected RabbitMqQueueSubscriber(IConnectionFactory factory, string queueName)
-			: base(factory)
+		protected RabbitMqQueueSubscriber(RabbitMqQueueSubscriberOptions queueSubscriberOptions)
+			: base(queueSubscriberOptions)
 		{
-			if (string.IsNullOrWhiteSpace(queueName))
-			{
-				throw new ArgumentNullException(nameof(queueName));
-			}
-
-			QueueName = queueName;
+			Options = queueSubscriberOptions ?? throw new ArgumentNullException(nameof(queueSubscriberOptions));
 		}
 
 		protected RabbitMqQueueSubscriber(string hostName, string queueName)
-			: base(hostName)
-		{
-			if (string.IsNullOrWhiteSpace(queueName))
-			{
-				throw new ArgumentNullException(nameof(queueName));
-			}
+			: this(new RabbitMqQueueSubscriberOptions(hostName, queueName))
+		{ }
 
-			QueueName = queueName;
-		}
-
-		public override Task RegisterAsync()
+		public override async Task RegisterAsync()
 		{
-			return Task.Run(() =>
+			try
 			{
-				Channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+				Channel.QueueDeclare(
+					queue: Options.QueueName,
+					durable: true,
+					exclusive: false,
+					autoDelete: false,
+					arguments: null);
 				Channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
 				var consumer = new EventingBasicConsumer(Channel);
-				consumer.Received += async (sender, args) =>
-				{
-					try
-					{
-						await OnMessageRecievedAsync(args.Body.ToArray().Deserialise<TMessage>(), default);
-						Channel.BasicAck(deliveryTag: args.DeliveryTag, multiple: false);
-					}
-					catch (Exception exception)
-					{
-						await OnExceptionAsync(exception);
-					}
-				};
+				consumer.Received += Consumer_ReceivedAsync;
 
-				Channel.BasicConsume(queue: QueueName, autoAck: false, consumer: consumer);
-			});
+				Channel.BasicConsume(queue: Options.QueueName, autoAck: false, consumer: consumer);
+			}
+			catch (Exception exception)
+			{
+				await OnExceptionAsync(exception);
+			}
+		}
+
+		private async void Consumer_ReceivedAsync(object sender, BasicDeliverEventArgs args)
+		{
+			try
+			{
+				await OnMessageRecievedAsync(args.Body.ToArray().Deserialise<TMessage>(), default);
+				Channel.BasicAck(deliveryTag: args.DeliveryTag, multiple: false);
+			}
+			catch (Exception exception)
+			{
+				await OnExceptionAsync(exception);
+			}
 		}
 	}
 }

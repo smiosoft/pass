@@ -1,31 +1,24 @@
 using System;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
+using Smiosoft.PASS.ServiceBus.Configuration;
 
 namespace Smiosoft.PASS.ServiceBus.Subscriber
 {
 	public abstract class ServiceBusTopicSubscriber<TMessage> : ServiceBusSubscriberBase<TMessage>
 		where TMessage : class
 	{
-		protected string TopicName { get; }
-		protected string SubscriptionName { get; }
+		protected ServiceBusTopicSubscriberOptions Options { get; }
+
+		protected ServiceBusTopicSubscriber(ServiceBusTopicSubscriberOptions topicSubscriberOptions)
+			: base(topicSubscriberOptions)
+		{
+			Options = topicSubscriberOptions ?? throw new ArgumentNullException(nameof(topicSubscriberOptions));
+		}
 
 		protected ServiceBusTopicSubscriber(string connectionString, string topicName, string subscriptionName)
-			: base(connectionString)
-		{
-			if (string.IsNullOrWhiteSpace(topicName))
-			{
-				throw new ArgumentNullException(nameof(topicName));
-			}
-
-			if (string.IsNullOrWhiteSpace(subscriptionName))
-			{
-				throw new ArgumentNullException(nameof(subscriptionName));
-			}
-
-			TopicName = topicName;
-			SubscriptionName = subscriptionName;
-		}
+			: this(new ServiceBusTopicSubscriberOptions(connectionString, topicName, subscriptionName))
+		{ }
 
 		public override Task RegisterAsync()
 		{
@@ -34,7 +27,9 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
 
 		protected override ServiceBusProcessor CreateProcessor()
 		{
-			return Client.CreateProcessor(topicName: TopicName, subscriptionName: SubscriptionName);
+			return Client.CreateProcessor(
+				topicName: Options.TopicName,
+				subscriptionName: Options.SubscriptionName);
 		}
 	}
 }

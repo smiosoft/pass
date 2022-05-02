@@ -1,27 +1,27 @@
 using System;
 using System.Threading.Tasks;
+using Smiosoft.PASS.ServiceBus.Configuration;
 
 namespace Smiosoft.PASS.ServiceBus.Publisher
 {
 	public abstract class ServiceBusTopicPublisher<TMessage> : ServiceBusPublisherBase<TMessage>
 		where TMessage : class
 	{
-		protected string TopicName { get; }
+		protected ServiceBusTopicPublisherOptions Options { get; }
+
+		protected ServiceBusTopicPublisher(ServiceBusTopicPublisherOptions topicPublisherOptions)
+			: base(topicPublisherOptions)
+		{
+			Options = topicPublisherOptions ?? throw new ArgumentNullException(nameof(topicPublisherOptions));
+		}
 
 		protected ServiceBusTopicPublisher(string connectionString, string topicName)
-			: base(connectionString)
-		{
-			if (string.IsNullOrWhiteSpace(topicName))
-			{
-				throw new ArgumentNullException(nameof(topicName));
-			}
-
-			TopicName = topicName;
-		}
+			: this(new ServiceBusTopicPublisherOptions(connectionString, topicName))
+		{ }
 
 		public override Task PublishAsync(TMessage message)
 		{
-			return SendMessageAsync(TopicName, message);
+			return SendMessageAsync(Options.TopicName, message);
 		}
 	}
 }

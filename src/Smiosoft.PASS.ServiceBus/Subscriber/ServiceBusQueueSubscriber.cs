@@ -1,24 +1,24 @@
 using System;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
+using Smiosoft.PASS.ServiceBus.Configuration;
 
 namespace Smiosoft.PASS.ServiceBus.Subscriber
 {
 	public abstract class ServiceBusQueueSubscriber<TMessage> : ServiceBusSubscriberBase<TMessage>
 		where TMessage : class
 	{
-		protected string QueueName { get; }
+		protected ServiceBusQueueSubscriberOptions Options { get; }
+
+		protected ServiceBusQueueSubscriber(ServiceBusQueueSubscriberOptions queueSubscriberOptions)
+			: base(queueSubscriberOptions)
+		{
+			Options = queueSubscriberOptions ?? throw new ArgumentNullException(nameof(queueSubscriberOptions));
+		}
 
 		protected ServiceBusQueueSubscriber(string connectionString, string queueName)
-			: base(connectionString)
-		{
-			if (string.IsNullOrWhiteSpace(queueName))
-			{
-				throw new ArgumentNullException(nameof(queueName));
-			}
-
-			QueueName = queueName;
-		}
+			: this(new ServiceBusQueueSubscriberOptions(connectionString, queueName))
+		{ }
 
 		public override Task RegisterAsync()
 		{
@@ -27,7 +27,7 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
 
 		protected override ServiceBusProcessor CreateProcessor()
 		{
-			return Client.CreateProcessor(queueName: QueueName);
+			return Client.CreateProcessor(queueName: Options.QueueName);
 		}
 	}
 }
