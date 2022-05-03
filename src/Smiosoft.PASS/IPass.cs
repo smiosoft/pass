@@ -1,5 +1,8 @@
 namespace Smiosoft.PASS
 {
-	public interface IPass
+	/// <summary>
+	/// Defines a root interface to encapsulate the publishing interactions
+	/// </summary>
+	public interface IPass : ISender
 	{ }
 }
