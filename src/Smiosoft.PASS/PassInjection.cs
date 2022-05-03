@@ -13,7 +13,9 @@ namespace Smiosoft.PASS
 
 		private static IServiceCollection AddRequiredServices(this IServiceCollection services)
 		{
-			services.AddTransient<ServiceFactory>(provider => provider.GetRequiredService);
+			services
+				.AddTransient<ServiceFactory>(provider => provider.GetRequiredService)
+				.AddSingleton<IPass, Pass>();
 
 			return services;
 		}
