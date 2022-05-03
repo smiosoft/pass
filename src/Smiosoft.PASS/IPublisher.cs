@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 namespace Smiosoft.PASS
 {
 	/// <summary>
-	/// Send a payload through the pass pipeline to be handled by a single handler
+	/// Send a payload through the pass pipeline to be handled by a single publishing handler
 	/// </summary>
-	public interface ISender
+	public interface IPublisher
 	{
 		/// <summary>
-		/// Asynchronously send a payload to a single handler
+		/// Asynchronously publish a payload via a single publishing handler
 		/// </summary>
 		/// <param name="payload">Payload object</param>
 		/// <param name="cancellationToken">Optional cancellation token</param>
 		/// <returns>An awaitable task</returns>
-		Task SendAsync(IPayload payload, CancellationToken cancellationToken = default);
+		Task PublishAsync(IPayload payload, CancellationToken cancellationToken = default);
 	}
 }
