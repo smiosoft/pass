@@ -1,5 +1,3 @@
-using Smiosoft.PASS.Publisher;
-
 namespace Smiosoft.PASS.ServiceBus.Publisher
 {
 	public interface IServiceBusPublisher : IBasePublisher

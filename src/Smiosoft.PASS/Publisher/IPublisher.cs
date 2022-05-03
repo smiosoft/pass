@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Smiosoft.PASS
+namespace Smiosoft.PASS.Publisher
 {
 	/// <summary>
 	/// Send a payload through the pass pipeline to be handled by a single publishing handler
