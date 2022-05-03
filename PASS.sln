@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31025.194
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5514BD07-5351-4629-9976-8060781B8DB5}"
 EndProject
@@ -17,7 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiosoft.PASS.ServiceBus.Un
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiosoft.PASS.RabbitMQ", "src\Smiosoft.PASS.RabbitMQ\Smiosoft.PASS.RabbitMQ.csproj", "{1C4002D3-DCE6-41F6-9172-398C80033EA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smiosoft.PASS.RabbitMQ.UnitTests", "tests\Smiosoft.PASS.RabbitMQ.UnitTests\Smiosoft.PASS.RabbitMQ.UnitTests.csproj", "{2E09A430-1F58-4295-9C68-D08E519EEB24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiosoft.PASS.RabbitMQ.UnitTests", "tests\Smiosoft.PASS.RabbitMQ.UnitTests\Smiosoft.PASS.RabbitMQ.UnitTests.csproj", "{2E09A430-1F58-4295-9C68-D08E519EEB24}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{7B6A0546-C15A-40C5-8617-8EF47E02235B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smiosoft.PASS.Examples.Console", "samples\Smiosoft.PASS.Examples.Console\Smiosoft.PASS.Examples.Console.csproj", "{06721CB3-8756-49D3-AAE0-763ED22EDCB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +53,10 @@ Global
 		{2E09A430-1F58-4295-9C68-D08E519EEB24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E09A430-1F58-4295-9C68-D08E519EEB24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E09A430-1F58-4295-9C68-D08E519EEB24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06721CB3-8756-49D3-AAE0-763ED22EDCB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06721CB3-8756-49D3-AAE0-763ED22EDCB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06721CB3-8756-49D3-AAE0-763ED22EDCB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06721CB3-8756-49D3-AAE0-763ED22EDCB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +68,7 @@ Global
 		{4B832FB2-2BAA-4AD6-8D24-659B751CAB51} = {9567BA38-3228-425B-ACD2-649BDBA82EA3}
 		{1C4002D3-DCE6-41F6-9172-398C80033EA5} = {5514BD07-5351-4629-9976-8060781B8DB5}
 		{2E09A430-1F58-4295-9C68-D08E519EEB24} = {9567BA38-3228-425B-ACD2-649BDBA82EA3}
+		{06721CB3-8756-49D3-AAE0-763ED22EDCB3} = {7B6A0546-C15A-40C5-8617-8EF47E02235B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0D19ABE4-9919-4964-B04F-CC71E5D10229}
