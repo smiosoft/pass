@@ -1,9 +1,9 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Smiosoft.PASS.Publisher.Handler
 {
-	internal class PayloadHandlerWrapperImplementation<TPayload> : HandlerWrapper
+	internal class HandlerWrapperImplementation<TPayload> : HandlerWrapper
 		where TPayload : IPayload
 	{
 		public override Task HandleAsync(IPayload payload, CancellationToken cancellationToken, ServiceFactory serviceFactory)
