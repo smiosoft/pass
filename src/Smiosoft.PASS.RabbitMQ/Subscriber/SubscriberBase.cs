@@ -7,13 +7,14 @@ using Smiosoft.PASS.Subscriber;
 
 namespace Smiosoft.PASS.RabbitMQ.Subscriber
 {
-	public abstract class SubscriberBase<TPayload> : ISubscriptionHandler<TPayload>
+	public abstract class SubscriberBase<TPayload> : ISubscriptionHandler<TPayload>, IDisposable
 		where TPayload : IPayload
 	{
 		private readonly SubscriberOptions _options;
 		private IConnectionFactory? _factory;
 		private IConnection? _connection;
 		private IModel? _channel;
+		private bool _disposedValue;
 
 		protected IConnectionFactory Factory { get => _factory ??= CreateConnectionFactory(); }
 		protected IConnection Connection { get => _connection ??= CreateConnection(); }
@@ -55,6 +56,34 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 		protected virtual IModel CreateChannel()
 		{
 			return Connection.CreateModel();
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!_disposedValue)
+			{
+				if (disposing)
+				{
+					if (_connection != null)
+					{
+						_connection.Dispose();
+						_connection = null;
+					}
+					if (_channel != null)
+					{
+						_channel.Dispose();
+						_channel = null;
+					}
+				}
+
+				_disposedValue = true;
+			}
+		}
+
+		public void Dispose()
+		{
+			Dispose(disposing: true);
+			GC.SuppressFinalize(this);
 		}
 	}
 }
