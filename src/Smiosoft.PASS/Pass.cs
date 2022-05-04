@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,9 +6,6 @@ using Smiosoft.PASS.Publisher.Handler;
 
 namespace Smiosoft.PASS
 {
-	/// <summary>
-	/// Default pass implementation
-	/// </summary>
 	internal class Pass : IPass
 	{
 		private readonly ServiceFactory _serviceFactory;
@@ -24,8 +21,8 @@ namespace Smiosoft.PASS
 			var requestType = payload.GetType();
 			var handler = (HandlerWrapper)_handlers.GetOrAdd(requestType, static implementation =>
 			{
-				var handler = Activator.CreateInstance(typeof(HandlerWrapperImplementation<>).MakeGenericType(implementation) ?? throw new InvalidOperationException($"Could not create wrapper type for {implementation}"));
-				return (HandlerBase)handler;
+				return (HandlerBase)Activator.CreateInstance(typeof(HandlerWrapperImplementation<>).MakeGenericType(implementation)
+					?? throw new InvalidOperationException($"Could not create wrapper type for {implementation}"));
 			});
 
 			return handler.HandleAsync(payload, cancellationToken, _serviceFactory);
