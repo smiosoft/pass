@@ -1,4 +1,4 @@
-﻿namespace Smiosoft.PASS.ServiceBus.Subscriber
+namespace Smiosoft.PASS.ServiceBus.Subscriber
 {
 	public class QueueSubscriberOptions : SubscriberOptions
 	{
