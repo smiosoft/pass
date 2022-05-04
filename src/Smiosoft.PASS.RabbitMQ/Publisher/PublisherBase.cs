@@ -8,7 +8,7 @@ using Smiosoft.PASS.RabbitMQ.Configuration;
 
 namespace Smiosoft.PASS.RabbitMQ.Publisher
 {
-	public abstract class PublisherBase<TPayload> : IPublishingHandler<TPayload>
+	public abstract class PublisherBase<TPayload> : IPublishingHandler<TPayload>, IRabbitMq
 		where TPayload : IPayload
 	{
 		private readonly RabbitMqOptions _options;
