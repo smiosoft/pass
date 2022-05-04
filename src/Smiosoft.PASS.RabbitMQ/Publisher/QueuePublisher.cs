@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
@@ -10,7 +11,8 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 	{
 		protected QueuePublisherOptions Options { get; }
 
-		protected QueuePublisher(QueuePublisherOptions options) : base(options)
+		protected QueuePublisher(QueuePublisherOptions options)
+			: base(options)
 		{
 			Options = options ?? throw new ArgumentNullException(nameof(options));
 		}
