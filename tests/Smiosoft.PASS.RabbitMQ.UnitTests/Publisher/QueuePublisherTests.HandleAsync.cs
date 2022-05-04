@@ -1,21 +1,22 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using RabbitMQ.Client;
-using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
+using Smiosoft.PASS.UnitTests.TestHelpers;
 using Xunit;
 
 namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
 {
-	public partial class RabbitMqQueuePublisherTests
+	public partial class QueuePublisherTests
 	{
-		public class PublishAsync : RabbitMqQueuePublisherTests
+		public class HandleAsync : QueuePublisherTests
 		{
 			[Fact]
 			public async Task GivenConfiguredPublisher_WhenExected_ThenQueueIsDeclaredOnce()
 			{
-				await _sut.PublishAsync(new DummyTestMessageOne());
+				await _sut.HandleAsync(new Payloads.DummyPayloadOne(), CancellationToken.None);
 
 				_mockChannel.Verify(
 					_ => _.QueueDeclare(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>()),
@@ -25,7 +26,7 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
 			[Fact]
 			public async Task GivenConfiguredPublisher_WhenExected_ThenBasicPublishOnce()
 			{
-				await _sut.PublishAsync(new DummyTestMessageOne());
+				await _sut.HandleAsync(new Payloads.DummyPayloadOne(), CancellationToken.None);
 
 				_mockChannel.Verify(
 					_ => _.BasicPublish(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<IBasicProperties>(), It.IsAny<ReadOnlyMemory<byte>>()),

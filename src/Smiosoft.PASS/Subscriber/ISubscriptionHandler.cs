@@ -25,6 +25,6 @@ namespace Smiosoft.PASS.Subscriber
 		/// <param name="payload">Payload object</param>
 		/// <param name="cancellationToken">Optional cancellation token</param>
 		/// <returns>An awaitable task</returns>
-		Task OnRecivedAsync(TPayload payload, CancellationToken cancellationToken = default);
+		Task OnReceivedAsync(TPayload payload, CancellationToken cancellationToken = default);
 	}
 }

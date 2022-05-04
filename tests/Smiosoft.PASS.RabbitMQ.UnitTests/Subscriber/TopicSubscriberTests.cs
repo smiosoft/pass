@@ -1,20 +1,18 @@
 using System.Collections.Generic;
 using Moq;
 using RabbitMQ.Client;
-using Smiosoft.PASS.RabbitMQ.Subscriber;
-using Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers.Subscribers;
-using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
+using Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers;
 
 namespace Smiosoft.PASS.RabbitMQ.UnitTests.Subscriber
 {
-	public partial class RabbitMqTopicSubscriberTests
+	public partial class TopicSubscriberTests
 	{
 		private readonly Mock<IConnectionFactory> _mockConnectionFactory;
 		private readonly Mock<IConnection> _mockConnection;
 		private readonly Mock<IModel> _mockChannel;
-		private readonly RabbitMqTopicSubscriber<DummyTestMessageOne> _sut;
+		private readonly Subscribers.TopicSubscriberOne _sut;
 
-		public RabbitMqTopicSubscriberTests()
+		public TopicSubscriberTests()
 		{
 			_mockConnectionFactory = new Mock<IConnectionFactory>();
 			_mockConnection = new Mock<IConnection>();
@@ -32,7 +30,7 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Subscriber
 				.Setup(_ => _.QueueDeclare(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>()))
 				.Returns(new QueueDeclareOk("test-queue", 1, 1));
 
-			_sut = new MessageOneTopicSubscriber("local-tests", "tests", "unit.test", _mockConnectionFactory.Object);
+			_sut = new Subscribers.TopicSubscriberOne("local-tests", "tests", "unit.test", _mockConnectionFactory.Object);
 		}
 	}
 }

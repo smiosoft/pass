@@ -6,7 +6,7 @@ namespace Smiosoft.PASS.UnitTests
 	public partial class PassTests
 	{
 		private readonly Mock<ServiceFactory> _mockServiceFactory;
-		private Pass _sut;
+		private readonly Pass _sut;
 
 		public PassTests()
 		{

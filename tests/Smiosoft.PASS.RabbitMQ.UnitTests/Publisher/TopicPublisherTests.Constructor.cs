@@ -1,18 +1,18 @@
 using System;
 using FluentAssertions;
-using Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers.Publishers;
+using Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers;
 using Xunit;
 
 namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
 {
-	public partial class RabbitMqTopicPublisherTests
+	public partial class TopicPublisherTests
 	{
-		public class Constructor : RabbitMqTopicPublisherTests
+		public class Constructor : TopicPublisherTests
 		{
 			[Fact]
 			public void GivenValidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown()
 			{
-				Action act = () => new MessageOneTopicPublisher("localhost", "tests", "unit.test");
+				Action act = () => new Publishers.TopicPublisherOne("localhost", "tests", "unit.test", _mockConnectionFactory.Object);
 
 				act.Should().NotThrow();
 			}
@@ -47,7 +47,7 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
 			[InlineData(" ", " ", " ")]
 			public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown(string hostName, string exchangeName, string routingKey)
 			{
-				Action act = () => new MessageOneTopicPublisher(hostName, exchangeName, routingKey);
+				Action act = () => new Publishers.TopicPublisherOne(hostName, exchangeName, routingKey, factory: null);
 
 				act.Should().NotThrow();
 			}

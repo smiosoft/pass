@@ -7,7 +7,7 @@ namespace Smiosoft.PASS.UnitTests.Subscriber.Services
 	public partial class HostedSubscribersTests
 	{
 		private readonly Mock<ServiceFactory> _mockServiceFactory;
-		private HostedSubscribers _sut;
+		private readonly HostedSubscribers _sut;
 
 		public HostedSubscribersTests()
 		{

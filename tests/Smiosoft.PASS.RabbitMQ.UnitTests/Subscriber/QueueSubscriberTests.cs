@@ -1,19 +1,17 @@
 using Moq;
 using RabbitMQ.Client;
-using Smiosoft.PASS.RabbitMQ.Subscriber;
-using Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers.Subscribers;
-using Smiosoft.PASS.UnitTests.TestHelpers.Messages;
+using Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers;
 
 namespace Smiosoft.PASS.RabbitMQ.UnitTests.Subscriber
 {
-	public partial class RabbitMqQueueSubscriberTests
+	public partial class QueueSubscriberTests
 	{
 		private readonly Mock<IConnectionFactory> _mockConnectionFactory;
 		private readonly Mock<IConnection> _mockConnection;
 		private readonly Mock<IModel> _mockChannel;
-		private readonly RabbitMqQueueSubscriber<DummyTestMessageOne> _sut;
+		private readonly Subscribers.QueueSubscriberOne _sut;
 
-		public RabbitMqQueueSubscriberTests()
+		public QueueSubscriberTests()
 		{
 			_mockConnectionFactory = new Mock<IConnectionFactory>();
 			_mockConnection = new Mock<IConnection>();
@@ -27,7 +25,7 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Subscriber
 				.Setup(_ => _.CreateModel())
 				.Returns(_mockChannel.Object);
 
-			_sut = new MessageOneQueueSubscriber("local-tests", "test-queue", _mockConnectionFactory.Object);
+			_sut = new Subscribers.QueueSubscriberOne("local-tests", "test-queue", _mockConnectionFactory.Object);
 		}
 	}
 }

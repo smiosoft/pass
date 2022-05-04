@@ -1,13 +1,13 @@
 using System;
 using FluentAssertions;
-using Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers.Subscribers;
+using Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers;
 using Xunit;
 
 namespace Smiosoft.PASS.RabbitMQ.UnitTests.Subscriber
 {
-	public partial class RabbitMqTopicSubscriberTests
+	public partial class TopicSubscriberTests
 	{
-		public class Constructor : RabbitMqTopicSubscriberTests
+		public class Constructor : TopicSubscriberTests
 		{
 			[Theory]
 			[InlineData(null, null, null)]
@@ -39,7 +39,7 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Subscriber
 			[InlineData(" ", " ", " ")]
 			public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown(string hostName, string exchangeName, string routingKey)
 			{
-				Action act = () => new MessageOneTopicSubscriber(hostName, exchangeName, routingKey);
+				Action act = () => new Subscribers.TopicSubscriberOne(hostName, exchangeName, routingKey, factory: null);
 
 				act.Should().NotThrow();
 			}

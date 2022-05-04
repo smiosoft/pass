@@ -39,7 +39,7 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 
 		public abstract Task OnExceptionAsync(Exception exception);
 
-		public abstract Task OnRecivedAsync(TPayload payload, CancellationToken cancellationToken = default);
+		public abstract Task OnReceivedAsync(TPayload payload, CancellationToken cancellationToken = default);
 
 		public abstract Task OnRegistrationAsync();
 

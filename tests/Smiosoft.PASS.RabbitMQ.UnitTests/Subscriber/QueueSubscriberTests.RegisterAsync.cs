@@ -6,17 +6,17 @@ using Xunit;
 
 namespace Smiosoft.PASS.RabbitMQ.UnitTests.Subscriber
 {
-	public partial class RabbitMqTopicSubscriberTests
+	public partial class QueueSubscriberTests
 	{
-		public class Register : RabbitMqTopicSubscriberTests
+		public class RegisterAsync : QueueSubscriberTests
 		{
 			[Fact]
-			public async Task GivenConfiguredSubscriber_WhenExected_ThenExchangeIsDeclaredOnce()
+			public async Task GivenConfiguredSubscriber_WhenExected_ThenQueueIsDeclaredOnce()
 			{
 				await _sut.RegisterAsync();
 
 				_mockChannel.Verify(
-					_ => _.ExchangeDeclare(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>()),
+					_ => _.QueueDeclare(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>()),
 					Times.Once);
 			}
 

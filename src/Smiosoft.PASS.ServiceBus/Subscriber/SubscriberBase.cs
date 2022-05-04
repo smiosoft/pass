@@ -37,7 +37,7 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
 
 		public abstract Task OnExceptionAsync(Exception exception);
 
-		public abstract Task OnRecivedAsync(TPayload payload, CancellationToken cancellationToken = default);
+		public abstract Task OnReceivedAsync(TPayload payload, CancellationToken cancellationToken = default);
 
 		public virtual async Task OnRegistrationAsync()
 		{
@@ -86,7 +86,7 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
 		{
 			try
 			{
-				await OnRecivedAsync(args.Message.Body.ToArray().Deserialise<TPayload>(), args.CancellationToken);
+				await OnReceivedAsync(args.Message.Body.ToArray().Deserialise<TPayload>(), args.CancellationToken);
 				await args.CompleteMessageAsync(args.Message, args.CancellationToken);
 			}
 			catch (Exception exception)

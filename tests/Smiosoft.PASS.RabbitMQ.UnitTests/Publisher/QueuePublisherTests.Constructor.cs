@@ -1,18 +1,18 @@
 using System;
 using FluentAssertions;
-using Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers.Publishers;
+using Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers;
 using Xunit;
 
 namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
 {
-	public partial class RabbitMqQueuePublisherTests
+	public partial class QueuePublisherTests
 	{
-		public class Constructor : RabbitMqQueuePublisherTests
+		public class Constructor : QueuePublisherTests
 		{
 			[Fact]
 			public void GivenValidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown()
 			{
-				Action act = () => new MessageOneQueuePublisher("localhost", "test-queue");
+				Action act = () => new Publishers.QueuePublisherOne("localhost", "test-queue", _mockConnectionFactory.Object);
 
 				act.Should().NotThrow();
 			}
@@ -29,7 +29,7 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
 			[InlineData(" ", " ")]
 			public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown(string hostName, string queueName)
 			{
-				Action act = () => new MessageOneQueuePublisher(hostName, queueName);
+				Action act = () => new Publishers.QueuePublisherOne(hostName, queueName, factory: null);
 
 				act.Should().NotThrow();
 			}

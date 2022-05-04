@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using Smiosoft.PASS.Examples.AspNetCore.Payloads;
 
 namespace Smiosoft.PASS.Examples.AspNetCore.Subscribers
@@ -16,7 +16,7 @@ namespace Smiosoft.PASS.Examples.AspNetCore.Subscribers
 				return Task.CompletedTask;
 			}
 
-			public override Task OnRecivedAsync(ServiceBusExampleQueuePayload payload, CancellationToken cancellationToken = default)
+			public override Task OnReceivedAsync(ServiceBusExampleQueuePayload payload, CancellationToken cancellationToken = default)
 			{
 				Log.Information("Recieved a payload on the Service Bus queue [{queue}]: {message}", QUEUE_NAME, payload.Message);
 				return Task.CompletedTask;

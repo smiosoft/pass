@@ -40,7 +40,7 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 		{
 			try
 			{
-				await OnRecivedAsync(args.Body.ToArray().Deserialise<TPayload>());
+				await OnReceivedAsync(args.Body.ToArray().Deserialise<TPayload>());
 			}
 			catch (Exception exception)
 			{
