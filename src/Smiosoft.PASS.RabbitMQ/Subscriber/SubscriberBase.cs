@@ -7,7 +7,7 @@ using Smiosoft.PASS.Subscriber;
 
 namespace Smiosoft.PASS.RabbitMQ.Subscriber
 {
-	public abstract class SubscriberBase<TPayload> : ISubscriptionHandler<TPayload>, IDisposable
+	public abstract class SubscriberBase<TPayload> : ISubscriptionHandler<TPayload>, IRabbitMq, IDisposable
 		where TPayload : IPayload
 	{
 		private readonly SubscriberOptions _options;
