@@ -14,4 +14,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Smiosoft.PASS.RabbitMQ\Smiosoft.PASS.RabbitMQ.csproj" />
+  </ItemGroup>
+
 </Project>

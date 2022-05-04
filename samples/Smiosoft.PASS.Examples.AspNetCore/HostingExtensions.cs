@@ -2,6 +2,9 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
+using Smiosoft.PASS.Examples.AspNetCore.Payloads;
+using Smiosoft.PASS.Examples.AspNetCore.Publishers;
+using Smiosoft.PASS.Publisher;
 
 namespace Smiosoft.PASS.Examples.AspNetCore
 {
@@ -23,19 +26,22 @@ namespace Smiosoft.PASS.Examples.AspNetCore
 			builder.Host.UseSerilog();
 
 			builder.Services
+				.AddPass()
+				.AddSwaggerGen(options =>
+				{
+					options.SwaggerDoc("v1", new OpenApiInfo
+					{
+						Title = $"PASS Example API",
+						Version = "v1"
+					});
+				})
 				.AddRouting()
 				.AddMvcCore()
 				.AddApiExplorer()
 				.AddDataAnnotations();
 
-			builder.Services.AddSwaggerGen(options =>
-			{
-				options.SwaggerDoc("v1", new OpenApiInfo
-				{
-					Title = $"PASS Example API",
-					Version = "v1"
-				});
-			});
+
+			builder.Services.AddTransient<IPublishingHandler<RabbitMqExampleQueuePayload>, RabbitMqExampleQueuePublisher>();
 
 			return builder;
 		}
