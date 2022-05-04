@@ -25,7 +25,7 @@ namespace Smiosoft.PASS.ServiceBus.Publisher
 		{
 			await using var client = CreateClient();
 			var sender = client.CreateSender(Options.QueueName);
-			await sender.SendMessageAsync(new ServiceBusMessage(payload.Serialise()));
+			await sender.SendMessageAsync(new ServiceBusMessage(payload.Serialise()), cancellationToken);
 		}
 	}
 }
