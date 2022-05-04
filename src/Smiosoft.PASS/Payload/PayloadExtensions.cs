@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Smiosoft.PASS
+namespace Smiosoft.PASS.Payload
 {
 	public static class PayloadExtensions
 	{

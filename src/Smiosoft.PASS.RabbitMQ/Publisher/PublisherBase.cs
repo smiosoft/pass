@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
+using Smiosoft.PASS.Payload;
 using Smiosoft.PASS.Publisher;
 using Smiosoft.PASS.RabbitMQ.Configuration;
 

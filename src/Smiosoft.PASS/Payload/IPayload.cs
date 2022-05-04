@@ -1,4 +1,4 @@
-namespace Smiosoft.PASS
+namespace Smiosoft.PASS.Payload
 {
 	/// <summary>
 	/// Marker interface to represent a payload

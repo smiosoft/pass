@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
+using Smiosoft.PASS.Payload;
 using Smiosoft.PASS.Publisher.Handler;
 
 namespace Smiosoft.PASS

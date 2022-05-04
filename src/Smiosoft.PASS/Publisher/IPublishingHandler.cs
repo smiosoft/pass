@@ -1,5 +1,6 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
+using Smiosoft.PASS.Payload;
 
 namespace Smiosoft.PASS.Publisher
 {

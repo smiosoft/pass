@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
+using Smiosoft.PASS.Payload;
 
 namespace Smiosoft.PASS.RabbitMQ.Publisher
 {
