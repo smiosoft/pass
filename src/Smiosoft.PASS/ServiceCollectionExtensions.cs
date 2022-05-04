@@ -92,7 +92,7 @@ namespace Smiosoft.PASS
 					services.AddTransient(publisher, type);
 				}
 
-				var subscriber = interfaces.FirstOrDefault(@interface => typeof(ISubscriber) == @interface);
+				var subscriber = interfaces.FirstOrDefault(@interface => typeof(IListener) == @interface);
 				if (subscriber != null)
 				{
 					subscribers.Add((subscriber, type));

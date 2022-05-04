@@ -1,3 +1,4 @@
+using Serilog;
 using Smiosoft.PASS.Examples.AspNetCore.Payloads;
 
 namespace Smiosoft.PASS.Examples.AspNetCore.Subscribers
@@ -11,12 +12,14 @@ namespace Smiosoft.PASS.Examples.AspNetCore.Subscribers
 
 			public override Task OnExceptionAsync(Exception exception)
 			{
-				throw new NotImplementedException();
+				Log.Error(exception, "An error occured in the RabbitMQ queue [{queue}] subscriber.", QUEUE_NAME);
+				return Task.CompletedTask;
 			}
 
-			public override Task OnRecivedAsync(RabbitMqExampleQueuePayload payload, CancellationToken cancellationToken)
+			public override Task OnRecivedAsync(RabbitMqExampleQueuePayload payload, CancellationToken cancellationToken = default)
 			{
-				throw new NotImplementedException();
+				Log.Information("Recieved a payload on the RabbitMQ queue [{queue}]: {message}", QUEUE_NAME, payload.Message);
+				return Task.CompletedTask;
 			}
 		}
 	}

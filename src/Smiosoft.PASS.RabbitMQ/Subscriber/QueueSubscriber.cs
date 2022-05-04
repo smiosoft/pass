@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -20,30 +21,36 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 			: this(new QueueSubscriberOptions() { HostName = hostName, QueueName = queueName })
 		{ }
 
-		public override Task RegisterAsync()
+		public override Task OnRegistration()
 		{
 			return Task.Run(() =>
 			{
-				var factory = CreateConnectionFactory();
-				using var connection = Factory.CreateConnection();
-				using var channel = connection.CreateModel();
-				channel.QueueDeclare(
+				Channel.QueueDeclare(
 					queue: Options.QueueName,
 					durable: true,
 					exclusive: false,
 					autoDelete: false,
 					arguments: null);
-				channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
+				Channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
-				var consumer = new EventingBasicConsumer(channel);
-				consumer.Received += async (sender, args) =>
-				{
-					await HandleAsync(args.Body.ToArray().Deserialise<TPayload>(), default);
-					channel.BasicAck(deliveryTag: args.DeliveryTag, multiple: false);
-				};
+				var consumer = new EventingBasicConsumer(Channel);
+				consumer.Received += Consumer_Received;
 
-				channel.BasicConsume(queue: Options.QueueName, autoAck: false, consumer: consumer);
+				Channel.BasicConsume(queue: Options.QueueName, autoAck: false, consumer: consumer);
 			});
+		}
+
+		private async void Consumer_Received(object sender, BasicDeliverEventArgs args)
+		{
+			try
+			{
+				await OnRecivedAsync(args.Body.ToArray().Deserialise<TPayload>());
+				Channel.BasicAck(deliveryTag: args.DeliveryTag, multiple: false);
+			}
+			catch (Exception exception)
+			{
+				await OnExceptionAsync(exception);
+			}
 		}
 	}
 }

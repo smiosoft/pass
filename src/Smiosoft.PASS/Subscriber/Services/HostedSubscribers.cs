@@ -16,10 +16,10 @@ namespace Smiosoft.PASS.Subscriber.Services
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 		{
-			var subscribers = _serviceFactory.GetInstances<ISubscriber>();
-			foreach (var subscriber in subscribers)
+			var listeners = _serviceFactory.GetInstances<IListener>();
+			foreach (var listener in listeners)
 			{
-				await subscriber.RegisterAsync();
+				await listener.RegisterAsync();
 			}
 			//return Task.CompletedTask;
 		}
