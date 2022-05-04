@@ -11,9 +11,6 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 		where TPayload : IPayload
 	{
 		private readonly PublisherOptions _options;
-		private IConnectionFactory? _factory;
-
-		protected IConnectionFactory Factory { get => _factory ??= CreateConnectionFactory(); }
 
 		protected PublisherBase(PublisherOptions options)
 		{

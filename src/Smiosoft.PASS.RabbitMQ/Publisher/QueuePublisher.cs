@@ -25,7 +25,8 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 		{
 			return Task.Run(() =>
 			{
-				using var connection = Factory.CreateConnection();
+				var factory = CreateConnectionFactory();
+				using var connection = factory.CreateConnection();
 				using var channel = connection.CreateModel();
 				channel.QueueDeclare(queue: Options.QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
 
