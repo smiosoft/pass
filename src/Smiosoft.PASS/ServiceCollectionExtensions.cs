@@ -11,10 +11,9 @@ using Smiosoft.PASS.Subscriber.Services;
 namespace Smiosoft.PASS
 {
 	/// <summary>
-	/// Extensions to register everything PASS.
-	/// <br />- Registers <see cref="Provider.ServiceFactory"/> and <see cref="Smiosoft.PASS.IPass"/> as transient instances.
-	/// <br />- Scans for any handler interface implementations and registers them as transient instances.
-	/// <br />After calling AddPass you can use the container to resolve an <see cref="Smiosoft.PASS.IPass"/> instance.
+	/// Extensions to register everything PASS
+	/// <br />- Registers <see cref="Provider.ServiceFactory"/> and <see cref="Smiosoft.PASS.IPass"/> as transient instances
+	/// <br />- Scans for any publishers/subscribers and registers them as transient instances
 	/// </summary>
 	public static class ServiceCollectionExtensions
 	{
