@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
@@ -14,14 +15,10 @@ namespace Smiosoft.PASS.Subscriber.Services
 			_serviceFactory = serviceFactory;
 		}
 
-		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+		protected override Task ExecuteAsync(CancellationToken stoppingToken)
 		{
 			var listeners = _serviceFactory.GetInstances<IListener>();
-			foreach (var listener in listeners)
-			{
-				await listener.RegisterAsync();
-			}
-			//return Task.CompletedTask;
+			return Task.WhenAll(listeners.Select(listener => listener.RegisterAsync()));
 		}
 	}
 }
