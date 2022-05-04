@@ -14,5 +14,12 @@ namespace Smiosoft.PASS.Examples.AspNetCore.Controllers.V1
 			await Pass.PublishAsync(payload);
 			return Ok();
 		}
+
+		[HttpPost("servicebus")]
+		public async Task<IActionResult> PublishWithServiceBus([FromBody] ServiceBusExampleQueuePayload payload)
+		{
+			await Pass.PublishAsync(payload);
+			return Ok();
+		}
 	}
 }
