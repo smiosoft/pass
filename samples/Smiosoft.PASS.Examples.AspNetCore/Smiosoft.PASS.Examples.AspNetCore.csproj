@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Smiosoft.PASS.RabbitMQ\Smiosoft.PASS.RabbitMQ.csproj" />
+    <ProjectReference Include="..\..\src\Smiosoft.PASS.ServiceBus\Smiosoft.PASS.ServiceBus.csproj" />
   </ItemGroup>
 
 </Project>
