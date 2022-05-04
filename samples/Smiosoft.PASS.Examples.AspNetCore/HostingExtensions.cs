@@ -33,7 +33,11 @@ namespace Smiosoft.PASS.Examples.AspNetCore
 						Version = "v1"
 					});
 				})
-				.AddRouting()
+				.AddRouting(options =>
+				{
+					options.LowercaseUrls = true;
+					options.LowercaseQueryStrings = true;
+				})
 				.AddMvcCore()
 				.AddApiExplorer()
 				.AddDataAnnotations();
