@@ -8,7 +8,7 @@ namespace Smiosoft.PASS
 
 		public PassServiceConfiguration()
 		{
-			TypeEvaluator = (type) => true;
+			TypeEvaluator = (type) => typeof(IDomain).IsAssignableFrom(type);
 		}
 
 		public PassServiceConfiguration WithEvaluator(Func<Type, bool> evaluator)

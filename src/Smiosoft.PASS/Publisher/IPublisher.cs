@@ -7,7 +7,7 @@ namespace Smiosoft.PASS.Publisher
 	/// <summary>
 	/// Send a payload through the pass pipeline to be handled by a single <see cref="IPublishingHandler{TPayload}" />
 	/// </summary>
-	public interface IPublisher
+	public interface IPublisher : IDomain
 	{
 		/// <summary>
 		/// Asynchronously publish a payload via a single <see cref="IPublishingHandler{TPayload}" />

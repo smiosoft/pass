@@ -8,7 +8,7 @@ namespace Smiosoft.PASS.Publisher
 	/// Defines a handler for publishing a payload
 	/// </summary>
 	/// <typeparam name="TPayload">The type of payload being handled</typeparam>
-	public interface IPublishingHandler<in TPayload>
+	public interface IPublishingHandler<in TPayload> : IDomain
 		where TPayload : IPayload
 	{
 		/// <summary>
