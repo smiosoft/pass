@@ -9,12 +9,12 @@ namespace Smiosoft.PASS.Examples.AspNetCore.Subscribers
 			public RabbitMq() : base("localhost", QUEUE_NAME)
 			{ }
 
-			protected override Task OnExceptionAsync(Exception exception)
+			public override Task OnExceptionAsync(Exception exception)
 			{
 				throw new NotImplementedException();
 			}
 
-			protected override Task OnRecivedAsync(RabbitMqExampleQueuePayload payload, CancellationToken cancellationToken)
+			public override Task OnRecivedAsync(RabbitMqExampleQueuePayload payload, CancellationToken cancellationToken)
 			{
 				throw new NotImplementedException();
 			}
