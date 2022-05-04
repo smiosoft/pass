@@ -6,23 +6,15 @@ namespace Smiosoft.PASS.Publisher.Handler
 	{
 		protected static THandler GetHandler<THandler>(ServiceFactory factory)
 		{
-			THandler handler;
-
 			try
 			{
-				handler = factory.GetInstance<THandler>();
+				return factory.GetInstance<THandler>()
+					?? throw new InvalidOperationException($"Handler was not found for request of type {typeof(THandler)}. Register your handlers with the container.");
 			}
 			catch (Exception exception)
 			{
 				throw new InvalidOperationException($"Error constructing handler for request of type {typeof(THandler)}. Register your handlers with the container.", exception);
 			}
-
-			if (handler == null)
-			{
-				throw new InvalidOperationException($"Handler was not found for request of type {typeof(THandler)}. Register your handlers with the container.");
-			}
-
-			return handler;
 		}
 	}
 }
