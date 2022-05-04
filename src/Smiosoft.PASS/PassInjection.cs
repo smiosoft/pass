@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Smiosoft.PASS.Publisher.Handler;
 
 namespace Smiosoft.PASS
 {
