@@ -1,21 +1,18 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using RabbitMQ.Client;
+using Azure.Messaging.ServiceBus;
 using Smiosoft.PASS.Payload;
 using Smiosoft.PASS.Publisher;
 
-namespace Smiosoft.PASS.RabbitMQ.Publisher
+namespace Smiosoft.PASS.ServiceBus.Publisher
 {
-	public abstract class PublisherBase<TPayload> : IPublishingHandler<TPayload>, IRabbitMq
+	public abstract class PublisherBase<TPayload> : IPublishingHandler<TPayload>, IServiceBus
 		where TPayload : IPayload
 	{
 		private readonly PublisherOptions _options;
-		private IConnectionFactory? _factory;
 
-		protected IConnectionFactory Factory { get => _factory ??= CreateConnectionFactory(); }
-
-		protected PublisherBase(PublisherOptions options)
+		public PublisherBase(PublisherOptions options)
 		{
 			_options = options ?? throw new ArgumentNullException(nameof(options));
 		}
@@ -35,9 +32,9 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 			}
 		}
 
-		protected virtual IConnectionFactory CreateConnectionFactory()
+		protected virtual ServiceBusClient CreateClient()
 		{
-			return new ConnectionFactory() { HostName = _options.HostName };
+			return new ServiceBusClient(_options.ConnectionString);
 		}
 	}
 }

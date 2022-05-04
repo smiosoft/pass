@@ -12,7 +12,7 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 
 		protected QueuePublisher(QueuePublisherOptions options) : base(options)
 		{
-			Options = options;
+			Options = options ?? throw new ArgumentNullException(nameof(options));
 		}
 
 		protected QueuePublisher(string hostName, string queueName)
