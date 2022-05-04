@@ -1,4 +1,4 @@
-﻿namespace Smiosoft.PASS.ServiceBus.Publisher
+namespace Smiosoft.PASS.ServiceBus.Publisher
 {
 	public class QueuePublisherOptions : PublisherOptions
 	{
