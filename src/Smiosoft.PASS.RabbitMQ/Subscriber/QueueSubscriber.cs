@@ -14,14 +14,14 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 		protected QueueSubscriber(QueueSubscriberOptions options)
 			: base(options)
 		{
-			Options = options;
+			Options = options ?? throw new ArgumentNullException(nameof(options));
 		}
 
 		protected QueueSubscriber(string hostName, string queueName)
 			: this(new QueueSubscriberOptions() { HostName = hostName, QueueName = queueName })
 		{ }
 
-		public override Task OnRegistration()
+		public override Task OnRegistrationAsync()
 		{
 			return Task.Run(() =>
 			{

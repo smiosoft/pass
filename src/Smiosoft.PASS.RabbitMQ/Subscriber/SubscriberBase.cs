@@ -11,10 +11,10 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 		where TPayload : IPayload
 	{
 		private readonly SubscriberOptions _options;
+		private bool _disposedValue;
 		private IConnectionFactory? _factory;
 		private IConnection? _connection;
 		private IModel? _channel;
-		private bool _disposedValue;
 
 		protected IConnectionFactory Factory { get => _factory ??= CreateConnectionFactory(); }
 		protected IConnection Connection { get => _connection ??= CreateConnection(); }
@@ -29,7 +29,7 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 		{
 			try
 			{
-				await OnRegistration();
+				await OnRegistrationAsync();
 			}
 			catch (Exception exception)
 			{
@@ -41,7 +41,7 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 
 		public abstract Task OnRecivedAsync(TPayload payload, CancellationToken cancellationToken = default);
 
-		public abstract Task OnRegistration();
+		public abstract Task OnRegistrationAsync();
 
 		protected virtual IConnectionFactory CreateConnectionFactory()
 		{
@@ -69,6 +69,7 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 						_connection.Dispose();
 						_connection = null;
 					}
+
 					if (_channel != null)
 					{
 						_channel.Dispose();
