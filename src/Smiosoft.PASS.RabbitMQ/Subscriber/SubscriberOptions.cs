@@ -1,4 +1,4 @@
-﻿using Smiosoft.PASS.RabbitMQ.Configuration;
+using Smiosoft.PASS.RabbitMQ.Configuration;
 
 namespace Smiosoft.PASS.RabbitMQ.Subscriber
 {
