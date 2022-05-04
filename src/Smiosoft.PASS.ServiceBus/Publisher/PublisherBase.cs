@@ -17,9 +17,6 @@ namespace Smiosoft.PASS.ServiceBus.Publisher
 			_options = options ?? throw new ArgumentNullException(nameof(options));
 		}
 
-		public abstract Task OnExceptionAsync(Exception exception);
-		public abstract Task OnPublishAsync(TPayload payload, CancellationToken cancellationToken);
-
 		public async Task HandleAsync(TPayload payload, CancellationToken cancellationToken)
 		{
 			try
@@ -31,6 +28,9 @@ namespace Smiosoft.PASS.ServiceBus.Publisher
 				await OnExceptionAsync(exception);
 			}
 		}
+
+		public abstract Task OnExceptionAsync(Exception exception);
+		public abstract Task OnPublishAsync(TPayload payload, CancellationToken cancellationToken);
 
 		protected virtual ServiceBusClient CreateClient()
 		{
