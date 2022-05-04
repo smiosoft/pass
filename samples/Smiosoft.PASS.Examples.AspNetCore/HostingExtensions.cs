@@ -3,9 +3,6 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
-using Smiosoft.PASS.Examples.AspNetCore.Payloads;
-using Smiosoft.PASS.Examples.AspNetCore.Publishers;
-using Smiosoft.PASS.Publisher;
 
 namespace Smiosoft.PASS.Examples.AspNetCore
 {
@@ -40,9 +37,6 @@ namespace Smiosoft.PASS.Examples.AspNetCore
 				.AddMvcCore()
 				.AddApiExplorer()
 				.AddDataAnnotations();
-
-
-			builder.Services.AddTransient<IPublishingHandler<RabbitMqExampleQueuePayload>, ExampleQueuePublisher.RabbitMq>();
 
 			return builder;
 		}
