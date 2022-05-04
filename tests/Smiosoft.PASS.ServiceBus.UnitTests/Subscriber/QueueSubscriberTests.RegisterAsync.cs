@@ -1,16 +1,16 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using Xunit;
 
 namespace Smiosoft.PASS.ServiceBus.UnitTests.Subscriber
 {
-	public partial class ServiceBusTopicSubscriberTests
+	public partial class QueueSubscriberTests
 	{
-		public class RegisterAsync : ServiceBusTopicSubscriberTests
+		public class RegisterAsync : QueueSubscriberTests
 		{
 			[Fact]
-			public async Task GivenConfiguredTopicSubscriber_WhenExected_ThenStartProcessingOnce()
+			public async Task GivenConfiguredQueueSubscriber_WhenExected_ThenStartProcessingOnce()
 			{
 				await _sut.RegisterAsync();
 

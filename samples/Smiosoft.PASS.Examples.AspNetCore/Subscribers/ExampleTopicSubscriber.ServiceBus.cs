@@ -18,7 +18,7 @@ namespace Smiosoft.PASS.Examples.AspNetCore.Subscribers
 
 			public override Task OnReceivedAsync(ServiceBusExampleTopicPayload payload, CancellationToken cancellationToken = default)
 			{
-				Log.Information("Recieved a payload on the Service Bus topic [{topic}]: {message}", TOPIC_NAME, payload.Message);
+				Log.Information("Received a payload on the Service Bus topic [{topic}]: {message}", TOPIC_NAME, payload.Message);
 				return Task.CompletedTask;
 			}
 		}

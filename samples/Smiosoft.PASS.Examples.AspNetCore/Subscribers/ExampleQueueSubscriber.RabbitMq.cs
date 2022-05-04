@@ -18,7 +18,7 @@ namespace Smiosoft.PASS.Examples.AspNetCore.Subscribers
 
 			public override Task OnReceivedAsync(RabbitMqExampleQueuePayload payload, CancellationToken cancellationToken = default)
 			{
-				Log.Information("Recieved a payload on the RabbitMQ queue [{queue}]: {message}", QUEUE_NAME, payload.Message);
+				Log.Information("Received a payload on the RabbitMQ queue [{queue}]: {message}", QUEUE_NAME, payload.Message);
 				return Task.CompletedTask;
 			}
 		}

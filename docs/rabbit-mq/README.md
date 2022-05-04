@@ -22,7 +22,7 @@ Configure a subscription by creating a class that inherits from one of the follo
 - `Smiosoft.PASS.RabbitMQ.Subscriber.RabbitMqQueueSubscriber<>`
 - `Smiosoft.PASS.RabbitMQ.Subscriber.RabbitMqTopicSubscriber<>`
 
-Ensure to provide a message object type that is intended to be recieved.
+Ensure to provide a message object type that is intended to be received.
 
 ```csharp
 internal class ExampleQueueSubscription : RabbitMqQueueSubscriber<MyMessage>
@@ -35,7 +35,7 @@ internal class ExampleQueueSubscription : RabbitMqQueueSubscriber<MyMessage>
         return Task.CompletedTask;
     }
 
-    public override Task OnMessageRecievedAsync(MyMessage message, CancellationToken cancellationToken)
+    public override Task OnMessageReceivedAsync(MyMessage message, CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
     }
@@ -59,7 +59,7 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-### Recieve messages
+### Receive messages
 
 That is it, the configured subscribers will be registered and listening on a background service.
 

@@ -20,7 +20,7 @@ namespace Smiosoft.PASS.Subscriber
 		Task OnExceptionAsync(Exception exception);
 
 		/// <summary>
-		/// Triggered when a payload is recieved
+		/// Triggered when a payload is received
 		/// </summary>
 		/// <param name="payload">Payload object</param>
 		/// <param name="cancellationToken">Optional cancellation token</param>

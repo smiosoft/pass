@@ -1,18 +1,18 @@
 using System;
 using FluentAssertions;
-using Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers.Subscribers;
+using Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers;
 using Xunit;
 
-namespace Smiosoft.PASS.ServiceBus.UnitTests.Subscriber
+namespace Smiosoft.PASS.ServiceBus.UnitTests.Publisher
 {
-	public partial class ServiceBusQueueSubscriberTests
+	public partial class QueuePublisherTests
 	{
-		public class Constructor : ServiceBusQueueSubscriberTests
+		public class Constructor : QueuePublisherTests
 		{
 			[Fact]
 			public void GivenValidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown()
 			{
-				Action act = () => new MessageOneQueueSubscriber("Endpoint=sb://test.net/;SharedAccessKeyName=***;SharedAccessKey=***", "test-queue");
+				Action act = () => new Publishers.QueuePublisherOne("Endpoint=sb://test.net/;SharedAccessKeyName=***;SharedAccessKey=***", "test-queue");
 
 				act.Should().NotThrow();
 			}
@@ -29,7 +29,7 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Subscriber
 			[InlineData(" ", " ")]
 			public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown(string connectionString, string queueName)
 			{
-				Action act = () => new MessageOneQueueSubscriber(connectionString, queueName);
+				Action act = () => new Publishers.QueuePublisherOne(connectionString, queueName);
 
 				act.Should().NotThrow();
 			}

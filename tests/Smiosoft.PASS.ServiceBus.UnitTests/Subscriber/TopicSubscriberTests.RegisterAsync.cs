@@ -5,12 +5,12 @@ using Xunit;
 
 namespace Smiosoft.PASS.ServiceBus.UnitTests.Subscriber
 {
-	public partial class ServiceBusQueueSubscriberTests
+	public partial class TopicSubscriberTests
 	{
-		public class RegisterAsync : ServiceBusQueueSubscriberTests
+		public class RegisterAsync : TopicSubscriberTests
 		{
 			[Fact]
-			public async Task GivenConfiguredQueueSubscriber_WhenExected_ThenStartProcessingOnce()
+			public async Task GivenConfiguredTopicSubscriber_WhenExected_ThenStartProcessingOnce()
 			{
 				await _sut.RegisterAsync();
 
