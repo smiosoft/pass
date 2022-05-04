@@ -15,13 +15,13 @@ namespace Smiosoft.PASS
 
 		public Pass(ServiceFactory serviceFactory)
 		{
-			_serviceFactory = serviceFactory;
+			_serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 		}
 
 		public Task PublishAsync(IPayload payload, CancellationToken cancellationToken = default)
 		{
-			var requestType = payload.GetType();
-			var handler = (HandlerWrapper)_handlers.GetOrAdd(requestType, static implementation =>
+			var payloadType = payload.GetType();
+			var handler = (HandlerWrapper)_handlers.GetOrAdd(payloadType, static implementation =>
 			{
 				return (HandlerBase)Activator.CreateInstance(typeof(HandlerWrapperImplementation<>).MakeGenericType(implementation)
 					?? throw new InvalidOperationException($"Could not create wrapper for {implementation} type"));

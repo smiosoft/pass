@@ -1,18 +1,17 @@
 using System;
 using FluentAssertions;
-using Smiosoft.PASS.Publisher;
 using Xunit;
 
-namespace Smiosoft.PASS.UnitTests.Publisher
+namespace Smiosoft.PASS.UnitTests
 {
-	public partial class PublishersServiceTests
+	public partial class PassTests
 	{
-		public class Constructor : PublishersServiceTests
+		public class Constructor : PassTests
 		{
 			[Fact]
 			public void GivenValidParameters_WhenConstructing_ThenNoExceptionsAreThrown()
 			{
-				Action act = () => new PublishingService(_mockServiceProvider.Object);
+				Action act = () => new Pass(_mockServiceFactory.Object);
 
 				act.Should().NotThrow();
 			}
@@ -20,7 +19,7 @@ namespace Smiosoft.PASS.UnitTests.Publisher
 			[Fact]
 			public void GivenNullParameters_WhenConstructing_ThenArgumentNullExceptionIsThrown()
 			{
-				Action act = () => new PublishingService(null!);
+				Action act = () => new Pass(null!);
 
 				act.Should().Throw<ArgumentNullException>();
 			}

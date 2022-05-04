@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace Smiosoft.PASS.Subscriber.Services
 
 		public HostedSubscribers(ServiceFactory serviceFactory)
 		{
-			_serviceFactory = serviceFactory;
+			_serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 		}
 
 		protected override Task ExecuteAsync(CancellationToken stoppingToken)

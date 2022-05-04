@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
 using Smiosoft.PASS.Provider;
 using Smiosoft.PASS.Publisher;
 using Smiosoft.PASS.Subscriber;
 using Smiosoft.PASS.Subscriber.Services;
 
+[assembly: InternalsVisibleTo("Smiosoft.PASS.UnitTests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 namespace Smiosoft.PASS
 {
 	/// <summary>

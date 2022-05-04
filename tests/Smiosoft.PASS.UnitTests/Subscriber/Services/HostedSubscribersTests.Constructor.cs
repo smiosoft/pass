@@ -1,18 +1,18 @@
 using System;
 using FluentAssertions;
-using Smiosoft.PASS.Subscriber;
+using Smiosoft.PASS.Subscriber.Services;
 using Xunit;
 
-namespace Smiosoft.PASS.UnitTests.Subscriber
+namespace Smiosoft.PASS.UnitTests.Subscriber.Services
 {
-	public partial class HostedSubscribersServiceTests
+	public partial class HostedSubscribersTests
 	{
-		public class Constructor : HostedSubscribersServiceTests
+		public class Constructor : HostedSubscribersTests
 		{
 			[Fact]
 			public void GivenValidParameters_WhenConstructing_ThenNoExceptionsAreThrown()
 			{
-				Action act = () => new HostedSubscribersService(_mockServiceProvider.Object);
+				Action act = () => new HostedSubscribers(_mockServiceFactory.Object);
 
 				act.Should().NotThrow();
 			}
@@ -20,7 +20,7 @@ namespace Smiosoft.PASS.UnitTests.Subscriber
 			[Fact]
 			public void GivenNullParameters_WhenConstructing_ThenArgumentNullExceptionIsThrown()
 			{
-				Action act = () => new HostedSubscribersService(null!);
+				Action act = () => new HostedSubscribers(null!);
 
 				act.Should().Throw<ArgumentNullException>();
 			}
