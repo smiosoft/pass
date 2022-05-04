@@ -41,7 +41,7 @@ namespace Smiosoft.PASS.Examples.AspNetCore
 				.AddDataAnnotations();
 
 
-			builder.Services.AddTransient<IPublishingHandler<RabbitMqExampleQueuePayload>, RabbitMqExampleQueuePublisher>();
+			builder.Services.AddTransient<IPublishingHandler<RabbitMqExampleQueuePayload>, ExampleQueuePublisher.RabbitMq>();
 
 			return builder;
 		}

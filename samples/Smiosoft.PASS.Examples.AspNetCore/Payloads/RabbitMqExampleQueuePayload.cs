@@ -1,7 +1,9 @@
 namespace Smiosoft.PASS.Examples.AspNetCore.Payloads
 {
-	public class RabbitMqExampleQueuePayload : IPayload
+	public partial class ExampleQueuePayload : IPayload
 	{
 		public string Message { get; set; } = string.Empty;
 	}
+
+
 }
