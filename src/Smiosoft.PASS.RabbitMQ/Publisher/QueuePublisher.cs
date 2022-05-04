@@ -14,6 +14,10 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 			Options = options;
 		}
 
+		protected QueuePublisher(string hostName, string queueName)
+			: this(new QueuePublisherOptions() { HostName = hostName, QueueName = queueName })
+		{ }
+
 		public override Task OnPublishAsync(TPayload payload, CancellationToken cancellationToken)
 		{
 			return Task.Run(() =>
