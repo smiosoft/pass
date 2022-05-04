@@ -1,6 +1,6 @@
 using System;
 
-namespace Smiosoft.PASS.Publisher.Handler
+namespace Smiosoft.PASS.Provider
 {
 	/// <summary>
 	/// Factory method used to resolve all services />

@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Smiosoft.PASS.Payload;
+using Smiosoft.PASS.Provider;
 
 namespace Smiosoft.PASS.Publisher.Handler
 {

@@ -1,4 +1,5 @@
 using System;
+using Smiosoft.PASS.Provider;
 
 namespace Smiosoft.PASS.Publisher.Handler
 {
@@ -9,11 +10,11 @@ namespace Smiosoft.PASS.Publisher.Handler
 			try
 			{
 				return factory.GetInstance<THandler>()
-					?? throw new InvalidOperationException($"Handler was not found for request of type {typeof(THandler)}. Register your handlers with the container.");
+					?? throw new InvalidOperationException($"Handler was not found for handler of type {typeof(THandler)}. Register your handlers with the container.");
 			}
 			catch (Exception exception)
 			{
-				throw new InvalidOperationException($"Error constructing handler for request of type {typeof(THandler)}. Register your handlers with the container.", exception);
+				throw new InvalidOperationException($"Error constructing handler for handler of type {typeof(THandler)}. Register your handlers with the container.", exception);
 			}
 		}
 	}

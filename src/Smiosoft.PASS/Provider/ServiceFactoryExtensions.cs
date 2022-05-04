@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Smiosoft.PASS.Publisher.Handler
+namespace Smiosoft.PASS.Provider
 {
 	internal static class ServiceFactoryExtensions
 	{

@@ -32,8 +32,9 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 			}
 		}
 
-		protected abstract Task OnExceptionAsync(Exception exception);
-		protected abstract Task OnRecivedAsync(TPayload payload, CancellationToken cancellationToken);
+		public abstract Task RegisterAsync();
+		public abstract Task OnExceptionAsync(Exception exception);
+		public abstract Task OnRecivedAsync(TPayload payload, CancellationToken cancellationToken);
 
 		protected virtual IConnectionFactory CreateConnectionFactory()
 		{

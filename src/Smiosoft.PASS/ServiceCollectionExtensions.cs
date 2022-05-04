@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using Smiosoft.PASS.Provider;
 using Smiosoft.PASS.Publisher;
-using Smiosoft.PASS.Publisher.Handler;
+using Smiosoft.PASS.Subscriber;
+using Smiosoft.PASS.Subscriber.Services;
 
 namespace Smiosoft.PASS
 {
 	/// <summary>
 	/// Extensions to register everything PASS.
-	/// <br />- Registers <see cref="Smiosoft.PASS.Publisher.Handler.ServiceFactory"/> and <see cref="Smiosoft.PASS.IPass"/> as transient instances.
+	/// <br />- Registers <see cref="Provider.ServiceFactory"/> and <see cref="Smiosoft.PASS.IPass"/> as transient instances.
 	/// <br />- Scans for any handler interface implementations and registers them as transient instances.
 	/// <br />After calling AddPass you can use the container to resolve an <see cref="Smiosoft.PASS.IPass"/> instance.
 	/// </summary>
@@ -51,14 +53,14 @@ namespace Smiosoft.PASS
 		{
 			if (!assemblies.Any())
 			{
-				throw new ArgumentException("No assemblies found to scan. Supply at least one assembly to scan for handlers.");
+				throw new ArgumentException("No assemblies found to scan. Supply at least one assembly to scan for publishers/subscribers.");
 			}
 
 			var configuration = new PassServiceConfiguration();
 			setup?.Invoke(configuration);
 
 			AddRequiredServices(services);
-			AddHandlers(services, configuration, assemblies);
+			AddPassClasses(services, configuration, assemblies);
 
 			return services;
 		}
@@ -67,10 +69,13 @@ namespace Smiosoft.PASS
 		{
 			services.AddTransient<ServiceFactory>(provider => provider.GetRequiredService);
 			services.AddTransient<IPass, Pass>();
+			services.AddHostedService<HostedSubscribers>();
 		}
 
-		private static void AddHandlers(IServiceCollection services, PassServiceConfiguration configuration, IEnumerable<Assembly> assemblies)
+		private static void AddPassClasses(IServiceCollection services, PassServiceConfiguration configuration, IEnumerable<Assembly> assemblies)
 		{
+			var publishers = new List<(Type serviceType, Type implementationType)>();
+			var subscribers = new List<(Type serviceType, Type implementationType)>();
 			var types = assemblies
 				.Distinct()
 				.SelectMany(assembly => assembly.DefinedTypes)
@@ -80,10 +85,19 @@ namespace Smiosoft.PASS
 				var interfaces = type.GetInterfaces();
 				if (!interfaces.Any()) continue;
 
-				var handlerInterface = interfaces.FirstOrDefault(@interface => @interface.IsGenericType && typeof(IPublishingHandler<>) == @interface.GetGenericTypeDefinition());
-				if (handlerInterface == null) continue;
+				var publisher = interfaces.FirstOrDefault(@interface => @interface.IsGenericType && typeof(IPublishingHandler<>) == @interface.GetGenericTypeDefinition());
+				if (publisher != null)
+				{
+					publishers.Add((publisher, type));
+					services.AddTransient(publisher, type);
+				}
 
-				services.AddTransient(handlerInterface, type);
+				var subscriber = interfaces.FirstOrDefault(@interface => typeof(ISubscriber) == @interface);
+				if (subscriber != null)
+				{
+					subscribers.Add((subscriber, type));
+					services.AddTransient(subscriber, type);
+				}
 			}
 		}
 	}

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using Smiosoft.PASS.Payload;
+using Smiosoft.PASS.Provider;
 using Smiosoft.PASS.Publisher.Handler;
 
 namespace Smiosoft.PASS
@@ -23,7 +24,7 @@ namespace Smiosoft.PASS
 			var handler = (HandlerWrapper)_handlers.GetOrAdd(requestType, static implementation =>
 			{
 				return (HandlerBase)Activator.CreateInstance(typeof(HandlerWrapperImplementation<>).MakeGenericType(implementation)
-					?? throw new InvalidOperationException($"Could not create wrapper type for {implementation}"));
+					?? throw new InvalidOperationException($"Could not create wrapper for {implementation} type"));
 			});
 
 			return handler.HandleAsync(payload, cancellationToken, _serviceFactory);

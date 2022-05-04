@@ -8,7 +8,7 @@ namespace Smiosoft.PASS.Subscriber
 	/// Defines a handler for a payload subscription
 	/// </summary>
 	/// <typeparam name="TPayload">The type of payload being handled</typeparam>
-	public interface ISubscriptionHandler<in TPayload> : IDomain
+	public interface ISubscriptionHandler<in TPayload> : ISubscriber, IDomain
 		where TPayload : IPayload
 	{
 		/// <summary>
@@ -18,5 +18,10 @@ namespace Smiosoft.PASS.Subscriber
 		/// <param name="cancellationToken">Cancellation token</param>
 		/// <returns>An awaitable task</returns>
 		Task HandleAsync(TPayload payload, CancellationToken cancellationToken);
+	}
+
+	public interface ISubscriber : IDomain
+	{
+		Task RegisterAsync();
 	}
 }

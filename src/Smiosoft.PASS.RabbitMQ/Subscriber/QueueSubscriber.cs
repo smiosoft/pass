@@ -20,7 +20,7 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 			: this(new QueueSubscriberOptions() { HostName = hostName, QueueName = queueName })
 		{ }
 
-		public Task RegisterAsync()
+		public override Task RegisterAsync()
 		{
 			return Task.Run(() =>
 			{
