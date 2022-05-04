@@ -27,7 +27,7 @@ namespace Smiosoft.PASS.Examples.AspNetCore
 			builder.Host.UseSerilog();
 
 			builder.Services
-				.AddPass(Assembly.GetExecutingAssembly())
+				.AddPass(assemblies: Assembly.GetExecutingAssembly())
 				.AddSwaggerGen(options =>
 				{
 					options.SwaggerDoc("v1", new OpenApiInfo
