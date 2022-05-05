@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
@@ -11,15 +11,15 @@ namespace Smiosoft.PASS.UnitTests.Subscriber.Services
 	{
 		public class ExecuteAsync : HostedSubscribersTests
 		{
-			private readonly Mock<IListener> _mockMessageOneSubscriber;
-			private readonly Mock<IListener> _mockMessageTwoSubscriber;
-			private readonly Mock<IListener> _mockMessageThreeSubscriber;
+			private readonly Mock<IListener> _mockSubscriberOne;
+			private readonly Mock<IListener> _mockSubscriberTwo;
+			private readonly Mock<IListener> _mockSubscriberThree;
 
 			public ExecuteAsync()
 			{
-				_mockMessageOneSubscriber = new Mock<IListener>();
-				_mockMessageTwoSubscriber = new Mock<IListener>();
-				_mockMessageThreeSubscriber = new Mock<IListener>();
+				_mockSubscriberOne = new Mock<IListener>();
+				_mockSubscriberTwo = new Mock<IListener>();
+				_mockSubscriberThree = new Mock<IListener>();
 			}
 
 			[Fact]
@@ -29,16 +29,16 @@ namespace Smiosoft.PASS.UnitTests.Subscriber.Services
 					.Setup(_ => _.Invoke(typeof(IEnumerable<IListener>)))
 					.Returns(new IListener[]
 					{
-						_mockMessageOneSubscriber.Object,
-						_mockMessageTwoSubscriber.Object,
-						_mockMessageThreeSubscriber.Object
+						_mockSubscriberOne.Object,
+						_mockSubscriberTwo.Object,
+						_mockSubscriberThree.Object
 					});
 
 				await _sut.StartAsync(CancellationToken.None);
 
-				_mockMessageOneSubscriber.Verify(_ => _.RegisterAsync(), Times.Once);
-				_mockMessageTwoSubscriber.Verify(_ => _.RegisterAsync(), Times.Once);
-				_mockMessageThreeSubscriber.Verify(_ => _.RegisterAsync(), Times.Once);
+				_mockSubscriberOne.Verify(_ => _.RegisterAsync(), Times.Once);
+				_mockSubscriberTwo.Verify(_ => _.RegisterAsync(), Times.Once);
+				_mockSubscriberThree.Verify(_ => _.RegisterAsync(), Times.Once);
 			}
 		}
 	}
