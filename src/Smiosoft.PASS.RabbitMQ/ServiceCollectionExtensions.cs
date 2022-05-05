@@ -1,22 +1,19 @@
-using System;
-using System.Runtime.CompilerServices;
-using Microsoft.Extensions.DependencyInjection;
-using Smiosoft.PASS.RabbitMQ.Configuration;
-
-[assembly: InternalsVisibleTo("Smiosoft.PASS.RabbitMQ.UnitTests")]
 namespace Smiosoft.PASS.RabbitMQ
 {
+	/// <summary>
+	/// Extensions to register everything PASS for RabbitMQ
+	/// </summary>
 	public static class ServiceCollectionExtensions
 	{
-		public static IServiceCollection AddPassRabbitMq(this IServiceCollection services, Action<ConfigureRabbitMqOptions> setup)
+		/// <summary>
+		/// Scope registration to only RabbitMQ related PASS types
+		/// </summary>
+		/// <param name="source">PASS service configuration</param>
+		/// <returns>PASS service configuration</returns>
+		public static PassServiceConfiguration WithRabbitMq(this PassServiceConfiguration source)
 		{
-			setup(new ConfigureRabbitMqOptions(services));
-
-			services
-				.AddPassPublishingService()
-				.AddPassHostedSubscribersService();
-
-			return services;
+			source.WithEvaluator((type) => typeof(IRabbitMq).IsAssignableFrom(type));
+			return source;
 		}
 	}
 }

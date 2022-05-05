@@ -2,21 +2,84 @@
 
 `Smiosoft.PASS.ServiceBus` intends to be a simple, unambitious wrapper around Azure Service Bus.
 
-## Subscribers
+## Setup
 
-### Subscription configuration
+Using the PASS dependency injection `IServiceCollection.AddPass(...)` extension method, will register all publishers and subscribers in the provided assemblies.
+
+Additionally, the `WithServiceBus()` extension method on the options can be used to scope the registration to Service Bus related types.
+
+```csharp
+public void ConfigureServices(IServiceCollection services)
+{
+  services.AddPass((options) => { options.WithServiceBus(); }, Assembly.GetExecutingAssembly())
+}
+```
+
+## Publishers
+
+Configure a publisher by creating a class that inherits from one of the following flows:
+
+- `Smiosoft.PASS.ServiceBus.Publisher.QueuePublisher<IPayload>`
+- `Smiosoft.PASS.ServiceBus.Publisher.TopicPublisher<IPayload>`
+
+Ensure to provide a `Smiosoft.PASS.Payload.IPayload` object type that is intended to be published, this type will also be used to link back to the specific publisher when publishing.
+
+```csharp
+internal class ExamplePayload : IPayload
+{ }
+
+internal class ExampleQueuePublisher : QueuePublisher<ExamplePayload>
+{
+	public ExampleQueuePublisher() : base("<connection_string>", "queue_name")
+	{ }
+
+	public override Task OnExceptionAsync(Exception exception)
+    {
+        return Task.CompletedTask;
+    }
+}
+```
+
+### Publishing
+
+Use `Smiosoft.PASS.IPass` to publish payloads. PASS will match the given payload type with a configured publisher to handle the publishing.
+
+```csharp
+internal class Sandbox
+{
+	private readonly IPass _pass;
+
+	public Sandbox(IPass pass)
+	{
+		_pass = pass;
+	}
+
+	public async Task ImportantTask()
+	{
+		// TODO: Implement important task
+
+		// Publish a payload
+		await _pass.PublishAsync(new ExamplePayload());
+	}
+}
+```
+
+## Subscribers
 
 Configure a subscription by creating a class that inherits from one of the following flows:
 
-- `Smiosoft.PASS.ServiceBus.Subscriber.ServiceBusQueueSubscriber<>`
-- `Smiosoft.PASS.ServiceBus.Subscriber.ServiceBusTopicSubscriber<>`
+- `Smiosoft.PASS.ServiceBus.Subscriber.QueueSubscriber<IPayload>`
+- `Smiosoft.PASS.ServiceBus.Subscriber.TopicSubscriber<IPayload>`
 
-Ensure to provide a message object type that is intended to be recieved.
+Ensure to provide a `Smiosoft.PASS.Payload.IPayload` object type that is intended to be received.
 
 ```csharp
-internal class ExampleQueueSubscription : ServiceBusQueueSubscriber<MyMessage>
+internal class ExamplePayload : IPayload
+{ }
+
+internal class ExampleQueueSubscription : QueueSubscriber<ExamplePayload>
 {
-	public ExampleQueueSubscription() : base("connection_string", "queue_name")
+	public ExampleQueueSubscription() : base("<connection_string>", "queue_name")
 	{ }
 
 	public override Task OnExceptionAsync(Exception exception)
@@ -24,90 +87,9 @@ internal class ExampleQueueSubscription : ServiceBusQueueSubscriber<MyMessage>
         return Task.CompletedTask;
     }
 
-    public override Task OnMessageRecievedAsync(MyMessage message, CancellationToken cancellationToken)
+    public override Task OnReceivedAsync(ExamplePayload payload, CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
     }
-}
-```
-
-For users who need more fine grained control, or a custom flow can do so by inheriting `Smiosoft.PASS.ServiceBus.Subscriber.ServiceBusSubscriberBase<>`.
-
-### Subscription registration
-
-Register all your subscribers by including them in the service configuration options.
-
-```csharp
-public void ConfigureServices(IServiceCollection services)
-{
-	services.AddPassServiceBus(options =>
-	{
-		options.AddSubscriber<ExampleQueueSubscription>();
-		options.AddSubscriber<ExampleTopicSubscription>();
-	});
-}
-```
-
-### Recieve messages
-
-That is it, the configured subscribers will be registered and listening on a background service.
-
-## Publishers
-
-### Publisher configuration
-
-Configure a publisher by creating a class that inherits from one of the following flows:
-
-- `Smiosoft.PASS.ServiceBus.Subscriber.ServiceBusQueuePublisher<>`
-- `Smiosoft.PASS.ServiceBus.Subscriber.ServiceBusTopicPublisher<>`
-
-Ensure to provide a message object type that is intended to be published, this type will also be used to link back to the specific publisher when publishing.
-
-```csharp
-internal class ExampleQueuePublisher : ServiceBusQueuePublisher<MyMessage>
-{
-	public ExampleQueuePublisher() : base("connection_string", "queue_name")
-	{ }
-}
-```
-
-For users who need more fine grained control, or a custom flow can do so by inheriting `Smiosoft.PASS.ServiceBus.Subscriber.ServiceBusPublisherBase<>`.
-
-### Publisher registration
-
-Register all your publishers by including them in the service configuration options.
-
-```csharp
-public void ConfigureServices(IServiceCollection services)
-{
-	services.AddPassServiceBus(options =>
-	{
-		options.AddPublisher<ExampleQueuePublisher>();
-		options.AddPublisher<ExampleTopicPublisher>();
-	});
-}
-```
-
-### Publish messages
-
-Inject `IPublishingService` and use it to publish your messages. The library will match the given message object type with a configured publisher to publish your message!
-
-```csharp
-internal class Sandbox
-{
-	private readonly IPublishingService _publishingService;
-
-	public Sandbox(IPublishingService publishingService)
-	{
-		_publishingService = publishingService;
-	}
-
-	private async Task ImportantTask()
-	{
-		// TODO: Implement important task
-
-		// Notify the rest of the system important task is complete
-		await _publishingService.PublishAsync<MyMessage>(new MyMessage("That thing you asked for is done."))
-	}
 }
 ```

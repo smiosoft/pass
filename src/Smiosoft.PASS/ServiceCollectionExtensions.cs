@@ -1,41 +1,103 @@
-using System.Runtime.CompilerServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using Smiosoft.PASS.Provider;
 using Smiosoft.PASS.Publisher;
 using Smiosoft.PASS.Subscriber;
+using Smiosoft.PASS.Subscriber.Services;
 
-[assembly: InternalsVisibleTo("Smiosoft.PASS.UnitTests")]
 namespace Smiosoft.PASS
 {
+	/// <summary>
+	/// Extensions to register everything PASS
+	/// <br />- Registers <see cref="Provider.ServiceFactory"/> and <see cref="Smiosoft.PASS.IPass"/> as transient instances
+	/// <br />- Scans for any publishers/subscribers and registers them as transient instances
+	/// </summary>
 	public static class ServiceCollectionExtensions
 	{
-		public static IServiceCollection AddPassPublisher<TPublisher>(this IServiceCollection services)
-			where TPublisher : IBasePublisher
+		/// <summary>
+		/// Registers handlers and PASS types from the specified assemblies
+		/// </summary>
+		/// <param name="services">Service collection</param>
+		/// <param name="assemblies">Assemblies to scan</param>
+		/// <returns>Service collection</returns>
+		public static IServiceCollection AddPass(this IServiceCollection services, params Assembly[] assemblies)
 		{
-			services.AddSingleton(typeof(IBasePublisher), typeof(TPublisher));
+			return services.AddPass(setup: null, assemblies.AsEnumerable());
+		}
+
+		/// <summary>
+		/// Registers handlers and PASS types from the specified assemblies
+		/// </summary>
+		/// <param name="services">Service collection</param>
+		/// <param name="configuration">The action used to configure the options</param>
+		/// <param name="assemblies">Assemblies to scan</param>
+		/// <returns>Service collection</returns>
+		public static IServiceCollection AddPass(this IServiceCollection services, Action<PassServiceConfiguration>? setup, params Assembly[] assemblies)
+		{
+			return services.AddPass(setup, assemblies.AsEnumerable());
+		}
+
+		/// <summary>
+		/// Registers handlers and PASS types from the specified assemblies
+		/// </summary>
+		/// <param name="services">Service collection</param>
+		/// <param name="configuration">The action used to configure the options</param>
+		/// <param name="assemblies">Assemblies to scan</param>
+		/// <returns>Service collection</returns>
+		/// <exception cref="ArgumentException"></exception>
+		public static IServiceCollection AddPass(this IServiceCollection services, Action<PassServiceConfiguration>? setup, IEnumerable<Assembly> assemblies)
+		{
+			if (!assemblies.Any())
+			{
+				throw new ArgumentException("No assemblies found to scan. Supply at least one assembly to scan for publishers/subscribers.");
+			}
+
+			var configuration = new PassServiceConfiguration();
+			setup?.Invoke(configuration);
+
+			AddRequiredServices(services);
+			AddPassClasses(services, configuration, assemblies);
 
 			return services;
 		}
 
-		public static IServiceCollection AddPassSubscriber<TSubscriber>(this IServiceCollection services)
-			where TSubscriber : IBaseSubscriber
+		private static void AddRequiredServices(IServiceCollection services)
 		{
-			services.AddSingleton(typeof(IBaseSubscriber), typeof(TSubscriber));
-
-			return services;
+			services.AddTransient<ServiceFactory>(provider => provider.GetRequiredService);
+			services.AddTransient<IPass, Pass>();
+			services.AddHostedService<HostedSubscribers>();
 		}
 
-		public static IServiceCollection AddPassPublishingService(this IServiceCollection services)
+		private static void AddPassClasses(IServiceCollection services, PassServiceConfiguration configuration, IEnumerable<Assembly> assemblies)
 		{
-			services.AddSingleton<IPublishingService, PublishingService>();
+			var publishers = new List<(Type serviceType, Type implementationType)>();
+			var subscribers = new List<(Type serviceType, Type implementationType)>();
+			var types = assemblies
+				.Distinct()
+				.SelectMany(assembly => assembly.DefinedTypes)
+				.Where(configuration.TypeEvaluator);
+			foreach (var type in types)
+			{
+				var interfaces = type.GetInterfaces();
+				if (!interfaces.Any()) continue;
 
-			return services;
-		}
+				var publisher = interfaces.FirstOrDefault(@interface => @interface.IsGenericType && typeof(IPublishingHandler<>) == @interface.GetGenericTypeDefinition());
+				if (publisher != null)
+				{
+					publishers.Add((publisher, type));
+					services.AddTransient(publisher, type);
+				}
 
-		public static IServiceCollection AddPassHostedSubscribersService(this IServiceCollection services)
-		{
-			services.AddHostedService<HostedSubscribersService>();
-
-			return services;
+				var subscriber = interfaces.FirstOrDefault(@interface => typeof(IListener) == @interface);
+				if (subscriber != null)
+				{
+					subscribers.Add((subscriber, type));
+					services.AddTransient(subscriber, type);
+				}
+			}
 		}
 	}
 }

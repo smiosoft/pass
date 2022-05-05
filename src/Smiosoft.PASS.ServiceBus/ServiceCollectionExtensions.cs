@@ -1,22 +1,19 @@
-using System;
-using System.Runtime.CompilerServices;
-using Microsoft.Extensions.DependencyInjection;
-using Smiosoft.PASS.ServiceBus.Configuration;
-
-[assembly: InternalsVisibleTo("Smiosoft.PASS.ServiceBus.UnitTests")]
 namespace Smiosoft.PASS.ServiceBus
 {
+	/// <summary>
+	/// Extensions to register everything PASS for Service Bus
+	/// </summary>
 	public static class ServiceCollectionExtensions
 	{
-		public static IServiceCollection AddPassServiceBus(this IServiceCollection services, Action<ConfigureServiceBusOptions> setup)
+		/// <summary>
+		/// Scope registration to only Service Bus related PASS types
+		/// </summary>
+		/// <param name="source">PASS service configuration</param>
+		/// <returns>PASS service configuration</returns>
+		public static PassServiceConfiguration WithServiceBus(this PassServiceConfiguration source)
 		{
-			setup(new ConfigureServiceBusOptions(services));
-
-			services
-				.AddPassPublishingService()
-				.AddPassHostedSubscribersService();
-
-			return services;
+			source.WithEvaluator((type) => typeof(IServiceBus).IsAssignableFrom(type));
+			return source;
 		}
 	}
 }
