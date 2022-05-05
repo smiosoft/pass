@@ -6,7 +6,7 @@ namespace Smiosoft.PASS.ServiceBus
 	public static class ServiceCollectionExtensions
 	{
 		/// <summary>
-		/// Restricts registration to only Service Bus related PASS types
+		/// Scope registration to only Service Bus related PASS types
 		/// </summary>
 		/// <param name="source">PASS service configuration</param>
 		/// <returns>PASS service configuration</returns>

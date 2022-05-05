@@ -6,7 +6,7 @@ namespace Smiosoft.PASS.RabbitMQ
 	public static class ServiceCollectionExtensions
 	{
 		/// <summary>
-		/// Restricts registration to only RabbitMQ related PASS types
+		/// Scope registration to only RabbitMQ related PASS types
 		/// </summary>
 		/// <param name="source">PASS service configuration</param>
 		/// <returns>PASS service configuration</returns>
