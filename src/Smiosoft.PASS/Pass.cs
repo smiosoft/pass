@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Smiosoft.PASS.Payload;
 using Smiosoft.PASS.Provider;
 using Smiosoft.PASS.Publisher.Handler;
 
+[assembly: InternalsVisibleTo("Smiosoft.PASS.UnitTests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 namespace Smiosoft.PASS
 {
 	internal class Pass : IPass
