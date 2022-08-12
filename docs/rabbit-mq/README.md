@@ -41,13 +41,13 @@ internal class ExamplePayload : IPayload
 
 internal class ExampleQueuePublisher : QueuePublisher<ExamplePayload>
 {
-	public ExampleQueuePublisher() : base("localhost", "queue_name")
-	{ }
+  public ExampleQueuePublisher() : base("localhost", "queue_name")
+  { }
 
-	public override Task OnExceptionAsync(Exception exception)
-    {
-        return Task.CompletedTask;
-    }
+  public override Task OnExceptionAsync(Exception exception)
+  {
+    return Task.CompletedTask;
+  }
 }
 ```
 
@@ -58,20 +58,20 @@ Use `Smiosoft.PASS.IPass` to publish payloads. PASS will match the given payload
 ```csharp
 internal class Sandbox
 {
-	private readonly IPass _pass;
+  private readonly IPass _pass;
 
-	public Sandbox(IPass pass)
-	{
-		_pass = pass;
-	}
+  public Sandbox(IPass pass)
+  {
+    _pass = pass;
+  }
 
-	public async Task ImportantTask()
-	{
-		// TODO: Implement important task
+  public async Task ImportantTask()
+  {
+    // TODO: Implement important task
 
-		// Publish a payload
-		await _pass.PublishAsync(new ExamplePayload());
-	}
+    // Publish a payload
+    await _pass.PublishAsync(new ExamplePayload());
+  }
 }
 ```
 
@@ -90,17 +90,17 @@ internal class ExamplePayload : IPayload
 
 internal class ExampleQueueSubscription : QueueSubscriber<ExamplePayload>
 {
-	public ExampleQueueSubscription() : base("localhost", "queue_name")
-	{ }
+  public ExampleQueueSubscription() : base("localhost", "queue_name")
+  { }
 
-	public override Task OnExceptionAsync(Exception exception)
-    {
-        return Task.CompletedTask;
-    }
+  public override Task OnExceptionAsync(Exception exception)
+  {
+    return Task.CompletedTask;
+  }
 
-    public override Task OnReceivedAsync(ExamplePayload payload, CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
-    }
+  public override Task OnReceivedAsync(ExamplePayload payload, CancellationToken cancellationToken)
+  {
+    return Task.CompletedTask;
+  }
 }
 ```
