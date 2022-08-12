@@ -1,0 +1,16 @@
+trigger:
+  branches:
+    exclude:
+      - master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  buildConfiguration: 'Release'
+
+stages:
+  - stage: STAGE_ARTIFACTS_CREATE
+    displayName: Create artifacts
+    jobs:
+      - template: 'jobs/create-atrifacts.yml'
