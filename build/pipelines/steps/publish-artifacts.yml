@@ -1,0 +1,14 @@
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'Create NuGet packages'
+    inputs:
+      command: 'pack'
+      packagesToPack: 'src/**/*.csproj'
+      packDirectory: '$(Build.ArtifactStagingDirectory)'
+      nobuild: true
+      versioningScheme: byEnvVar
+      versionEnvVar: GitVersion.NuGetVersion
+
+  - publish: '$(Build.ArtifactStagingDirectory)'
+    displayName: 'Publish artifacts'
+    artifact: 'nuget-packages'
