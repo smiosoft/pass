@@ -15,6 +15,15 @@ namespace Smiosoft.PASS.Publisher
 		/// <param name="payload">Payload object</param>
 		/// <param name="cancellationToken">Optional cancellation token</param>
 		/// <returns>An awaitable task</returns>
+		/// <exception cref="System.Exception">Thrown when there is an error publishing</exception>
 		Task PublishAsync(IPayload payload, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Asynchronously tries to publish a payload via a single <see cref="IPublishingHandler{TPayload}" />
+		/// </summary>
+		/// <param name="payload">Payload object</param>
+		/// <param name="cancellationToken">Optional cancellation token</param>
+		/// <returns>An awaitable task with a boolean result if the publish was successful</returns>
+		Task<bool> TryPublishAsync(IPayload payload, CancellationToken cancellationToken = default);
 	}
 }
