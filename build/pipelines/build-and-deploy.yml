@@ -1,0 +1,23 @@
+trigger:
+  - master
+pr: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  buildConfiguration: 'Release'
+  isMasterBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+
+stages:
+  - stage: STAGE_ARTIFACTS_CREATE
+    displayName: Create artifacts
+    jobs:
+      - template: 'jobs/create-atrifacts.yml'
+
+  - stage: STAGE_ARTIFACTS_DEPLOY
+    displayName: Deploy artifacts
+    dependsOn: STAGE_ARTIFACTS_CREATE
+    condition: and(succeeded(), eq(variables.isMasterBranch, true))
+    jobs:
+      - template: 'jobs/deploy-atrifacts.yml'

@@ -1,14 +1,17 @@
 root = true
 
 [*]
-indent_style = tab
 charset = utf-8
-trim_trailing_whitespace = true
+end_of_line = crlf
+indent_style = space
+indent_size = 2
 insert_final_newline = true
 quote_type = single
+trim_trailing_whitespace = true
 
 [*.cs]
 indent_size = 4
+indent_style = tab
 dotnet_sort_system_directives_first = true
 dotnet_naming_rule.instance_fields_should_be_camel_case.severity = suggestion
 dotnet_naming_rule.instance_fields_should_be_camel_case.symbols = instance_fields
@@ -24,7 +27,3 @@ dotnet_naming_rule.constant_fields_should_be_upper_case.style = upper_case_style
 dotnet_naming_symbols.constant_fields.applicable_kinds = field
 dotnet_naming_symbols.constant_fields.applicable_accessibilities = *
 dotnet_naming_symbols.constant_fields.required_modifiers = const
-
-[*.{yml,*proj}]
-indent_style = space
-indent_size = 2

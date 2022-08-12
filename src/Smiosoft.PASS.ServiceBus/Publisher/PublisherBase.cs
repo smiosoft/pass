@@ -26,6 +26,7 @@ namespace Smiosoft.PASS.ServiceBus.Publisher
 			catch (Exception exception)
 			{
 				await OnExceptionAsync(exception);
+				throw;
 			}
 		}
 

@@ -11,13 +11,13 @@ namespace Smiosoft.PASS.UnitTests
 {
 	public partial class PassTests
 	{
-		public class PublishAsync : PassTests
+		public class TryPublishAsync : PassTests
 		{
 			private readonly Mock<IPublishingHandler<Payloads.DummyPayloadOne>> _mockPublisherOne;
 			private readonly Mock<IPublishingHandler<Payloads.DummyPayloadTwo>> _mockPublisherTwo;
 			private readonly Mock<IPublishingHandler<Payloads.DummyPayloadThree>> _mockPublisherThree;
 
-			public PublishAsync()
+			public TryPublishAsync()
 			{
 				_mockPublisherOne = new Mock<IPublishingHandler<Payloads.DummyPayloadOne>>();
 				_mockPublisherTwo = new Mock<IPublishingHandler<Payloads.DummyPayloadTwo>>();
@@ -45,7 +45,7 @@ namespace Smiosoft.PASS.UnitTests
 			}
 
 			[Fact]
-			public void GiventMultipleConfiguredPublishers_WhenPublishingAnUnregisteredPayload_ThenInvalidOperationExceptionIsThrown()
+			public async Task GiventMultipleConfiguredPublishers_WhenAPayloadHasBeenSuccessfullyPublished_ReturnTrue()
 			{
 				_mockServiceFactory
 					.Setup(_ => _(It.Is<Type>(type => type == typeof(IPublishingHandler<Payloads.DummyPayloadOne>))))
@@ -57,13 +57,49 @@ namespace Smiosoft.PASS.UnitTests
 					.Setup(_ => _(It.Is<Type>(type => type == typeof(IPublishingHandler<Payloads.DummyPayloadThree>))))
 					.Returns(_mockPublisherThree.Object);
 
-				Func<Task> act = async () => await _sut.PublishAsync(new Payloads.DummyPayloadFive());
+				var result = await _sut.TryPublishAsync(new Payloads.DummyPayloadTwo());
 
-				act.Should().ThrowAsync<InvalidOperationException>();
+				result.Should().BeTrue();
 			}
 
 			[Fact]
-			public void GiventMultipleConfiguredPublishers_WhenPublishingForAnErroneousPublisher_ThenExceptionIsThrown()
+			public void GiventMultipleConfiguredPublishers_WhenPublishingAnUnregisteredPayload_ThenNoExceptionsAreThrown()
+			{
+				_mockServiceFactory
+					.Setup(_ => _(It.Is<Type>(type => type == typeof(IPublishingHandler<Payloads.DummyPayloadOne>))))
+					.Returns(_mockPublisherOne.Object);
+				_mockServiceFactory
+					.Setup(_ => _(It.Is<Type>(type => type == typeof(IPublishingHandler<Payloads.DummyPayloadTwo>))))
+					.Returns(_mockPublisherTwo.Object);
+				_mockServiceFactory
+					.Setup(_ => _(It.Is<Type>(type => type == typeof(IPublishingHandler<Payloads.DummyPayloadThree>))))
+					.Returns(_mockPublisherThree.Object);
+
+				Func<Task> act = async () => await _sut.TryPublishAsync(new Payloads.DummyPayloadFive());
+
+				act.Should().NotThrowAsync();
+			}
+
+			[Fact]
+			public async Task GiventMultipleConfiguredPublishers_WhenPublishingAnUnregisteredPayload_ThenReturnFalse()
+			{
+				_mockServiceFactory
+					.Setup(_ => _(It.Is<Type>(type => type == typeof(IPublishingHandler<Payloads.DummyPayloadOne>))))
+					.Returns(_mockPublisherOne.Object);
+				_mockServiceFactory
+					.Setup(_ => _(It.Is<Type>(type => type == typeof(IPublishingHandler<Payloads.DummyPayloadTwo>))))
+					.Returns(_mockPublisherTwo.Object);
+				_mockServiceFactory
+					.Setup(_ => _(It.Is<Type>(type => type == typeof(IPublishingHandler<Payloads.DummyPayloadThree>))))
+					.Returns(_mockPublisherThree.Object);
+
+				var result = await _sut.TryPublishAsync(new Payloads.DummyPayloadFive());
+
+				result.Should().BeFalse();
+			}
+
+			[Fact]
+			public void GiventMultipleConfiguredPublishers_WhenPublishingForAnErroneousPublisher_ThenNoExceptionsAreThrown()
 			{
 				_mockServiceFactory
 					.Setup(_ => _(It.Is<Type>(type => type == typeof(IPublishingHandler<Payloads.DummyPayloadOne>))))
@@ -79,9 +115,31 @@ namespace Smiosoft.PASS.UnitTests
 					.Setup(_ => _.HandleAsync(It.IsAny<Payloads.DummyPayloadTwo>(), It.IsAny<CancellationToken>()))
 					.ThrowsAsync(new Exception("PUBLISHER IS IN THE BIN"));
 
-				Func<Task> act = async () => await _sut.PublishAsync(new Payloads.DummyPayloadTwo());
+				Func<Task> act = async () => await _sut.TryPublishAsync(new Payloads.DummyPayloadTwo());
 
-				act.Should().ThrowAsync<Exception>();
+				act.Should().NotThrowAsync();
+			}
+
+			[Fact]
+			public async Task GiventMultipleConfiguredPublishers_WhenPublishingForAnErroneousPublisher_ThenReturnFalse()
+			{
+				_mockServiceFactory
+					.Setup(_ => _(It.Is<Type>(type => type == typeof(IPublishingHandler<Payloads.DummyPayloadOne>))))
+					.Returns(_mockPublisherOne.Object);
+				_mockServiceFactory
+					.Setup(_ => _(It.Is<Type>(type => type == typeof(IPublishingHandler<Payloads.DummyPayloadTwo>))))
+					.Returns(_mockPublisherTwo.Object);
+				_mockServiceFactory
+					.Setup(_ => _(It.Is<Type>(type => type == typeof(IPublishingHandler<Payloads.DummyPayloadThree>))))
+					.Returns(_mockPublisherThree.Object);
+
+				_mockPublisherTwo
+					.Setup(_ => _.HandleAsync(It.IsAny<Payloads.DummyPayloadTwo>(), It.IsAny<CancellationToken>()))
+					.ThrowsAsync(new Exception("PUBLISHER IS IN THE BIN"));
+
+				var result = await _sut.TryPublishAsync(new Payloads.DummyPayloadTwo());
+
+				result.Should().BeFalse();
 			}
 		}
 	}

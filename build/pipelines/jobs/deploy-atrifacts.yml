@@ -1,0 +1,19 @@
+jobs:
+  - deployment: DEPLOY_ARTIFACTS
+    displayName: 'Publish NuGet packages to internal feed'
+    environment: INTERNAL_FEED
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - download: current
+              artifact: 'nuget-packages'
+              displayName: 'Download NuGet packages'
+
+            - task: DotNetCoreCLI@2
+              displayName: 'Push NuGet packages to the feed'
+              inputs:
+                command: 'push'
+                packagesToPush: '$(Agent.BuildDirectory)/nuget-packages/*.nupkg'
+                nuGetFeedType: 'internal'
+                publishVstsFeed: 'f479efe2-179c-4ce7-9313-60199b06c5f0'

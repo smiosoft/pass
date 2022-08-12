@@ -32,5 +32,18 @@ namespace Smiosoft.PASS
 
 			return handler.HandleAsync(payload, cancellationToken, _serviceFactory);
 		}
+
+		public async Task<bool> TryPublishAsync(IPayload payload, CancellationToken cancellationToken = default)
+		{
+			try
+			{
+				await PublishAsync(payload, cancellationToken);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
 	}
 }

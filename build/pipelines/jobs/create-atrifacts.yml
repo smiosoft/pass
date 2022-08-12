@@ -1,0 +1,11 @@
+jobs:
+  - job: JOB_CREATE_ARTIFACTS
+    displayName: Create artifacts
+    steps:
+      - template: '../steps/configure-git-version.yml'
+
+      - template: '../steps/build-projects.yml'
+
+      - template: '../steps/run-tests.yml'
+
+      - template: '../steps/publish-artifacts.yml'
