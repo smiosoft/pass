@@ -1,0 +1,8 @@
+{
+	"recommendations": [
+		"editorconfig.editorconfig",
+		"esbenp.prettier-vscode",
+		"ms-azure-devops.azure-pipelines",
+		"yzhang.markdown-all-in-one"
+	]
+}
