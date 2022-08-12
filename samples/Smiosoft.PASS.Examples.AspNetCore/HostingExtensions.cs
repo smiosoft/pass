@@ -29,7 +29,7 @@ namespace Smiosoft.PASS.Examples.AspNetCore
 				{
 					options.SwaggerDoc("v1", new OpenApiInfo
 					{
-						Title = $"PASS Example API",
+						Title = "PASS Example API",
 						Version = "v1"
 					});
 				})
