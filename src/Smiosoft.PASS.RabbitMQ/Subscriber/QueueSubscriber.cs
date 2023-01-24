@@ -26,12 +26,7 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
         {
             return Task.Run(() =>
             {
-                Channel.QueueDeclare(
-                    queue: Options.QueueName,
-                    durable: true,
-                    exclusive: false,
-                    autoDelete: false,
-                    arguments: null);
+                Channel.QueueDeclare(queue: Options.QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
                 Channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
                 var consumer = new EventingBasicConsumer(Channel);

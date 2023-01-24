@@ -27,13 +27,13 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
             return Task.Run(() =>
             {
                 Channel.ExchangeDeclare(exchange: Options.ExchangeName, type: ExchangeType.Topic);
-                var queueName = Channel.QueueDeclare().QueueName;
-                Channel.QueueBind(queue: queueName, exchange: Options.ExchangeName, routingKey: Options.RoutingKey);
+                Channel.QueueDeclare(queue: Options.QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+                Channel.QueueBind(queue: Options.QueueName, exchange: Options.ExchangeName, routingKey: Options.RoutingKey);
 
                 var consumer = new EventingBasicConsumer(Channel);
                 consumer.Received += Consumer_ReceivedAsync;
 
-                Channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);
+                Channel.BasicConsume(queue: Options.QueueName, autoAck: false, consumer: consumer);
             });
         }
 
@@ -42,6 +42,7 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
             try
             {
                 await OnReceivedAsync(args.Body.ToArray().Deserialise<TPayload>());
+                Channel.BasicAck(deliveryTag: args.DeliveryTag, multiple: false);
             }
             catch (Exception exception)
             {
