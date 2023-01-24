@@ -5,25 +5,25 @@ using Xunit;
 
 namespace Smiosoft.PASS.UnitTests.Subscriber.Services
 {
-	public partial class HostedSubscribersTests
-	{
-		public class Constructor : HostedSubscribersTests
-		{
-			[Fact]
-			public void GivenValidParameters_WhenConstructing_ThenNoExceptionsAreThrown()
-			{
-				Action act = () => new HostedSubscribers(_mockServiceFactory.Object);
+    public partial class HostedSubscribersTests
+    {
+        public class Constructor : HostedSubscribersTests
+        {
+            [Fact]
+            public void GivenValidParameters_WhenConstructing_ThenNoExceptionsAreThrown()
+            {
+                Action act = () => new HostedSubscribers(_mockServiceFactory.Object);
 
-				act.Should().NotThrow();
-			}
+                act.Should().NotThrow();
+            }
 
-			[Fact]
-			public void GivenNullParameters_WhenConstructing_ThenArgumentNullExceptionIsThrown()
-			{
-				Action act = () => new HostedSubscribers(null!);
+            [Fact]
+            public void GivenNullParameters_WhenConstructing_ThenArgumentNullExceptionIsThrown()
+            {
+                Action act = () => new HostedSubscribers(null!);
 
-				act.Should().Throw<ArgumentNullException>();
-			}
-		}
-	}
+                act.Should().Throw<ArgumentNullException>();
+            }
+        }
+    }
 }

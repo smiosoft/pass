@@ -2,6 +2,6 @@
 
 namespace Smiosoft.PASS.RabbitMQ.Publisher
 {
-	public class PublisherOptions : RabbitMqOptions
-	{ }
+    public class PublisherOptions : RabbitMqOptions
+    { }
 }
