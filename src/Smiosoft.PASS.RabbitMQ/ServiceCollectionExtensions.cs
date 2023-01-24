@@ -10,7 +10,7 @@ namespace Smiosoft.PASS.RabbitMQ
         /// </summary>
         /// <param name="source">PASS service configuration</param>
         /// <returns>PASS service configuration</returns>
-        public static PassServiceConfiguration WithRabbitMq(this PassServiceConfiguration source)
+        public static PassServiceConfiguration UseRabbitMq(this PassServiceConfiguration source)
         {
             source.WithEvaluator((type) => typeof(IRabbitMq).IsAssignableFrom(type));
             return source;

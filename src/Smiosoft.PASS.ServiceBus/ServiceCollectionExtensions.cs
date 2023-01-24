@@ -10,7 +10,7 @@ namespace Smiosoft.PASS.ServiceBus
         /// </summary>
         /// <param name="source">PASS service configuration</param>
         /// <returns>PASS service configuration</returns>
-        public static PassServiceConfiguration WithServiceBus(this PassServiceConfiguration source)
+        public static PassServiceConfiguration UseServiceBus(this PassServiceConfiguration source)
         {
             source.WithEvaluator((type) => typeof(IServiceBus).IsAssignableFrom(type));
             return source;

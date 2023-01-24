@@ -6,12 +6,12 @@
 
 Using the PASS dependency injection `IServiceCollection.AddPass(...)` extension method, will register all publishers and subscribers in the provided assemblies.
 
-Additionally, the `WithServiceBus()` extension method on the options can be used to scope the registration to Service Bus related types.
+Additionally, the `UseServiceBus()` extension method on the options can be used to scope the registration to Service Bus related types.
 
 ```csharp
 public void ConfigureServices(IServiceCollection services)
 {
-  services.AddPass((options) => { options.WithServiceBus(); }, Assembly.GetExecutingAssembly())
+  services.AddPass((options) => { options.UseServiceBus(); }, Assembly.GetExecutingAssembly())
 }
 ```
 
