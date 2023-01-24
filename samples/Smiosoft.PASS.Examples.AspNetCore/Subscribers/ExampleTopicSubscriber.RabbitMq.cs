@@ -7,7 +7,7 @@ namespace Smiosoft.PASS.Examples.AspNetCore.Subscribers
     {
         internal class RabbitMq : Smiosoft.PASS.RabbitMQ.Subscriber.TopicSubscriber<RabbitMqExampleTopicPayload>
         {
-            public RabbitMq() : base("localhost", TOPIC_NAME, routingKey: "default")
+            public RabbitMq() : base("localhost", TOPIC_NAME, QUEUE_NAME, routingKey: "default")
             { }
 
             public override Task OnExceptionAsync(Exception exception)

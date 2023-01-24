@@ -39,8 +39,8 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers
         {
             private readonly IConnectionFactory? _factory;
 
-            public TopicSubscriberOne(string hostName, string exchangeName, string routingKey, IConnectionFactory? factory)
-                : base(hostName, exchangeName, routingKey)
+            public TopicSubscriberOne(string hostName, string exchangeName, string queueName, string routingKey, IConnectionFactory? factory)
+                : base(hostName, exchangeName, queueName, routingKey)
             {
                 _factory = factory;
             }

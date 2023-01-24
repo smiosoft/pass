@@ -30,7 +30,7 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Subscriber
                 .Setup(_ => _.QueueDeclare(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>()))
                 .Returns(new QueueDeclareOk("test-queue", 1, 1));
 
-            _sut = new Subscribers.TopicSubscriberOne("local-tests", "tests", "unit.test", _mockConnectionFactory.Object);
+            _sut = new Subscribers.TopicSubscriberOne("local-tests", "tests", "test", "unit.test", _mockConnectionFactory.Object);
         }
     }
 }
