@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Moq;
 using RabbitMQ.Client;
 using Smiosoft.PASS.UnitTests.TestHelpers;
@@ -13,6 +14,14 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
     {
         public class HandleAsync : QueuePublisherTests
         {
+            [Fact]
+            public async Task GivenConfiguredPublisher_WhenExected_ThenNoExceptionsAreThrown()
+            {
+                Func<Task> act = async () => await _sut.HandleAsync(new Payloads.DummyPayloadOne(), CancellationToken.None);
+
+                await act.Should().NotThrowAsync();
+            }
+
             [Fact]
             public async Task GivenConfiguredPublisher_WhenExected_ThenQueueIsDeclaredOnce()
             {
