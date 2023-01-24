@@ -23,6 +23,12 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
             _options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
+        protected SubscriberBase(SubscriberOptions options, ServiceBusClient client)
+            : this(options)
+        {
+            _client = client ?? throw new ArgumentNullException(nameof(client));
+        }
+
         public async Task RegisterAsync(CancellationToken cancellationToken = default)
         {
             try

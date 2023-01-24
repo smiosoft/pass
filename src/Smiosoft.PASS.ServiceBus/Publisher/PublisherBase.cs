@@ -11,10 +11,19 @@ namespace Smiosoft.PASS.ServiceBus.Publisher
         where TPayload : IPayload
     {
         private readonly PublisherOptions _options;
+        private ServiceBusClient? _client;
+
+        protected ServiceBusClient Client { get => _client ??= CreateDefaultClient(); }
 
         public PublisherBase(PublisherOptions options)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
+        }
+
+        public PublisherBase(PublisherOptions options, ServiceBusClient client)
+            : this(options)
+        {
+            _client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
         public async Task HandleAsync(TPayload payload, CancellationToken cancellationToken)
@@ -26,7 +35,7 @@ namespace Smiosoft.PASS.ServiceBus.Publisher
         {
             try
             {
-                await OnPublishAsync(payload, cancellationToken);
+                await HandleAsync(payload, cancellationToken);
                 return true;
             }
             catch
@@ -37,7 +46,7 @@ namespace Smiosoft.PASS.ServiceBus.Publisher
 
         public abstract Task OnPublishAsync(TPayload payload, CancellationToken cancellationToken);
 
-        protected virtual ServiceBusClient CreateClient()
+        protected virtual ServiceBusClient CreateDefaultClient()
         {
             return new ServiceBusClient(_options.ConnectionString);
         }

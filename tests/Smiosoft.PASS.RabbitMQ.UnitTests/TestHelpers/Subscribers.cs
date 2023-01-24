@@ -29,9 +29,9 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers
                 return Task.CompletedTask;
             }
 
-            protected override IConnectionFactory CreateConnectionFactory()
+            protected override IConnectionFactory CreateDefaultConnectionFactory()
             {
-                return _factory ?? base.CreateConnectionFactory();
+                return _factory ?? base.CreateDefaultConnectionFactory();
             }
         }
 
@@ -55,9 +55,9 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers
                 return Task.CompletedTask;
             }
 
-            protected override IConnectionFactory CreateConnectionFactory()
+            protected override IConnectionFactory CreateDefaultConnectionFactory()
             {
-                return _factory ?? base.CreateConnectionFactory();
+                return _factory ?? base.CreateDefaultConnectionFactory();
             }
         }
     }

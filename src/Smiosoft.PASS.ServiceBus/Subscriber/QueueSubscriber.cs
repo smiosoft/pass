@@ -9,7 +9,14 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
     {
         public QueueSubscriberOptions Options { get; }
 
-        protected QueueSubscriber(QueueSubscriberOptions options) : base(options)
+        protected QueueSubscriber(QueueSubscriberOptions options)
+            : base(options)
+        {
+            Options = options ?? throw new ArgumentNullException(nameof(options));
+        }
+
+        protected QueueSubscriber(QueueSubscriberOptions options, ServiceBusClient client)
+            : base(options, client)
         {
             Options = options ?? throw new ArgumentNullException(nameof(options));
         }

@@ -17,13 +17,19 @@ namespace Smiosoft.PASS.ServiceBus.Publisher
             Options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
+        protected QueuePublisher(QueuePublisherOptions options, ServiceBusClient client)
+            : base(options, client)
+        {
+            Options = options ?? throw new ArgumentNullException(nameof(options));
+        }
+
         protected QueuePublisher(string connectionString, string queueName)
             : this(new QueuePublisherOptions() { ConnectionString = connectionString, QueueName = queueName })
         { }
 
         public override async Task OnPublishAsync(TPayload payload, CancellationToken cancellationToken)
         {
-            await using var client = CreateClient();
+            await using var client = CreateDefaultClient();
             var sender = client.CreateSender(Options.QueueName);
             await sender.SendMessageAsync(new ServiceBusMessage(payload.Serialise()), cancellationToken);
         }

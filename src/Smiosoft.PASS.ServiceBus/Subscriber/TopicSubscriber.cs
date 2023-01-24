@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Azure.Messaging.ServiceBus;
 using Smiosoft.PASS.Payload;
 
@@ -11,6 +11,12 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
 
         protected TopicSubscriber(TopicSubscriberOptions topicSubscriberOptions)
             : base(topicSubscriberOptions)
+        {
+            Options = topicSubscriberOptions ?? throw new ArgumentNullException(nameof(topicSubscriberOptions));
+        }
+
+        protected TopicSubscriber(TopicSubscriberOptions topicSubscriberOptions, ServiceBusClient client)
+            : base(topicSubscriberOptions, client)
         {
             Options = topicSubscriberOptions ?? throw new ArgumentNullException(nameof(topicSubscriberOptions));
         }

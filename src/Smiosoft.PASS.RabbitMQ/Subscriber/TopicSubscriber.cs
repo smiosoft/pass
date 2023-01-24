@@ -18,8 +18,14 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
             Options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
-        protected TopicSubscriber(string hostName, string exchangeName, string routingKey)
-            : this(new TopicSubscriberOptions() { HostName = hostName, ExchangeName = exchangeName, RoutingKey = routingKey })
+        protected TopicSubscriber(TopicSubscriberOptions options, IConnectionFactory factory)
+            : base(options, factory)
+        {
+            Options = options ?? throw new ArgumentNullException(nameof(options));
+        }
+
+        protected TopicSubscriber(string hostName, string exchangeName, string queueName, string routingKey)
+            : this(new TopicSubscriberOptions() { HostName = hostName, ExchangeName = exchangeName, QueueName = queueName, RoutingKey = routingKey })
         { }
 
         public override Task OnRegistrationAsync(CancellationToken cancellationToken)

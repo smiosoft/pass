@@ -17,6 +17,12 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
             Options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
+        protected TopicPublisher(TopicPublisherOptions options, IConnectionFactory factory)
+            : base(options, factory)
+        {
+            Options = options ?? throw new ArgumentNullException(nameof(options));
+        }
+
         protected TopicPublisher(string hostName, string exchangeName, string routingKey)
             : this(new TopicPublisherOptions() { HostName = hostName, ExchangeName = exchangeName, RoutingKey = routingKey })
         { }
@@ -25,7 +31,7 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
         {
             return Task.Run(() =>
             {
-                var factory = CreateConnectionFactory();
+                var factory = CreateDefaultConnectionFactory();
                 using var connection = factory.CreateConnection();
                 using var channel = connection.CreateModel();
                 channel.ExchangeDeclare(exchange: Options.ExchangeName, type: ExchangeType.Topic);

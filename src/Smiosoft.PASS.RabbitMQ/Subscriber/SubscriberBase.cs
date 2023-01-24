@@ -16,13 +16,19 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
         private IConnection? _connection;
         private IModel? _channel;
 
-        protected IConnectionFactory Factory { get => _factory ??= CreateConnectionFactory(); }
-        protected IConnection Connection { get => _connection ??= CreateConnection(); }
-        protected IModel Channel { get => _channel ??= CreateChannel(); }
+        protected IConnectionFactory Factory { get => _factory ??= CreateDefaultConnectionFactory(); }
+        protected IConnection Connection { get => _connection ??= CreateDefaultConnection(); }
+        protected IModel Channel { get => _channel ??= CreateDefaultChannel(); }
 
         protected SubscriberBase(SubscriberOptions options)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
+        }
+
+        protected SubscriberBase(SubscriberOptions options, IConnectionFactory factory)
+            : this(options)
+        {
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
         public async Task RegisterAsync(CancellationToken cancellationToken = default)
@@ -43,17 +49,17 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 
         public abstract Task OnRegistrationAsync(CancellationToken cancellationToken);
 
-        protected virtual IConnectionFactory CreateConnectionFactory()
+        protected virtual IConnectionFactory CreateDefaultConnectionFactory()
         {
             return new ConnectionFactory() { HostName = _options.HostName };
         }
 
-        protected virtual IConnection CreateConnection()
+        protected virtual IConnection CreateDefaultConnection()
         {
             return Factory.CreateConnection();
         }
 
-        protected virtual IModel CreateChannel()
+        protected virtual IModel CreateDefaultChannel()
         {
             return Connection.CreateModel();
         }

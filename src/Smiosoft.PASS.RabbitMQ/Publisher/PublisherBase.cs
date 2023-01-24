@@ -11,10 +11,19 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
         where TPayload : IPayload
     {
         private readonly PublisherOptions _options;
+        private IConnectionFactory? _factory;
+
+        protected IConnectionFactory Factory { get => _factory ??= CreateDefaultConnectionFactory(); }
 
         protected PublisherBase(PublisherOptions options)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
+        }
+
+        protected PublisherBase(PublisherOptions options, IConnectionFactory factory)
+            : this(options)
+        {
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
         public async Task HandleAsync(TPayload payload, CancellationToken cancellationToken)
@@ -26,7 +35,7 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
         {
             try
             {
-                await OnPublishAsync(payload, cancellationToken);
+                await HandleAsync(payload, cancellationToken);
                 return true;
             }
             catch
@@ -37,7 +46,7 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
 
         public abstract Task OnPublishAsync(TPayload payload, CancellationToken cancellationToken);
 
-        protected virtual IConnectionFactory CreateConnectionFactory()
+        protected virtual IConnectionFactory CreateDefaultConnectionFactory()
         {
             return new ConnectionFactory() { HostName = _options.HostName };
         }

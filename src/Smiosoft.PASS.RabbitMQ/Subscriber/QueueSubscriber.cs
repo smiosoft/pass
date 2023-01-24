@@ -18,6 +18,12 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
             Options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
+        protected QueueSubscriber(QueueSubscriberOptions options, IConnectionFactory factory)
+            : base(options, factory)
+        {
+            Options = options ?? throw new ArgumentNullException(nameof(options));
+        }
+
         protected QueueSubscriber(string hostName, string queueName)
             : this(new QueueSubscriberOptions() { HostName = hostName, QueueName = queueName })
         { }

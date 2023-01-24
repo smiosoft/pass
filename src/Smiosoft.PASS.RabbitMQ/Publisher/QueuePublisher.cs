@@ -17,6 +17,12 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
             Options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
+        protected QueuePublisher(QueuePublisherOptions options, IConnectionFactory factory)
+            : base(options, factory)
+        {
+            Options = options ?? throw new ArgumentNullException(nameof(options));
+        }
+
         protected QueuePublisher(string hostName, string queueName)
             : this(new QueuePublisherOptions() { HostName = hostName, QueueName = queueName })
         { }
@@ -25,8 +31,7 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
         {
             return Task.Run(() =>
             {
-                var factory = CreateConnectionFactory();
-                using var connection = factory.CreateConnection();
+                using var connection = Factory.CreateConnection();
                 using var channel = connection.CreateModel();
                 channel.QueueDeclare(queue: Options.QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
 
