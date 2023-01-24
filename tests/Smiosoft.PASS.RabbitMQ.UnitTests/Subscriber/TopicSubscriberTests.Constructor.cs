@@ -21,7 +21,7 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Subscriber
             [InlineData(" ", null, null, null)]
             public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown(string hostName, string exchangeName, string queueName, string routingKey)
             {
-                Action act = () => new Subscribers.TopicSubscriberOne(hostName, exchangeName, queueName, routingKey, factory: null);
+                Action act = () => new Subscribers.TopicSubscriberOne(hostName, exchangeName, queueName, routingKey, factory: _mockConnectionFactory.Object);
 
                 act.Should().NotThrow();
             }

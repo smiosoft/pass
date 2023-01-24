@@ -11,13 +11,13 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers
     {
         public class QueueSubscriberOne : QueueSubscriber<Payloads.DummyPayloadOne>
         {
-            private readonly IConnectionFactory? _factory;
+            public QueueSubscriberOne(QueueSubscriberOptions options, IConnectionFactory factory)
+                : base(options, factory)
+            { }
 
-            public QueueSubscriberOne(string hostName, string queueName, IConnectionFactory? factory)
-                : base(hostName, queueName)
-            {
-                _factory = factory;
-            }
+            public QueueSubscriberOne(string hostName, string queueName, IConnectionFactory factory)
+                : this(new QueueSubscriberOptions() { HostName = hostName, QueueName = queueName }, factory)
+            { }
 
             public override Task OnExceptionAsync(Exception exception)
             {
@@ -27,23 +27,18 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers
             public override Task OnReceivedAsync(Payloads.DummyPayloadOne payload, CancellationToken cancellationToken = default)
             {
                 return Task.CompletedTask;
-            }
-
-            protected override IConnectionFactory CreateDefaultConnectionFactory()
-            {
-                return _factory ?? base.CreateDefaultConnectionFactory();
             }
         }
 
         public class TopicSubscriberOne : TopicSubscriber<Payloads.DummyPayloadOne>
         {
-            private readonly IConnectionFactory? _factory;
+            public TopicSubscriberOne(TopicSubscriberOptions options, IConnectionFactory factory)
+                : base(options, factory)
+            { }
 
-            public TopicSubscriberOne(string hostName, string exchangeName, string queueName, string routingKey, IConnectionFactory? factory)
-                : base(hostName, exchangeName, queueName, routingKey)
-            {
-                _factory = factory;
-            }
+            public TopicSubscriberOne(string hostName, string exchangeName, string queueName, string routingKey, IConnectionFactory factory)
+                : this(new TopicSubscriberOptions() { HostName = hostName, ExchangeName = exchangeName, QueueName = queueName, RoutingKey = routingKey }, factory)
+            { }
 
             public override Task OnExceptionAsync(Exception exception)
             {
@@ -53,11 +48,6 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers
             public override Task OnReceivedAsync(Payloads.DummyPayloadOne payload, CancellationToken cancellationToken = default)
             {
                 return Task.CompletedTask;
-            }
-
-            protected override IConnectionFactory CreateDefaultConnectionFactory()
-            {
-                return _factory ?? base.CreateDefaultConnectionFactory();
             }
         }
     }

@@ -29,7 +29,7 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
             [InlineData(" ", " ")]
             public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown(string hostName, string queueName)
             {
-                Action act = () => new Publishers.QueuePublisherOne(hostName, queueName, factory: null);
+                Action act = () => new Publishers.QueuePublisherOne(hostName, queueName, factory: _mockConnectionFactory.Object);
 
                 act.Should().NotThrow();
             }
