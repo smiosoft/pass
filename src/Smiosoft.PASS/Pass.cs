@@ -23,27 +23,23 @@ namespace Smiosoft.PASS
 
         public Task PublishAsync(IPayload payload, CancellationToken cancellationToken = default)
         {
-            var payloadType = payload.GetType();
-            var handler = (HandlerWrapper)s_handlers.GetOrAdd(payloadType, static implementation =>
+            var handler = GetHandlerImplementationForPayload(payload);
+            return handler.HandleAsync(payload, cancellationToken, _serviceFactory);
+        }
+
+        public Task<bool> TryPublishAsync(IPayload payload, CancellationToken cancellationToken = default)
+        {
+            var handler = GetHandlerImplementationForPayload(payload);
+            return handler.TryHandleAsync(payload, cancellationToken, _serviceFactory);
+        }
+
+        private HandlerWrapper GetHandlerImplementationForPayload(IPayload payload)
+        {
+            return (HandlerWrapper)s_handlers.GetOrAdd(payload.GetType(), static implementation =>
             {
                 return (HandlerBase)Activator.CreateInstance(typeof(HandlerWrapperImplementation<>).MakeGenericType(implementation)
                     ?? throw new InvalidOperationException($"Could not create wrapper for {implementation} type"));
             });
-
-            return handler.HandleAsync(payload, cancellationToken, _serviceFactory);
-        }
-
-        public async Task<bool> TryPublishAsync(IPayload payload, CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                await PublishAsync(payload, cancellationToken);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
         }
     }
 }

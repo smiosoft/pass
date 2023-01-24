@@ -12,5 +12,10 @@ namespace Smiosoft.PASS.Publisher.Handler
         {
             return GetHandler<IPublishingHandler<TPayload>>(serviceFactory).HandleAsync((TPayload)payload, cancellationToken);
         }
+
+        public override Task<bool> TryHandleAsync(IPayload payload, CancellationToken cancellationToken, ServiceFactory serviceFactory)
+        {
+            return GetHandler<IPublishingHandler<TPayload>>(serviceFactory).TryHandleAsync((TPayload)payload, cancellationToken);
+        }
     }
 }

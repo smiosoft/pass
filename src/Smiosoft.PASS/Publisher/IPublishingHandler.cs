@@ -18,5 +18,13 @@ namespace Smiosoft.PASS.Publisher
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>An awaitable task</returns>
         Task HandleAsync(TPayload payload, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Attempts to handle publishing a payload
+        /// </summary>
+        /// <param name="payload"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>An awaitable task with a result of whether or not the attempt was successful</returns>
+        Task<bool> TryHandleAsync(TPayload payload, CancellationToken cancellationToken);
     }
 }

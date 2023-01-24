@@ -19,18 +19,22 @@ namespace Smiosoft.PASS.ServiceBus.Publisher
 
         public async Task HandleAsync(TPayload payload, CancellationToken cancellationToken)
         {
+            await OnPublishAsync(payload, cancellationToken);
+        }
+
+        public async Task<bool> TryHandleAsync(TPayload payload, CancellationToken cancellationToken)
+        {
             try
             {
                 await OnPublishAsync(payload, cancellationToken);
+                return true;
             }
-            catch (Exception exception)
+            catch
             {
-                await OnExceptionAsync(exception);
-                throw;
+                return false;
             }
         }
 
-        public abstract Task OnExceptionAsync(Exception exception);
         public abstract Task OnPublishAsync(TPayload payload, CancellationToken cancellationToken);
 
         protected virtual ServiceBusClient CreateClient()
