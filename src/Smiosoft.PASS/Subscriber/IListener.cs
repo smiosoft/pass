@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Smiosoft.PASS.Subscriber
@@ -10,7 +11,8 @@ namespace Smiosoft.PASS.Subscriber
         /// <summary>
         /// Register the listening service
         /// </summary>
+        /// <param name="cancellationToken">Optional cancellation token</param>
         /// <returns>An awaitable task</returns>
-        Task RegisterAsync();
+        Task RegisterAsync(CancellationToken cancellationToken = default);
     }
 }

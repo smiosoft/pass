@@ -1,4 +1,4 @@
-﻿namespace Smiosoft.PASS.RabbitMQ.Subscriber
+namespace Smiosoft.PASS.RabbitMQ.Subscriber
 {
     public class TopicSubscriberOptions : SubscriberOptions
     {

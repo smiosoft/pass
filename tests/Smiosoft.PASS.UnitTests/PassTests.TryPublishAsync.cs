@@ -47,6 +47,9 @@ namespace Smiosoft.PASS.UnitTests
             [Fact]
             public async Task GiventMultipleConfiguredPublishers_WhenAPayloadHasBeenSuccessfullyPublished_ReturnTrue()
             {
+                _mockPublisherTwo
+                    .Setup(_ => _.TryHandleAsync(It.IsAny<Payloads.DummyPayloadTwo>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(true);
                 _mockServiceFactory
                     .Setup(_ => _(It.Is<Type>(type => type == typeof(IPublishingHandler<Payloads.DummyPayloadOne>))))
                     .Returns(_mockPublisherOne.Object);

@@ -25,11 +25,11 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
             _options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
-        public async Task RegisterAsync()
+        public async Task RegisterAsync(CancellationToken cancellationToken = default)
         {
             try
             {
-                await OnRegistrationAsync();
+                await OnRegistrationAsync(cancellationToken);
             }
             catch (Exception exception)
             {
@@ -41,7 +41,7 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
 
         public abstract Task OnReceivedAsync(TPayload payload, CancellationToken cancellationToken = default);
 
-        public abstract Task OnRegistrationAsync();
+        public abstract Task OnRegistrationAsync(CancellationToken cancellationToken);
 
         protected virtual IConnectionFactory CreateConnectionFactory()
         {

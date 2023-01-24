@@ -9,17 +9,17 @@ namespace Smiosoft.PASS.Subscriber.Services
 {
     internal class HostedSubscribers : BackgroundService
     {
-        private readonly ServiceFactory _serviceFactory;
+        private readonly ServiceFactory _services;
 
         public HostedSubscribers(ServiceFactory serviceFactory)
         {
-            _serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
+            _services = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var listeners = _serviceFactory.GetInstances<IListener>();
-            return Task.WhenAll(listeners.Select(listener => listener.RegisterAsync()));
+            var listeners = _services.GetInstances<IListener>() ?? Enumerable.Empty<IListener>();
+            await Task.WhenAll(listeners.Select(listener => listener.RegisterAsync(stoppingToken)));
         }
     }
 }

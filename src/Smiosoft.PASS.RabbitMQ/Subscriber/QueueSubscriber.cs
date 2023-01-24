@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -21,7 +22,7 @@ namespace Smiosoft.PASS.RabbitMQ.Subscriber
             : this(new QueueSubscriberOptions() { HostName = hostName, QueueName = queueName })
         { }
 
-        public override Task OnRegistrationAsync()
+        public override Task OnRegistrationAsync(CancellationToken cancellationToken)
         {
             return Task.Run(() =>
             {

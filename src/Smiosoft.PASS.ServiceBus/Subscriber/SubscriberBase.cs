@@ -23,11 +23,11 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
             _options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
-        public async Task RegisterAsync()
+        public async Task RegisterAsync(CancellationToken cancellationToken = default)
         {
             try
             {
-                await OnRegistrationAsync();
+                await OnRegistrationAsync(cancellationToken);
             }
             catch (Exception exception)
             {
@@ -39,7 +39,7 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
 
         public abstract Task OnReceivedAsync(TPayload payload, CancellationToken cancellationToken = default);
 
-        public virtual async Task OnRegistrationAsync()
+        public virtual async Task OnRegistrationAsync(CancellationToken cancellationToken)
         {
             Processor.ProcessMessageAsync += Processor_ProcessMessageAsync;
             Processor.ProcessErrorAsync += Processor_ProcessErrorAsync;
