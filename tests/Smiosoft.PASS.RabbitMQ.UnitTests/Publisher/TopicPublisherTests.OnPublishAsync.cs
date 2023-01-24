@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,12 +23,12 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
             }
 
             [Fact]
-            public async Task GivenConfiguredPublisher_WhenExected_ThenQueueIsDeclaredOnce()
+            public async Task GivenConfiguredPublisher_WhenExected_ThenExchangeIsDeclaredOnce()
             {
                 await _sut.OnPublishAsync(new Payloads.DummyPayloadOne(), CancellationToken.None);
 
                 _mockChannel.Verify(
-                    _ => _.QueueDeclare(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>()),
+                    _ => _.ExchangeDeclare(It.IsAny<string>(), It.Is<string>(_ => _ == "topic"), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>()),
                     Times.Once);
             }
 
