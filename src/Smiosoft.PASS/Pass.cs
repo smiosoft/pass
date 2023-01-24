@@ -13,8 +13,8 @@ namespace Smiosoft.PASS
 {
     internal class Pass : IPass
     {
+        private static readonly ConcurrentDictionary<Type, HandlerBase> s_handlers = new();
         private readonly ServiceFactory _serviceFactory;
-        private static readonly ConcurrentDictionary<Type, HandlerBase> _handlers = new();
 
         public Pass(ServiceFactory serviceFactory)
         {
@@ -24,7 +24,7 @@ namespace Smiosoft.PASS
         public Task PublishAsync(IPayload payload, CancellationToken cancellationToken = default)
         {
             var payloadType = payload.GetType();
-            var handler = (HandlerWrapper)_handlers.GetOrAdd(payloadType, static implementation =>
+            var handler = (HandlerWrapper)s_handlers.GetOrAdd(payloadType, static implementation =>
             {
                 return (HandlerBase)Activator.CreateInstance(typeof(HandlerWrapperImplementation<>).MakeGenericType(implementation)
                     ?? throw new InvalidOperationException($"Could not create wrapper for {implementation} type"));
