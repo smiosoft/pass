@@ -9,12 +9,12 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Subscriber
 {
     public partial class QueueSubscriberTests
     {
-        public class RegisterAsync : QueueSubscriberTests
+        public class OnRegistrationAsync : QueueSubscriberTests
         {
             [Fact]
             public async Task GivenConfiguredSubscriber_WhenExected_ThenNoExceptionsAreThrown()
             {
-                Func<Task> act = async () => await _sut.RegisterAsync(CancellationToken.None);
+                Func<Task> act = async () => await _sut.OnRegistrationAsync(CancellationToken.None);
 
                 await act.Should().NotThrowAsync();
             }
@@ -22,7 +22,7 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Subscriber
             [Fact]
             public async Task GivenConfiguredSubscriber_WhenExected_ThenStartProcessingOnce()
             {
-                await _sut.RegisterAsync(CancellationToken.None);
+                await _sut.OnRegistrationAsync(CancellationToken.None);
 
                 _mockServiceBusProcessor.Verify(
                     _ => _.StartProcessingAsync(It.IsAny<CancellationToken>()),

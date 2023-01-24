@@ -25,7 +25,7 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
             : this(new QueueSubscriberOptions() { ConnectionString = connectionString, QueueName = queueName })
         { }
 
-        protected override ServiceBusProcessor CreateProcessor()
+        protected override ServiceBusProcessor CreateDefaultProcessor()
         {
             return Client.CreateProcessor(queueName: Options.QueueName);
         }

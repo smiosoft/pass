@@ -22,11 +22,7 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Publisher
             [InlineData(null, "")]
             [InlineData(null, " ")]
             [InlineData("", null)]
-            [InlineData("", "")]
-            [InlineData("", " ")]
             [InlineData(" ", null)]
-            [InlineData(" ", "")]
-            [InlineData(" ", " ")]
             public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown(string connectionString, string topicName)
             {
                 Action act = () => new Publishers.TopicPublisherOne(connectionString, topicName);

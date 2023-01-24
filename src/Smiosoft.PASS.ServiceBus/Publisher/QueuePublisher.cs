@@ -17,12 +17,6 @@ namespace Smiosoft.PASS.ServiceBus.Publisher
             Options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
-        protected QueuePublisher(QueuePublisherOptions options, ServiceBusClient client)
-            : base(options, client)
-        {
-            Options = options ?? throw new ArgumentNullException(nameof(options));
-        }
-
         protected QueuePublisher(string connectionString, string queueName)
             : this(new QueuePublisherOptions() { ConnectionString = connectionString, QueueName = queueName })
         { }

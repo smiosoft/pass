@@ -13,8 +13,12 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers
         {
             private readonly ServiceBusProcessor? _processor;
 
-            public QueueSubscriberOne(string connectionString, string queueName, ServiceBusProcessor? processor)
+            public QueueSubscriberOne(string connectionString, string queueName)
                 : base(connectionString, queueName)
+            { }
+
+            public QueueSubscriberOne(string connectionString, string queueName, ServiceBusProcessor? processor)
+                : this(connectionString, queueName)
             {
                 _processor = processor;
             }
@@ -29,9 +33,9 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers
                 return Task.CompletedTask;
             }
 
-            protected override ServiceBusProcessor CreateProcessor()
+            protected override ServiceBusProcessor CreateDefaultProcessor()
             {
-                return _processor ?? base.CreateProcessor();
+                return _processor ?? base.CreateDefaultProcessor();
             }
         }
 
@@ -39,11 +43,16 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers
         {
             private readonly ServiceBusProcessor? _processor;
 
-            public TopicSubscriberOne(string connectionString, string topicName, string subscriptionName, ServiceBusProcessor? processor)
+            public TopicSubscriberOne(string connectionString, string topicName, string subscriptionName)
                 : base(connectionString, topicName, subscriptionName)
+            { }
+
+            public TopicSubscriberOne(string connectionString, string topicName, string subscriptionName, ServiceBusProcessor? processor)
+                : this(connectionString, topicName, subscriptionName)
             {
                 _processor = processor;
             }
+
             public override Task OnExceptionAsync(Exception exception)
             {
                 return Task.CompletedTask;
@@ -54,9 +63,9 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers
                 return Task.CompletedTask;
             }
 
-            protected override ServiceBusProcessor CreateProcessor()
+            protected override ServiceBusProcessor CreateDefaultProcessor()
             {
-                return _processor ?? base.CreateProcessor();
+                return _processor ?? base.CreateDefaultProcessor();
             }
         }
     }

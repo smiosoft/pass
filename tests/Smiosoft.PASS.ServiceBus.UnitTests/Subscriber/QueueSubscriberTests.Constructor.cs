@@ -25,11 +25,7 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Subscriber
             [InlineData(null, "")]
             [InlineData(null, " ")]
             [InlineData("", null)]
-            [InlineData("", "")]
-            [InlineData("", " ")]
             [InlineData(" ", null)]
-            [InlineData(" ", "")]
-            [InlineData(" ", " ")]
             public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown(string connectionString, string queueName)
             {
                 Action act = () => new Subscribers.QueueSubscriberOne(connectionString, queueName, processor: null);

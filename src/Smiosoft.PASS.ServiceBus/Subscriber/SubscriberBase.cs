@@ -15,8 +15,8 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
         private ServiceBusClient? _client;
         private ServiceBusProcessor? _processor;
 
-        protected ServiceBusClient Client { get => _client ??= CreateClient(); }
-        protected ServiceBusProcessor Processor { get => _processor ??= CreateProcessor(); }
+        protected ServiceBusClient Client { get => _client ??= CreateDefaultClient(); }
+        protected ServiceBusProcessor Processor { get => _processor ??= CreateDefaultProcessor(); }
 
         protected SubscriberBase(SubscriberOptions options)
         {
@@ -52,12 +52,12 @@ namespace Smiosoft.PASS.ServiceBus.Subscriber
             await Processor.StartProcessingAsync();
         }
 
-        protected virtual ServiceBusClient CreateClient()
+        protected virtual ServiceBusClient CreateDefaultClient()
         {
             return new ServiceBusClient(_options.ConnectionString);
         }
 
-        protected abstract ServiceBusProcessor CreateProcessor();
+        protected abstract ServiceBusProcessor CreateDefaultProcessor();
 
         protected virtual void Dispose(bool disposing)
         {
