@@ -47,7 +47,7 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
             [InlineData(" ", " ", " ")]
             public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown(string hostName, string exchangeName, string routingKey)
             {
-                Action act = () => new Publishers.TopicPublisherOne(hostName, exchangeName, routingKey, factory: null);
+                Action act = () => new Publishers.TopicPublisherOne(hostName, exchangeName, routingKey, factory: _mockConnectionFactory.Object);
 
                 act.Should().NotThrow();
             }

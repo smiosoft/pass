@@ -31,8 +31,7 @@ namespace Smiosoft.PASS.RabbitMQ.Publisher
         {
             return Task.Run(() =>
             {
-                var factory = CreateDefaultConnectionFactory();
-                using var connection = factory.CreateConnection();
+                using var connection = Factory.CreateConnection();
                 using var channel = connection.CreateModel();
                 channel.ExchangeDeclare(exchange: Options.ExchangeName, type: ExchangeType.Topic);
                 channel.BasicPublish(
