@@ -1,15 +1,12 @@
 {
-	"markdown.extension.toc.levels": "2..2",
-	"javascript.preferences.quoteStyle": "single",
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"editor.formatOnSave": true,
-	"files.associations": {
-		"**/build/pipelines/**/*.yml": "azure-pipelines"
-	},
-	"[markdown]": {
-		"editor.defaultFormatter": "yzhang.markdown-all-in-one"
-	},
-	"[bicep]": {
-		"editor.defaultFormatter": "ms-azuretools.vscode-bicep"
-	}
+  "markdown.extension.toc.levels": "2..2",
+  "javascript.preferences.quoteStyle": "single",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "files.associations": {
+    "**/build/pipelines/**/*.yml": "azure-pipelines"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+  }
 }
