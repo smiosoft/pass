@@ -7,19 +7,19 @@ using Smiosoft.PASS.Provider;
 
 namespace Smiosoft.PASS.Subscriber.Services
 {
-	internal class HostedSubscribers : BackgroundService
-	{
-		private readonly ServiceFactory _serviceFactory;
+    internal class HostedSubscribers : BackgroundService
+    {
+        private readonly ServiceFactory _services;
 
-		public HostedSubscribers(ServiceFactory serviceFactory)
-		{
-			_serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
-		}
+        public HostedSubscribers(ServiceFactory serviceFactory)
+        {
+            _services = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
+        }
 
-		protected override Task ExecuteAsync(CancellationToken stoppingToken)
-		{
-			var listeners = _serviceFactory.GetInstances<IListener>();
-			return Task.WhenAll(listeners.Select(listener => listener.RegisterAsync()));
-		}
-	}
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            var listeners = _services.GetInstances<IListener>() ?? Enumerable.Empty<IListener>();
+            await Task.WhenAll(listeners.Select(listener => listener.RegisterAsync(stoppingToken)));
+        }
+    }
 }

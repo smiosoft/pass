@@ -7,35 +7,48 @@ using Smiosoft.PASS.Publisher;
 
 namespace Smiosoft.PASS.RabbitMQ.Publisher
 {
-	public abstract class PublisherBase<TPayload> : IPublishingHandler<TPayload>, IRabbitMq
-		where TPayload : IPayload
-	{
-		private readonly PublisherOptions _options;
+    public abstract class PublisherBase<TPayload> : IPublishingHandler<TPayload>, IRabbitMq
+        where TPayload : IPayload
+    {
+        private readonly PublisherOptions _options;
+        private IConnectionFactory? _factory;
 
-		protected PublisherBase(PublisherOptions options)
-		{
-			_options = options ?? throw new ArgumentNullException(nameof(options));
-		}
+        protected IConnectionFactory Factory { get => _factory ??= CreateDefaultConnectionFactory(); }
 
-		public async Task HandleAsync(TPayload payload, CancellationToken cancellationToken)
-		{
-			try
-			{
-				await OnPublishAsync(payload, cancellationToken);
-			}
-			catch (Exception exception)
-			{
-				await OnExceptionAsync(exception);
-				throw;
-			}
-		}
+        protected PublisherBase(PublisherOptions options)
+        {
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+        }
 
-		public abstract Task OnExceptionAsync(Exception exception);
-		public abstract Task OnPublishAsync(TPayload payload, CancellationToken cancellationToken);
+        protected PublisherBase(PublisherOptions options, IConnectionFactory factory)
+            : this(options)
+        {
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
+        }
 
-		protected virtual IConnectionFactory CreateConnectionFactory()
-		{
-			return new ConnectionFactory() { HostName = _options.HostName };
-		}
-	}
+        public async Task HandleAsync(TPayload payload, CancellationToken cancellationToken)
+        {
+            await OnPublishAsync(payload, cancellationToken);
+        }
+
+        public async Task<bool> TryHandleAsync(TPayload payload, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await HandleAsync(payload, cancellationToken);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public abstract Task OnPublishAsync(TPayload payload, CancellationToken cancellationToken);
+
+        protected virtual IConnectionFactory CreateDefaultConnectionFactory()
+        {
+            return new ConnectionFactory() { HostName = _options.HostName };
+        }
+    }
 }

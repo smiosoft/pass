@@ -2,8 +2,8 @@
 
 namespace Smiosoft.PASS.Examples.AspNetCore.Payloads
 {
-	public class RabbitMqExampleTopicPayload : IPayload
-	{
-		public string Message { get; set; } = "Default message from RabbitMQ";
-	}
+    public class RabbitMqExampleTopicPayload : IPayload
+    {
+        public string Message { get; set; } = "Default message from RabbitMQ";
+    }
 }

@@ -5,8 +5,9 @@ using Smiosoft.PASS.Provider;
 
 namespace Smiosoft.PASS.Publisher.Handler
 {
-	internal abstract class HandlerWrapper : HandlerBase
-	{
-		public abstract Task HandleAsync(IPayload payload, CancellationToken cancellationToken, ServiceFactory serviceFactory);
-	}
+    internal abstract class HandlerWrapper : HandlerBase
+    {
+        public abstract Task HandleAsync(IPayload payload, CancellationToken cancellationToken, ServiceFactory serviceFactory);
+        public abstract Task<bool> TryHandleAsync(IPayload payload, CancellationToken cancellationToken, ServiceFactory serviceFactory);
+    }
 }

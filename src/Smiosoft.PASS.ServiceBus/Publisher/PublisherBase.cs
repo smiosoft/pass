@@ -7,35 +7,39 @@ using Smiosoft.PASS.Publisher;
 
 namespace Smiosoft.PASS.ServiceBus.Publisher
 {
-	public abstract class PublisherBase<TPayload> : IPublishingHandler<TPayload>, IServiceBus
-		where TPayload : IPayload
-	{
-		private readonly PublisherOptions _options;
+    public abstract class PublisherBase<TPayload> : IPublishingHandler<TPayload>, IServiceBus
+        where TPayload : IPayload
+    {
+        private readonly PublisherOptions _options;
 
-		public PublisherBase(PublisherOptions options)
-		{
-			_options = options ?? throw new ArgumentNullException(nameof(options));
-		}
+        public PublisherBase(PublisherOptions options)
+        {
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+        }
 
-		public async Task HandleAsync(TPayload payload, CancellationToken cancellationToken)
-		{
-			try
-			{
-				await OnPublishAsync(payload, cancellationToken);
-			}
-			catch (Exception exception)
-			{
-				await OnExceptionAsync(exception);
-				throw;
-			}
-		}
+        public async Task HandleAsync(TPayload payload, CancellationToken cancellationToken)
+        {
+            await OnPublishAsync(payload, cancellationToken);
+        }
 
-		public abstract Task OnExceptionAsync(Exception exception);
-		public abstract Task OnPublishAsync(TPayload payload, CancellationToken cancellationToken);
+        public async Task<bool> TryHandleAsync(TPayload payload, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await HandleAsync(payload, cancellationToken);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
-		protected virtual ServiceBusClient CreateClient()
-		{
-			return new ServiceBusClient(_options.ConnectionString);
-		}
-	}
+        public abstract Task OnPublishAsync(TPayload payload, CancellationToken cancellationToken);
+
+        protected virtual ServiceBusClient CreateDefaultClient()
+        {
+            return new ServiceBusClient(_options.ConnectionString);
+        }
+    }
 }

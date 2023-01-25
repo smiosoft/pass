@@ -4,23 +4,30 @@ using Smiosoft.PASS.Payload;
 
 namespace Smiosoft.PASS.ServiceBus.Subscriber
 {
-	public abstract class QueueSubscriber<TPayload> : SubscriberBase<TPayload>
-		where TPayload : IPayload
-	{
-		public QueueSubscriberOptions Options { get; }
+    public abstract class QueueSubscriber<TPayload> : SubscriberBase<TPayload>
+        where TPayload : IPayload
+    {
+        public QueueSubscriberOptions Options { get; }
 
-		protected QueueSubscriber(QueueSubscriberOptions options) : base(options)
-		{
-			Options = options ?? throw new ArgumentNullException(nameof(options));
-		}
+        protected QueueSubscriber(QueueSubscriberOptions options)
+            : base(options)
+        {
+            Options = options ?? throw new ArgumentNullException(nameof(options));
+        }
 
-		protected QueueSubscriber(string connectionString, string queueName)
-			: this(new QueueSubscriberOptions() { ConnectionString = connectionString, QueueName = queueName })
-		{ }
+        protected QueueSubscriber(QueueSubscriberOptions options, ServiceBusClient client)
+            : base(options, client)
+        {
+            Options = options ?? throw new ArgumentNullException(nameof(options));
+        }
 
-		protected override ServiceBusProcessor CreateProcessor()
-		{
-			return Client.CreateProcessor(queueName: Options.QueueName);
-		}
-	}
+        protected QueueSubscriber(string connectionString, string queueName)
+            : this(new QueueSubscriberOptions() { ConnectionString = connectionString, QueueName = queueName })
+        { }
+
+        protected override ServiceBusProcessor CreateDefaultProcessor()
+        {
+            return Client.CreateProcessor(queueName: Options.QueueName);
+        }
+    }
 }

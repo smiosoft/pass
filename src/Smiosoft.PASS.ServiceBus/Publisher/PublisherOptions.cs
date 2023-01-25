@@ -2,6 +2,6 @@
 
 namespace Smiosoft.PASS.ServiceBus.Publisher
 {
-	public class PublisherOptions : ServiceBusOptions
-	{ }
+    public class PublisherOptions : ServiceBusOptions
+    { }
 }

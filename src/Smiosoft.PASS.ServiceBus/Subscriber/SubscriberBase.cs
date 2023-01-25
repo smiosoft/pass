@@ -7,97 +7,103 @@ using Smiosoft.PASS.Subscriber;
 
 namespace Smiosoft.PASS.ServiceBus.Subscriber
 {
-	public abstract class SubscriberBase<TPayload> : ISubscriptionHandler<TPayload>, IServiceBus, IDisposable
-		where TPayload : IPayload
-	{
-		private readonly SubscriberOptions _options;
-		private bool _disposedValue;
-		private ServiceBusClient? _client;
-		private ServiceBusProcessor? _processor;
+    public abstract class SubscriberBase<TPayload> : ISubscriptionHandler<TPayload>, IServiceBus, IDisposable
+        where TPayload : IPayload
+    {
+        private readonly SubscriberOptions _options;
+        private bool _disposedValue;
+        private ServiceBusClient? _client;
+        private ServiceBusProcessor? _processor;
 
-		protected ServiceBusClient Client { get => _client ??= CreateClient(); }
-		protected ServiceBusProcessor Processor { get => _processor ??= CreateProcessor(); }
+        protected ServiceBusClient Client { get => _client ??= CreateDefaultClient(); }
+        protected ServiceBusProcessor Processor { get => _processor ??= CreateDefaultProcessor(); }
 
-		protected SubscriberBase(SubscriberOptions options)
-		{
-			_options = options ?? throw new ArgumentNullException(nameof(options));
-		}
+        protected SubscriberBase(SubscriberOptions options)
+        {
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+        }
 
-		public async Task RegisterAsync()
-		{
-			try
-			{
-				await OnRegistrationAsync();
-			}
-			catch (Exception exception)
-			{
-				await OnExceptionAsync(exception);
-			}
-		}
+        protected SubscriberBase(SubscriberOptions options, ServiceBusClient client)
+            : this(options)
+        {
+            _client = client ?? throw new ArgumentNullException(nameof(client));
+        }
 
-		public abstract Task OnExceptionAsync(Exception exception);
+        public async Task RegisterAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                await OnRegistrationAsync(cancellationToken);
+            }
+            catch (Exception exception)
+            {
+                await OnExceptionAsync(exception);
+            }
+        }
 
-		public abstract Task OnReceivedAsync(TPayload payload, CancellationToken cancellationToken = default);
+        public abstract Task OnExceptionAsync(Exception exception);
 
-		public virtual async Task OnRegistrationAsync()
-		{
-			Processor.ProcessMessageAsync += Processor_ProcessMessageAsync;
-			Processor.ProcessErrorAsync += Processor_ProcessErrorAsync;
-			await Processor.StartProcessingAsync();
-		}
+        public abstract Task OnReceivedAsync(TPayload payload, CancellationToken cancellationToken = default);
 
-		protected virtual ServiceBusClient CreateClient()
-		{
-			return new ServiceBusClient(_options.ConnectionString);
-		}
+        public virtual async Task OnRegistrationAsync(CancellationToken cancellationToken)
+        {
+            Processor.ProcessMessageAsync += Processor_ProcessMessageAsync;
+            Processor.ProcessErrorAsync += Processor_ProcessErrorAsync;
+            await Processor.StartProcessingAsync();
+        }
 
-		protected abstract ServiceBusProcessor CreateProcessor();
+        protected virtual ServiceBusClient CreateDefaultClient()
+        {
+            return new ServiceBusClient(_options.ConnectionString);
+        }
 
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!_disposedValue)
-			{
-				if (disposing)
-				{
-					if (_client != null)
-					{
-						_client.DisposeAsync().GetAwaiter().GetResult();
-						_client = null;
-					}
+        protected abstract ServiceBusProcessor CreateDefaultProcessor();
 
-					if (_processor != null)
-					{
-						_processor.DisposeAsync().GetAwaiter().GetResult();
-						_processor = null;
-					}
-				}
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    if (_client != null)
+                    {
+                        _client.DisposeAsync().GetAwaiter().GetResult();
+                        _client = null;
+                    }
 
-				_disposedValue = true;
-			}
-		}
+                    if (_processor != null)
+                    {
+                        _processor.DisposeAsync().GetAwaiter().GetResult();
+                        _processor = null;
+                    }
+                }
 
-		public void Dispose()
-		{
-			Dispose(disposing: true);
-			GC.SuppressFinalize(this);
-		}
+                _disposedValue = true;
+            }
+        }
 
-		private async Task Processor_ProcessMessageAsync(ProcessMessageEventArgs args)
-		{
-			try
-			{
-				await OnReceivedAsync(args.Message.Body.ToArray().Deserialise<TPayload>(), args.CancellationToken);
-				await args.CompleteMessageAsync(args.Message, args.CancellationToken);
-			}
-			catch (Exception exception)
-			{
-				await OnExceptionAsync(exception);
-			}
-		}
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
 
-		private Task Processor_ProcessErrorAsync(ProcessErrorEventArgs args)
-		{
-			return OnExceptionAsync(args.Exception);
-		}
-	}
+        private async Task Processor_ProcessMessageAsync(ProcessMessageEventArgs args)
+        {
+            try
+            {
+                await OnReceivedAsync(args.Message.Body.ToArray().Deserialise<TPayload>(), args.CancellationToken);
+                await args.CompleteMessageAsync(args.Message, args.CancellationToken);
+            }
+            catch (Exception exception)
+            {
+                await OnExceptionAsync(exception);
+            }
+        }
+
+        private Task Processor_ProcessErrorAsync(ProcessErrorEventArgs args)
+        {
+            return OnExceptionAsync(args.Exception);
+        }
+    }
 }

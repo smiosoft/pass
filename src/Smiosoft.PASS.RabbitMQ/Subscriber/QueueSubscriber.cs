@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -6,51 +7,52 @@ using Smiosoft.PASS.Payload;
 
 namespace Smiosoft.PASS.RabbitMQ.Subscriber
 {
-	public abstract class QueueSubscriber<TPayload> : SubscriberBase<TPayload>
-		where TPayload : IPayload
-	{
-		public QueueSubscriberOptions Options { get; }
+    public abstract class QueueSubscriber<TPayload> : SubscriberBase<TPayload>
+        where TPayload : IPayload
+    {
+        public QueueSubscriberOptions Options { get; }
 
-		protected QueueSubscriber(QueueSubscriberOptions options)
-			: base(options)
-		{
-			Options = options ?? throw new ArgumentNullException(nameof(options));
-		}
+        protected QueueSubscriber(QueueSubscriberOptions options)
+            : base(options)
+        {
+            Options = options ?? throw new ArgumentNullException(nameof(options));
+        }
 
-		protected QueueSubscriber(string hostName, string queueName)
-			: this(new QueueSubscriberOptions() { HostName = hostName, QueueName = queueName })
-		{ }
+        protected QueueSubscriber(QueueSubscriberOptions options, IConnectionFactory factory)
+            : base(options, factory)
+        {
+            Options = options ?? throw new ArgumentNullException(nameof(options));
+        }
 
-		public override Task OnRegistrationAsync()
-		{
-			return Task.Run(() =>
-			{
-				Channel.QueueDeclare(
-					queue: Options.QueueName,
-					durable: true,
-					exclusive: false,
-					autoDelete: false,
-					arguments: null);
-				Channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
+        protected QueueSubscriber(string hostName, string queueName)
+            : this(new QueueSubscriberOptions() { HostName = hostName, QueueName = queueName })
+        { }
 
-				var consumer = new EventingBasicConsumer(Channel);
-				consumer.Received += Consumer_Received;
+        public override Task OnRegistrationAsync(CancellationToken cancellationToken)
+        {
+            return Task.Run(() =>
+            {
+                Channel.QueueDeclare(queue: Options.QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+                Channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
-				Channel.BasicConsume(queue: Options.QueueName, autoAck: false, consumer: consumer);
-			});
-		}
+                var consumer = new EventingBasicConsumer(Channel);
+                consumer.Received += Consumer_Received;
 
-		private async void Consumer_Received(object sender, BasicDeliverEventArgs args)
-		{
-			try
-			{
-				await OnReceivedAsync(args.Body.ToArray().Deserialise<TPayload>());
-				Channel.BasicAck(deliveryTag: args.DeliveryTag, multiple: false);
-			}
-			catch (Exception exception)
-			{
-				await OnExceptionAsync(exception);
-			}
-		}
-	}
+                Channel.BasicConsume(queue: Options.QueueName, autoAck: false, consumer: consumer);
+            });
+        }
+
+        private async void Consumer_Received(object sender, BasicDeliverEventArgs args)
+        {
+            try
+            {
+                await OnReceivedAsync(args.Body.ToArray().Deserialise<TPayload>());
+                Channel.BasicAck(deliveryTag: args.DeliveryTag, multiple: false);
+            }
+            catch (Exception exception)
+            {
+                await OnExceptionAsync(exception);
+            }
+        }
+    }
 }

@@ -1,51 +1,31 @@
-using System;
-using System.Threading.Tasks;
 using RabbitMQ.Client;
 using Smiosoft.PASS.RabbitMQ.Publisher;
 using Smiosoft.PASS.UnitTests.TestHelpers;
 
 namespace Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers
 {
-	public static class Publishers
-	{
-		public class QueuePublisherOne : QueuePublisher<Payloads.DummyPayloadOne>
-		{
-			private readonly IConnectionFactory? _factory;
+    public static class Publishers
+    {
+        public class QueuePublisherOne : QueuePublisher<Payloads.DummyPayloadOne>
+        {
+            public QueuePublisherOne(QueuePublisherOptions options, IConnectionFactory factory)
+                : base(options, factory)
+            { }
 
-			public QueuePublisherOne(string hostName, string queueName, IConnectionFactory? factory) : base(hostName, queueName)
-			{
-				_factory = factory;
-			}
+            public QueuePublisherOne(string hostName, string queueName, IConnectionFactory factory)
+                : this(new QueuePublisherOptions() { HostName = hostName, QueueName = queueName }, factory)
+            { }
+        }
 
-			public override Task OnExceptionAsync(Exception exception)
-			{
-				return Task.CompletedTask;
-			}
+        public class TopicPublisherOne : TopicPublisher<Payloads.DummyPayloadOne>
+        {
+            public TopicPublisherOne(TopicPublisherOptions options, IConnectionFactory factory)
+                : base(options, factory)
+            { }
 
-			protected override IConnectionFactory CreateConnectionFactory()
-			{
-				return _factory ?? base.CreateConnectionFactory();
-			}
-		}
-
-		public class TopicPublisherOne : TopicPublisher<Payloads.DummyPayloadOne>
-		{
-			private readonly IConnectionFactory? _factory;
-
-			public TopicPublisherOne(string hostName, string exchangeName, string routingKey, IConnectionFactory? factory) : base(hostName, exchangeName, routingKey)
-			{
-				_factory = factory;
-			}
-
-			public override Task OnExceptionAsync(Exception exception)
-			{
-				return Task.CompletedTask;
-			}
-
-			protected override IConnectionFactory CreateConnectionFactory()
-			{
-				return _factory ?? base.CreateConnectionFactory();
-			}
-		}
-	}
+            public TopicPublisherOne(string hostName, string exchangeName, string routingKey, IConnectionFactory factory)
+                : this(new TopicPublisherOptions() { HostName = hostName, ExchangeName = exchangeName, RoutingKey = routingKey }, factory)
+            { }
+        }
+    }
 }

@@ -1,32 +1,49 @@
-using System;
-using System.Threading.Tasks;
+using Azure.Messaging.ServiceBus;
 using Smiosoft.PASS.ServiceBus.Publisher;
 using Smiosoft.PASS.UnitTests.TestHelpers;
 
 namespace Smiosoft.PASS.ServiceBus.UnitTests.TestHelpers
 {
-	public static class Publishers
-	{
-		public class QueuePublisherOne : QueuePublisher<Payloads.DummyPayloadOne>
-		{
-			public QueuePublisherOne(string connectionString, string queueName) : base(connectionString, queueName)
-			{ }
+    public static class Publishers
+    {
+        public class QueuePublisherOne : QueuePublisher<Payloads.DummyPayloadOne>
+        {
+            private readonly ServiceBusClient? _client;
 
-			public override Task OnExceptionAsync(Exception exception)
-			{
-				return Task.CompletedTask;
-			}
-		}
+            public QueuePublisherOne(string connectionString, string queueName)
+                : base(connectionString, queueName)
+            { }
 
-		public class TopicPublisherOne : TopicPublisher<Payloads.DummyPayloadOne>
-		{
-			public TopicPublisherOne(string connectionString, string topicPath) : base(connectionString, topicPath)
-			{ }
+            public QueuePublisherOne(string connectionString, string queueName, ServiceBusClient? client)
+                : base(connectionString, queueName)
+            {
+                _client = client;
+            }
 
-			public override Task OnExceptionAsync(Exception exception)
-			{
-				return Task.CompletedTask;
-			}
-		}
-	}
+            protected override ServiceBusClient CreateDefaultClient()
+            {
+                return _client ?? base.CreateDefaultClient();
+            }
+        }
+
+        public class TopicPublisherOne : TopicPublisher<Payloads.DummyPayloadOne>
+        {
+            private readonly ServiceBusClient? _client;
+
+            public TopicPublisherOne(string connectionString, string topicPath)
+                : base(connectionString, topicPath)
+            { }
+
+            public TopicPublisherOne(string connectionString, string topicPath, ServiceBusClient? client)
+                : base(connectionString, topicPath)
+            {
+                _client = client;
+            }
+
+            protected override ServiceBusClient CreateDefaultClient()
+            {
+                return _client ?? base.CreateDefaultClient();
+            }
+        }
+    }
 }
