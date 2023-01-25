@@ -43,11 +43,6 @@ internal class ExampleQueuePublisher : QueuePublisher<ExamplePayload>
 {
   public ExampleQueuePublisher() : base("localhost", "queue_name")
   { }
-
-  public override Task OnExceptionAsync(Exception exception)
-  {
-    return Task.CompletedTask;
-  }
 }
 ```
 

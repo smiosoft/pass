@@ -32,11 +32,6 @@ internal class ExampleQueuePublisher : QueuePublisher<ExamplePayload>
 {
   public ExampleQueuePublisher() : base("<connection_string>", "queue_name")
   { }
-
-  public override Task OnExceptionAsync(Exception exception)
-  {
-    return Task.CompletedTask;
-  }
 }
 ```
 
