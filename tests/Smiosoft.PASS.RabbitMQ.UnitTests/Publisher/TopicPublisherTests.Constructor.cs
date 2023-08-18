@@ -12,7 +12,7 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
             [Fact]
             public void GivenValidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown()
             {
-                Action act = () => new Publishers.TopicPublisherOne("localhost", "tests", "unit.test", _mockConnectionFactory.Object);
+                Action act = () => new Publishers.TopicPublisherOne("localhost", "tests", "unit.test", _mockConnectionFactory);
 
                 act.Should().NotThrow();
             }
@@ -27,7 +27,7 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
             [InlineData(" ", null, null)]
             public void GivenInvalidParameters_WhenConstructingWithConnectionParams_ThenNoExceptionsAreThrown(string hostName, string exchangeName, string routingKey)
             {
-                Action act = () => new Publishers.TopicPublisherOne(hostName, exchangeName, routingKey, factory: _mockConnectionFactory.Object);
+                Action act = () => new Publishers.TopicPublisherOne(hostName, exchangeName, routingKey, factory: _mockConnectionFactory);
 
                 act.Should().NotThrow();
             }

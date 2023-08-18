@@ -16,7 +16,7 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Subscriber
                     "Endpoint=sb://test.net/;SharedAccessKeyName=***;SharedAccessKey=***",
                     "test-topic",
                     "test-subscription",
-                    _mockServiceBusProcessor.Object);
+                    _mockServiceBusProcessor);
 
                 act.Should().NotThrow();
             }

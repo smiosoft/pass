@@ -15,7 +15,7 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Subscriber
                 Action act = () => new Subscribers.QueueSubscriberOne(
                     "Endpoint=sb://test.net/;SharedAccessKeyName=***;SharedAccessKey=***",
                     "test-queue",
-                    _mockServiceBusProcessor.Object);
+                    _mockServiceBusProcessor);
 
                 act.Should().NotThrow();
             }

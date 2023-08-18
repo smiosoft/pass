@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Moq;
+using NSubstitute;
 using RabbitMQ.Client;
 using Smiosoft.PASS.UnitTests.TestHelpers;
 using Xunit;
@@ -27,9 +27,8 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
             {
                 await _sut.OnPublishAsync(new Payloads.DummyPayloadOne(), CancellationToken.None);
 
-                _mockChannel.Verify(
-                    _ => _.QueueDeclare(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>()),
-                    Times.Once);
+                _mockChannel.Received(1)
+                    .QueueDeclare(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<bool>(), Arg.Any<bool>(), Arg.Any<IDictionary<string, object>>());
             }
 
             [Fact]
@@ -37,9 +36,8 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
             {
                 await _sut.OnPublishAsync(new Payloads.DummyPayloadOne(), CancellationToken.None);
 
-                _mockChannel.Verify(
-                    _ => _.BasicPublish(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<IBasicProperties>(), It.IsAny<ReadOnlyMemory<byte>>()),
-                    Times.Once);
+                _mockChannel.Received(1)
+                    .BasicPublish(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<IBasicProperties>(), Arg.Any<ReadOnlyMemory<byte>>());
             }
         }
     }
