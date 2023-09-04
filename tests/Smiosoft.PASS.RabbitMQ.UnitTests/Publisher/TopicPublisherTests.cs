@@ -1,4 +1,4 @@
-using Moq;
+using NSubstitute;
 using RabbitMQ.Client;
 using Smiosoft.PASS.RabbitMQ.UnitTests.TestHelpers;
 
@@ -6,26 +6,26 @@ namespace Smiosoft.PASS.RabbitMQ.UnitTests.Publisher
 {
     public partial class TopicPublisherTests
     {
-        private readonly Mock<IConnectionFactory> _mockConnectionFactory;
-        private readonly Mock<IConnection> _mockConnection;
-        private readonly Mock<IModel> _mockChannel;
+        private readonly IConnectionFactory _mockConnectionFactory;
+        private readonly IConnection _mockConnection;
+        private readonly IModel _mockChannel;
         private readonly Publishers.TopicPublisherOne _sut;
 
         public TopicPublisherTests()
         {
-            _mockConnectionFactory = new Mock<IConnectionFactory>();
-            _mockConnection = new Mock<IConnection>();
-            _mockChannel = new Mock<IModel>();
+            _mockConnectionFactory = Substitute.For<IConnectionFactory>();
+            _mockConnection = Substitute.For<IConnection>();
+            _mockChannel = Substitute.For<IModel>();
 
             _mockConnectionFactory
-                .Setup(_ => _.CreateConnection())
-                .Returns(_mockConnection.Object);
+                .CreateConnection()
+                .Returns(_mockConnection);
 
             _mockConnection
-                .Setup(_ => _.CreateModel())
-                .Returns(_mockChannel.Object);
+                .CreateModel()
+                .Returns(_mockChannel);
 
-            _sut = new Publishers.TopicPublisherOne("local-tests", "tests", "unit.test", _mockConnectionFactory.Object);
+            _sut = new Publishers.TopicPublisherOne("local-tests", "tests", "unit.test", _mockConnectionFactory);
         }
     }
 }

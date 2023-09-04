@@ -12,7 +12,7 @@ namespace Smiosoft.PASS.UnitTests.Subscriber.Services
             [Fact]
             public void GivenValidParameters_WhenConstructing_ThenNoExceptionsAreThrown()
             {
-                Action act = () => new HostedSubscribers(_mockServiceFactory.Object);
+                Action act = () => new HostedSubscribers(_mockServiceFactory);
 
                 act.Should().NotThrow();
             }

@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using FluentAssertions;
-using Moq;
+using NSubstitute;
 using Smiosoft.PASS.UnitTests.TestHelpers;
 using Xunit;
 
@@ -26,9 +26,7 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Publisher
             {
                 await _sut.TryHandleAsync(new Payloads.DummyPayloadOne(), CancellationToken.None);
 
-                _mockServiceBusClient.Verify(
-                    _ => _.CreateSender(It.IsAny<string>()),
-                    Times.Once);
+                _mockServiceBusClient.Received(1).CreateSender(Arg.Any<string>());
             }
 
             [Fact]
@@ -36,9 +34,7 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Publisher
             {
                 await _sut.TryHandleAsync(new Payloads.DummyPayloadOne(), CancellationToken.None);
 
-                _mockServiceBusSender.Verify(
-                    _ => _.SendMessageAsync(It.IsAny<ServiceBusMessage>(), It.IsAny<CancellationToken>()),
-                    Times.Once);
+                await _mockServiceBusSender.Received(1).SendMessageAsync(Arg.Any<ServiceBusMessage>(), Arg.Any<CancellationToken>());
             }
         }
     }

@@ -11,7 +11,7 @@ namespace Smiosoft.PASS.UnitTests
             [Fact]
             public void GivenValidParameters_WhenConstructing_ThenNoExceptionsAreThrown()
             {
-                Action act = () => new Pass(_mockServiceFactory.Object);
+                Action act = () => new Pass(_mockServiceFactory);
 
                 act.Should().NotThrow();
             }

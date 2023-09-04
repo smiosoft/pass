@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace Smiosoft.PASS.ServiceBus.UnitTests.Subscriber
@@ -24,9 +24,7 @@ namespace Smiosoft.PASS.ServiceBus.UnitTests.Subscriber
             {
                 await _sut.OnRegistrationAsync(CancellationToken.None);
 
-                _mockServiceBusProcessor.Verify(
-                    _ => _.StartProcessingAsync(It.IsAny<CancellationToken>()),
-                    Times.Once);
+                await _mockServiceBusProcessor.Received(1).StartProcessingAsync(Arg.Any<CancellationToken>());
             }
         }
     }
